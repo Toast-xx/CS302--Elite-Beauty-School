@@ -1,9 +1,9 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
 
 class Config:
+    load_dotenv()
     # Flask secret key
     SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "dev-secret-key")
 

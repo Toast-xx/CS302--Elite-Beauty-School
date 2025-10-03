@@ -1,0 +1,4 @@
+[Flask Migrate] (use this to update db when adding new models):
+    python -m flask db migrate -m "added user model"
+    python -m flask db upgrade
+

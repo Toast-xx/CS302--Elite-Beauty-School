@@ -19,6 +19,9 @@ def create_app(config_object=Config):
     db.init_app(app)
     migrate.init_app(app, db)
 
+    # Import models so Alembic sees them
+    from app import models
+
     # Register routes/blueprints
     from .routes import register_routes
     register_routes(app)
