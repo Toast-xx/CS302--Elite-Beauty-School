@@ -13,14 +13,11 @@ def require_clearance(required_level):
             # Check login session
             user = session.get('user')
             if not user:
-                flash("You must be logged in to access this page.", "warning")
                 return redirect(url_for('auth.login'))
-
             # Check security clearance level
             user_clearance = user.get('clearance_level', 0)
             if user_clearance < required_level:
-                flash("You do not have permission to access this page.", "danger")
-                return redirect(url_for('main.index'))
+                return redirect(url_for('main.home'))
 
             # Passed both checks
             return f(*args, **kwargs)

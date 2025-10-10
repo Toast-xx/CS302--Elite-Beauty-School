@@ -33,13 +33,13 @@ def login():
 
             session['user'] = user
 
-            return render_template(""), 200 # TODO: add render template for home page
+            return redirect("/"), 200 # TODO: add render template for home page
 
         except Exception as e:
             return jsonify({"error": f"Login Failed: {e}"}, 401)
 
     # If method is GET
-    return render_template(""), 200 # TODO: add render template for login
+    return render_template("login.html"), 200 # TODO: add render template for login
 
 
 @auth.route("/auth/logout", methods=["GET","POST"])

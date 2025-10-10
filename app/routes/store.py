@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template
 from app.models.product import Product
+from app.utils import *
 
 products = Blueprint("products", __name__, url_prefix="/store")
 
 @products.route("/")
+@require_clearance(1)
 def show_products():
     # Fetch all products from the database
     #product_list = Product.query.all()
