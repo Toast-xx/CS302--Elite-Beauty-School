@@ -12,6 +12,9 @@ def create_app(config_object=Config):
     # Define app
     app = Flask(__name__)
 
+    # TODO: replace this with random value during deployment
+    app.secret_key = 'Placeholder_Secret_Key'
+
     # Load configuration
     app.config.from_object(config_object)
 
