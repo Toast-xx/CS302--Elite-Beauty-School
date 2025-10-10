@@ -1,0 +1,106 @@
+   @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap');
+   
+/* 
+========================================
+Navbar Styling
+- Styles the brand name and navigation links in the top navbar.
+- Brand uses a custom purple color.
+- Navigation links have spacing and color transitions on hover.
+========================================
+*/
+.navbar-brand {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.nav-link {
+    color: #333;
+    margin-left: 1rem;
+}
+
+    .nav-link:hover {
+        color: #B29C6C;
+    }
+
+.navbar {
+    background-color: #B29C6C
+}
+/* 
+========================================
+Search Bar Styling
+- Sets a fixed width for the search form in the navbar.
+========================================
+*/
+.navbar-search {
+    width: 200px;
+}
+
+/* 
+========================================
+Cart Placeholder Styling
+- Makes the cart icon a round button, matching the profile image.
+- Sets size, background, and border.
+- Adds a smooth box-shadow transition on hover for interactivity.
+========================================
+*/
+.cart-placeholder {
+    width: 40px;
+    height: 40px;
+    background: #f3f3f3;
+    border: 2px solid #6c63ff;
+    transition: box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .cart-placeholder:hover {
+        box-shadow: 0 0 0 2px #6c63ff33;
+        background: #e9e7fd;
+    }
+
+.cart-icon {
+    width: 22px;
+    height: 22px;
+}
+
+/* 
+========================================
+Profile Bubble Styling
+- Styles the user profile image in the navbar.
+- Ensures the image is circular and adds a purple border.
+========================================
+*/
+.navbar img.rounded-circle,
+.profile-img {
+    object-fit: cover;
+    border: 2px solid #6c63ff;
+    width: 40px;
+    height: 40px;
+}
+
+/* 
+========================================
+Body Styling
+- Adds top padding to prevent content from being hidden behind the navbar.
+- Sets a light background and a clean sans-serif font.
+========================================
+*/
+body {
+    padding-top: 0px;
+    background-color: #fdf6ec;
+    font-family: 'Segoe UI', sans-serif;
+}
+/* 
+========================================
+Logo Styling
+- Ensures the logo in the navbar is a fixed height and keeps its aspect ratio.
+========================================
+*/
+.base-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+   
+}

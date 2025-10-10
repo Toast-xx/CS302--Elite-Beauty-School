@@ -1,0 +1,58 @@
+{% extends 'user_Base.html' %}
+{% block title %}Popular Products{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Sidebar Filters -->
+    <aside class="col-md-3 p-4 bg-light">
+        <h5>Filter By</h5>
+        <div class="mb-3">
+            <strong>Categories</strong>
+            <ul class="list-unstyled">
+                <li><input type="checkbox" /> Skin Care</li>
+                <li><input type="checkbox" /> Hair Care</li>
+                <li><input type="checkbox" /> Makeup</li>
+                <li><input type="checkbox" /> Fragrances</li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <strong>Brand</strong>
+            <select class="form-select">
+                <option>Range</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <strong>Price</strong>
+            <input type="range" class="form-range" min="0" max="50" />
+            <div>NZD $0.00 - NZD $50.00</div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="col-md-9 p-4">
+        <div class="alert alert-primary text-center">
+            <strong>Aliquip do laboris officia...</strong>
+        </div>
+
+
+        <div class="container py-4">
+            <div class="row">
+                {% for product in products %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card h-100 shadow-sm position-relative">
+                        <img src="{{ url_for('static', filename='images/' ~ product.image_file) }}" class="card-img-top" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text mb-1"><strong>Brand:</strong> {{ product.brand }}</p>
+                            <p class="card-text mb-1"><strong>Price:</strong> NZD ${{ "%.2f"|format(product.price) }}</p>
+                            <!-- Discount tag placeholder (future) -->
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </main>
+</div>
+{% endblock %}

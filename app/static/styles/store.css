@@ -1,0 +1,27 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fdf6ec;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.card-text {
+    color: #555;
+}
+
+.btn-primary {
+    background-color: #6c63ff;
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: #574fd2;
+    }
+
+.product-img {
+    height: 200px;
+    object-fit: cover;
+}
