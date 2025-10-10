@@ -42,7 +42,7 @@ class User(db.Model):
 
         new_user = cls(
             name=name,
-            email=email,
+            email=email.lower().strip(),
             password_hash=password_hash,
             clearance_level=clearance_level,
             campus_id=campus_id,

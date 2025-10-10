@@ -13,7 +13,7 @@ def is_valid_email(email: str) -> bool:
     Validate email format using regex.
     Returns True if valid, False otherwise.
     """
-    return bool(EMAIL_REGEX.match(email))
+    return bool(EMAIL_REGEX.match(email.lower().strip()))
 
 
 def is_email_in_use(email: str) -> bool:
@@ -23,7 +23,7 @@ def is_email_in_use(email: str) -> bool:
     """
     # Requires an application context to access the DB
     with current_app.app_context():
-        existing_user = db.session.query(User).filter_by(email=email).first()
+        existing_user = db.session.query(User).filter_by(email=email.lower().strip()).first()
         return existing_user is not None
 
 
@@ -32,6 +32,8 @@ def validate_new_email(email: str) -> tuple[bool, str]:
     Combined validation: checks format and uniqueness.
     Returns (is_valid, message)
     """
+    email = email.lower().strip()
+
     if not is_valid_email(email):
         return False, "Invalid email format."
 
