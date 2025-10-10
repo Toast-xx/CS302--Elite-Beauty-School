@@ -1,7 +1,7 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, render_template
 
 main = Blueprint("main", __name__)
 
 @main.route("/")
 def home():
-    return jsonify({"message": "Hello World!"})
+    return render_template("login.html")

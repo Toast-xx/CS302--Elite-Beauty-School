@@ -1,0 +1,48 @@
+/* Background */
+body {
+    background-color: #fdf6ec;
+}
+
+/* Container for centering content */
+.centered-card {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Logo styling */
+.logo-img {
+    width: 400px;
+    height: auto;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+/* Tagline */
+.tagline {
+    font-size: 1rem;
+    color: #000; /* Black */
+    margin-bottom: 2rem;
+}
+
+/* Login form */
+.login-form {
+    max-width: 450px;
+    width: 100%;
+    padding: 2rem;
+    margin: 0 auto;
+    background: transparent; /* Change to white if needed */
+}
+
+/* Gold button */
+.btn-gold {
+    background-color: #B29C6C;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-gold:hover {
+        background-color: #a88e3c;
+    }
