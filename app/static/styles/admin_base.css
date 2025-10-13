@@ -1,0 +1,27 @@
+html,body
+{
+    height: 100%;
+    margin: 0;
+}
+.container
+{
+    display: grid;
+    grid-template-columns: 500px 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      "side top"
+      "side content";
+    height: 100%;
+    width: 100%;
+}
+.side
+{
+    grid-area: side;
+    background-color: #6c63ff;
+}
+.top
+{
+    grid-area: top;
+    background-color: #333333;
+    width: 100%;
+}
