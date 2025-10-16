@@ -2,12 +2,13 @@ html,body
 {
     height: 100%;
     margin: 0;
+    font-family: sans-serif;
 }
 .container
 {
     display: grid;
-    grid-template-columns: 500px 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 255px 1fr;
+    grid-template-rows: auto 1fr;
     grid-template-areas:
       "side top"
       "side content";
@@ -17,11 +18,95 @@ html,body
 .side
 {
     grid-area: side;
-    background-color: #6c63ff;
+    background-color: #E4CFA1B3;
 }
 .top
 {
     grid-area: top;
-    background-color: #333333;
+}
+.top-banner
+{
+    height: 64px;
+    background-color: teal;
+    display: inline-flex;
     width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+.banner-name
+{
+    margin-left: 20px;
+    font-size: 30px;
+    font-weight: bold;
+}
+.banner-right
+{
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+}
+.banner-search
+{
+    width: 241px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    border-width: 1px;
+    border-color: #DEE1E6FF;
+    border-style: solid;
+}
+.banner-notification
+{
+    width: 131px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.banner-setting
+{
+    width: 102px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.banner-profile
+{
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 24px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+.top-filter-order
+{
+    display: none;
+    height: 144px;
+    background-color: red;
+    margin-top: 52px;
+}
+.top-filter-list
+{
+    display: none;
+    height: 20px;
+    margin: 20px;
+    background-color: yellow;
+}
+.content
+{
+    grid-area: content;
+    margin: 20px;
+    background-color: gold;
 }
