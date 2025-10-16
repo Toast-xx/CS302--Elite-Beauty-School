@@ -1,0 +1,202 @@
+.product-detail-container {
+    display: flex;
+    gap: 2rem;
+    background: #f8f6f2;
+    padding: 2rem 2rem 1rem 2rem;
+    border-radius: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.product-detail-left {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    border-radius: 1rem;
+    padding: 2rem;
+}
+
+.product-detail-main-img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    display: block;
+    margin: 0 auto 1rem auto;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.product-gallery {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.product-gallery-img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #eee;
+    transition: border 0.2s;
+}
+
+    .product-gallery-img:hover {
+        border: 1.5px solid #333;
+    }
+
+.product-detail-right {
+    flex: 1.5;
+    background: #f8f6f2;
+    border-radius: 1rem;
+    padding: 2rem 2rem 2rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.product-detail-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.product-detail-price {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.product-detail-badge {
+    background: #b6e0c6;
+    color: #2d6a4f;
+    font-size: 0.9rem;
+    padding: 0.3rem 1rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.product-detail-form {
+    margin-bottom: 1.5rem;
+}
+
+.product-detail-qty {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.product-detail-qty button {
+    background: #f2e9e4;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    }
+
+.product-detail-qty-input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #e0d7c6;
+    border-radius: 0.5rem;
+    padding: 0.2rem;
+}
+
+.product-detail-add-btn {
+    background: #f7b6b6;
+    color: #fff;
+    border: none;
+    border-radius: 0.7rem;
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    transition: background 0.2s;
+}
+
+    .product-detail-add-btn:hover {
+        background: #e57373;
+    }
+
+.product-detail-tabs {
+    margin-bottom: 1rem;
+}
+
+.product-detail-description {
+    background: #fff;
+    border-radius: 0.7rem;
+    padding: 1rem;
+    font-size: 1rem;
+    color: #444;
+}
+
+.may-also-like-section {
+    margin-top: 2rem;
+}
+
+.may-also-like-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.may-also-like-row {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+
+.product-recommend-card {
+    min-width: 170px;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+    .product-recommend-card img {
+        width: 100%;
+        max-width: 100px;
+        height: 100px;
+        object-fit: contain;
+        margin-bottom: 0.5rem;
+    }
+
+    .product-recommend-card .card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+    }
+
+    .product-recommend-card .card-text {
+        color: #e57373;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .product-recommend-card .btn {
+        background: #f7b6b6;
+        color: #fff;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
+        font-weight: 500;
+        width: 100%;
+    }
+
+    .product-recommend-card .btn:hover {
+        background: #e57373;
+        }

@@ -1,0 +1,82 @@
+{% extends 'user_Base.html' %}
+{% block title %}Product Details{% endblock %}
+{% block head %}
+{{ super() }}
+
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/product_detail.css') }}">
+<div class="row">
+    <!-- Product Image & Gallery -->
+    <div class="product-detail-container">
+    <div class="product-detail-left">
+    {# Main product image: first image in image_gallery #}
+    {% set main_img = product.image_gallery[0] if product.image_gallery else None %}
+    {% if main_img %}
+        {% if main_img.startswith('http') %}
+            <img id="mainProductImg" src="{{ main_img }}" class="product-detail-main-img" alt="{{ product.name }}">
+        {% else %}
+            <img id="mainProductImg" src="{{ url_for('static', filename='images/' ~ main_img) }}" class="product-detail-main-img" alt="{{ product.name }}">
+        {% endif %}
+    {% else %}
+        <img id="mainProductImg" src="{{ url_for('static', filename='images/placeholder.png') }}" class="product-detail-main-img" alt="No image">
+    {% endif %}
+    <div class="product-gallery">
+        {% if product.image_gallery %}
+            {% for img in product.image_gallery %}
+                {% if img.startswith('http') %}
+                    <img src="{{ img }}" class="product-gallery-img" alt="Gallery image" data-img="{{ img }}">
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/' ~ img) }}" class="product-gallery-img" alt="Gallery image" data-img="{{ url_for('static', filename='images/' ~ img) }}">
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+    <div class="product-detail-right">
+        <h4 class="product-detail-title">{{ product.name }}</h4>
+        <div class="product-detail-price">${{ "%.2f"|format(product.price) }}</div>
+     
+        <div class="product-detail-qty mb-3">
+            <button type="button">-</button>
+            <input type="text" value="1" class="product-detail-qty-input">
+            <button type="button">+</button>
+        </div>
+<form action="{{ url_for('cart.add_to_cart', product_id=product.id) }}" method="get" style="display:inline;">
+    <button class="product-detail-add-btn" type="submit">
+        <i class="fa fa-shopping-cart"></i> Add to Cart
+    </button>
+</form>
+        <ul class="nav nav-tabs product-detail-tabs mb-2" id="descTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc" type="button" role="tab">Description</button>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active product-detail-description" id="desc" role="tabpanel">
+                <p>{{ product.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="may-also-like-section">
+    <div class="may-also-like-title">You may also like</div>
+    <div class="may-also-like-row">
+        {% for rec in recommendations %}
+            {% if rec.image_gallery and rec.image_gallery[0].startswith('http') %}
+                <img src="{{ rec.image_gallery[0] }}" alt="{{ rec.name }}">
+            {% elif rec.image_gallery %}
+                <img src="{{ url_for('static', filename='images/' ~ rec.image_gallery[0]) }}" alt="{{ rec.name }}">
+            {% else %}
+                <img src="{{ url_for('static', filename='images/placeholder.png') }}" alt="No image">
+            {% endif %}
+            <div class="card-title">{{ rec.name }}</div>
+            <div class="card-text">${{ "%.2f"|format(rec.price) }}</div>
+            <button class="btn">Add</button>
+        {% endfor %}
+    </div>
+</div>
+</div>
+<script src="{{ url_for('static', filename='js/product_detail.js') }}"></script>
+{% endblock %}

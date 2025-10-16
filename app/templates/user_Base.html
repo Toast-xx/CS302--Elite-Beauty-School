@@ -9,7 +9,7 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom px-4 justify-content-between">
+    <nav class="navbar custom-navbar navbar-expand-lg navbar-light border-bottom px-4 justify-content-between">
         <div class="d-flex align-items-center mx-auto">
             <!-- Logo: styled via .base-logo in CSS -->
             <img src="{{ url_for('static', filename='images/elite-black-logo.png') }}" alt="Elite Logo" class="base-logo me-2">
@@ -28,7 +28,15 @@
                 <img src="{{ url_for('static', filename='images/placeholder3.png') }}" alt="Cart" class="cart-icon">
             </a>
             <!-- Profile image: round and sized in CSS -->
-            <img src="{{ url_for('static', filename='images/placeholder2.jpg') }}" class="rounded-circle ms-3 profile-img" alt="Profile" />
+            {% if session.get('username') %}
+            <a href="/profile" class="d-flex align-items-center justify-content-center rounded-circle profile-bubble ms-3">
+                {{ session['username'][0]|upper }}
+            </a>
+            {% else %}
+            <a href="/auth/login" class="d-flex align-items-center justify-content-center rounded-circle profile-bubble ms-3">
+                <i class="bi bi-person"></i>
+            </a>
+            {% endif %}
         </div>
     </nav>
 
