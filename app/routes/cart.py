@@ -1,8 +1,11 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session
 from flask_login import current_user
 from app.models import db, Cart, CartItem, Product
+from app.utils import *
+
 
 cart_bp = Blueprint('cart', __name__)
+
 
 def get_or_create_cart():
     if current_user.is_authenticated:
@@ -18,7 +21,9 @@ def get_or_create_cart():
             session['cart_items'] = []
         return None
 
+
 @cart_bp.route('/cart')
+@require_clearance(1)
 def view_cart():
     if current_user.is_authenticated:
         cart = get_or_create_cart()

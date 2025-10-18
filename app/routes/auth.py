@@ -44,6 +44,7 @@ def login():
 
 
 @auth.route("/auth/logout", methods=["GET","POST"])
+@require_clearance(1)
 def logout():
     try:
         session.pop('user_id', None)
