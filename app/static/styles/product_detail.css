@@ -1,3 +1,10 @@
+/* Styles for the product detail page.
+   - Layouts product images, gallery, details, and recommendations.
+   - Ensure class names match those in product_detail.html.
+   - Button and card styles here are specific to product detail and may override global styles.
+   - Responsive adjustments may be needed for mobile; add media queries if required.
+*/
+
 .product-detail-container {
     display: flex;
     gap: 2rem;
@@ -93,14 +100,14 @@
     margin-bottom: 1.5rem;
 }
 
-.product-detail-qty button {
-    background: #f2e9e4;
-    border: none;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    font-size: 1.2rem;
-    cursor: pointer;
+    .product-detail-qty button {
+        background: #f2e9e4;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        font-size: 1.2rem;
+        cursor: pointer;
     }
 
 .product-detail-qty-input {
@@ -197,6 +204,6 @@
         width: 100%;
     }
 
-    .product-recommend-card .btn:hover {
-        background: #e57373;
+        .product-recommend-card .btn:hover {
+            background: #e57373;
         }

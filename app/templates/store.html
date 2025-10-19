@@ -1,3 +1,12 @@
+{#
+    Store page template.
+    - Displays sidebar filters for category, subcategory, and brand.
+    - Main content shows a banner and a grid of product cards.
+    - Integrates with store.js for AJAX filtering and store.css for styling.
+    - Product images support both external URLs and local static files.
+    - Ensure all class and ID names match those in store.css and store.js.
+    - Logout button provided for user session management.
+#}
 {% extends 'user_Base.html' %}
 {% block title %}Popular Products{% endblock %}
 
@@ -7,26 +16,41 @@
     <!-- Sidebar Filters -->
     <aside class="col-md-3 p-4 bg-light">
         <h5>Filter By</h5>
-        <div class="mb-3">
-            <strong>Categories</strong>
-            <ul class="list-unstyled">
-                <li><input type="checkbox" /> Skin Care</li>
-                <li><input type="checkbox" /> Hair Care</li>
-                <li><input type="checkbox" /> Makeup</li>
-                <li><input type="checkbox" /> Fragrances</li>
-            </ul>
-        </div>
-        <div class="mb-3">
-            <strong>Brand</strong>
-            <select class="form-select">
-                <option>Range</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <strong>Price</strong>
-            <input type="range" class="form-range" min="0" max="50" />
-            <div>NZD $0.00 - NZD $50.00</div>
-        </div>
+        <form method="get">
+            <div class="mb-3">
+                <strong>Category</strong>
+                <select name="category" class="form-select mb-2">
+                    <option value="">All</option>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}" {% if selected_category == category.id %}selected{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {% if selected_category %}
+            <div class="mb-3">
+                <strong>Subcategory</strong>
+                <select name="subcategory" class="form-select mb-2">
+                    <option value="">All</option>
+                    {% for sub in subcategories %}
+                    <option value="{{ sub.id }}" {% if selected_subcategory == sub.id %}selected{% endif %}>{{ sub.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+
+            <div class="mb-3">
+                <strong>Brand</strong>
+                <select name="brand" class="form-select mb-2">
+                    <option value="">All</option>
+                    {% for b in brands %}
+                    <option value="{{ b }}" {% if selected_brand ==b %}selected{% endif %}>{{ b }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </form>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-primary w-100 mt-3">Logout</a>
     </aside>
 
     <!-- Main Content -->
@@ -39,9 +63,9 @@
             </div>
         </div>
 
-
-        <div class="container py-4">
+        <div class="container py-4 product-list">
             <div class="row">
+                {# Render product cards #}
                 {% for product in products %}
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                     <a href="{{ url_for('product_detail.product_detail', product_id=product.id) }}" style="text-decoration: none; color: inherit;">
@@ -57,7 +81,6 @@
                                 <h5 class="card-title">{{ product.name }}</h5>
                                 <p class="card-text mb-1"><strong>Brand:</strong> {{ product.brand }}</p>
                                 <p class="card-text mb-1"><strong>Price:</strong> NZD ${{ "%.2f"|format(product.price) }}</p>
-                                <!-- Discount tag placeholder (future) -->
                             </div>
                         </div>
                     </a>
@@ -65,7 +88,7 @@
                 {% endfor %}
             </div>
         </div>
-
     </main>
 </div>
+<script src="{{ url_for('static', filename='js/store.js') }}"></script>
 {% endblock %}

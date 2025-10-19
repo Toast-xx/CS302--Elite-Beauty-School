@@ -1,5 +1,5 @@
-   @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap');
-   
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap');
+
 /* 
 ========================================
 Navbar Styling
@@ -18,13 +18,14 @@ Navbar Styling
     margin-left: 1rem;
 }
 
-.nav-link:hover {
-     color: #B29C6C;
- }
+    .nav-link:hover {
+        color: #B29C6C;
+    }
 
 .custom-navbar {
     background-color: rgba(203, 176, 115, 0.6); /*  #cbb073 with 60% opacity */
 }
+
 /* 
 ========================================
 Search Bar Styling
@@ -54,10 +55,10 @@ Cart Placeholder Styling
     justify-content: center;
 }
 
-.cart-placeholder:hover {
-     box-shadow: 0 0 0 2px #6c63ff33;
-     background: #e9e7fd;
- }
+    .cart-placeholder:hover {
+        box-shadow: 0 0 0 2px #6c63ff33;
+        background: #e9e7fd;
+    }
 
 .cart-icon {
     width: 22px;
@@ -90,6 +91,7 @@ body {
     padding-top: 0px;
     font-family: 'Segoe UI', sans-serif;
 }
+
 /* 
 ========================================
 Logo Styling
@@ -101,20 +103,27 @@ Logo Styling
     width: auto;
     object-fit: contain;
     display: block;
-   
 }
+
+/* 
+========================================
+Button Styling
+- Styles outline primary buttons for navbar and profile bubble.
+========================================
+*/
 .btn-outline-primary {
     color: #fff;
     background-color: #cbb073;
     border-color: #cbb073;
 }
 
-.btn-outline-primary:hover,
-.btn-outline-primary:focus {
-    color: #fff;
-    background-color: #b29c6c; /* Slightly darker for hover effect */
-    border-color: #b29c6c;
-}
+    .btn-outline-primary:hover,
+    .btn-outline-primary:focus {
+        color: #fff;
+        background-color: #b29c6c; /* Slightly darker for hover effect */
+        border-color: #b29c6c;
+    }
+
 .profile-bubble {
     width: 40px;
     height: 40px;
@@ -136,6 +145,7 @@ Logo Styling
         background: #b29c6c;
         color: #fff;
     }
+
 .profile-img {
     width: 36px;
     height: 36px;

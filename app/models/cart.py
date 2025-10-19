@@ -1,3 +1,9 @@
+# Models for shopping cart and cart items.
+# Cart is linked to a user and contains multiple CartItems.
+# CartItem links to a product and tracks quantity.
+# Cascade delete ensures cart items are removed when a cart is deleted.
+# The product relationship in CartItem allows easy access to product details.
+
 from app import db
 
 class Cart(db.Model):
@@ -11,5 +17,5 @@ class CartItem(db.Model):
     cart_id = db.Column(db.Integer, db.ForeignKey('cart.id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     quantity = db.Column(db.Integer, default=1, nullable=False)
-    # Optionally, add a relationship to Product for easy access
+    # Relationship to Product for convenient access to product details
     product = db.relationship('Product')

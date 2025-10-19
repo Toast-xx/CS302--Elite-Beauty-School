@@ -4,7 +4,7 @@ from app.routes.user import user
 from app.routes.auth import auth
 from app.routes.product_detail import product_detail_bp
 from app.routes.cart import cart_bp
-
+from app.routes.checkout import *
 
 def register_routes(app):
     app.register_blueprint(main)

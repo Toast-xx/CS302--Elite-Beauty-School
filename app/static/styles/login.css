@@ -1,3 +1,9 @@
+/* Styles for the login page.
+   - Sets background, centers content, and styles logo, tagline, and login form.
+   - Gold button style matches branding and provides hover feedback.
+   - Ensure class and ID names match those in login.html.
+*/
+
 /* Background */
 body {
     background-color: #fdf6ec;

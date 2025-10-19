@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request, session, render_template, redirect
+from flask_login import login_user
 from app.models import User
 from app.utils import *
 from app.utils.email_handler import is_valid_email
@@ -27,13 +28,15 @@ def login():
                 return render_template("login.html", error=message), 401
 
             if verify_password(user.password_hash, password):
-                pass
+                 pass
+                
             else:
                 return render_template("login.html", error="Incorrect Password."), 401
 
             session['user_id'] = user.id
             session['username'] = user.name
-
+            
+            login_user(user) 
             return redirect("/") # TODO: add render template for home page
 
         except Exception as e:

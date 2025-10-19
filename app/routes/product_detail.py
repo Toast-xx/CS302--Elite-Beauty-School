@@ -1,3 +1,8 @@
+# Handles the product detail page route.
+# Fetches product information, example campuses, and simple product recommendations.
+# Renders product_detail.html with all required context.
+# If you want dynamic campuses, replace the static list with a database query.
+
 from flask import Blueprint, render_template, abort
 from app.models.product import Product
 
@@ -5,7 +10,7 @@ product_detail_bp = Blueprint("product_detail", __name__, url_prefix="/product")
 
 @product_detail_bp.route("/<int:product_id>")
 def product_detail(product_id):
-    # Query the product from the database
+    # Query the product from the database, 404 if not found
     product = Product.query.get_or_404(product_id)
 
     # Example campuses (replace with a query if you want dynamic campuses)
@@ -19,5 +24,4 @@ def product_detail(product_id):
         product=product,
         campuses=campuses,
         recommendations=recommendations
-       
     )

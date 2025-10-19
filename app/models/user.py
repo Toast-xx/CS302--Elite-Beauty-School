@@ -1,8 +1,14 @@
+# User model for authentication and user management.
+# Integrates with Flask-Login via UserMixin.
+# Stores user info, password hash, clearance level, and campus relationship.
+# Includes helper methods for user creation and lookup.
+# Handles database integrity errors and provides clear return messages.
+
+from flask_login import UserMixin
 from enum import Enum
 from app import db
 
-
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "users"
 
     id = db.Column(db.BigInteger, primary_key=True)
@@ -12,13 +18,13 @@ class User(db.Model):
     clearance_level = db.Column(db.Integer, nullable=False, default=1) # highest clearance is 3
 
     campus_id = db.Column(db.BigInteger, db.ForeignKey("campuses.id"), nullable=True)
-
     campus = db.relationship("Campus", backref=db.backref("users", lazy=True))
 
     def __repr__(self):
         return f"<User {self.name}, email={self.email}, clearance={self.clearance_level}>"
 
     def to_dict(self):
+        # Converts user instance to dictionary for API or template use
         return {
             "id": self.id,
             "name": self.name,
@@ -35,7 +41,6 @@ class User(db.Model):
         Returns:
             tuple: (user, message)
         """
-
         # Validate clearance range
         if clearance_level not in [1, 2, 3]:
             return None, "Invalid clearance level. Must be 1, 2, or 3."
@@ -52,15 +57,12 @@ class User(db.Model):
             db.session.add(new_user)
             db.session.commit()
             return new_user, "User added successfully."
-
         except db.IntegrityError:
             db.session.rollback()
             return None, "Email already exists."
-
         except Exception as e:
             db.session.rollback()
             return None, f"An error occurred: {e}"
-
 
     @classmethod
     def get_user_by_email(cls, email: str) -> tuple:
