@@ -1,11 +1,14 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session, jsonify
 from flask_login import current_user
 from app.models import db, Cart, CartItem, Product
+from app.utils import *
+
 
 # Blueprint for cart-related routes
 cart_bp = Blueprint('cart', __name__)
 
 # Helper function to get the current user's cart, or create one if it doesn't exist
+
 def get_or_create_cart():
     if current_user.is_authenticated:
         cart = Cart.query.filter_by(user_id=current_user.id).first()
@@ -16,7 +19,9 @@ def get_or_create_cart():
         return cart
 
 
+
 @cart_bp.route('/cart')
+@require_clearance(1)
 def view_cart():
     # Displays the current user's cart with items, subtotal, shipping, and total cost
     if not current_user.is_authenticated:
