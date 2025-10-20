@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, session, render_template, redirect
-from flask_login import login_user
+from flask_login import login_user, logout_user
 from app.models import User
 from ..utils import *
 from ..utils.email_handler import is_valid_email
@@ -36,7 +36,8 @@ def login():
             session['user_id'] = user.id
             session['username'] = user.name
             
-            login_user(user) 
+            login_user(user)
+
             return redirect("/")
 
         except Exception as e:
@@ -51,6 +52,8 @@ def login():
 def logout():
     try:
         session.pop('user_id', None)
+
+        logout_user()
 
         return render_template("login.html", message="Logout Successful."), 200
     except Exception as e:

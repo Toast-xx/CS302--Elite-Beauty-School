@@ -23,7 +23,7 @@ def create_app(config_object=Config):
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
-    login_manager.login_view = 'auth.login'  # Update to your login route endpoint
+    login_manager.login_view = 'auth.login'
 
     # Import models so Alembic sees them
     from app import models
