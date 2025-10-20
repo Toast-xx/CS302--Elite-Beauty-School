@@ -11,7 +11,7 @@
     <div class="container">
         <div class="top">
             <div class="top-banner">
-                <div class="banner-name">
+                <div class="banner-name" id="banner-name">
                     Banner
                 </div>
                 <div class="banner-right">
@@ -24,21 +24,77 @@
                         <span style="margin-left: 10px">Notifications</span>
                     </div>
                     <div class="banner-setting">
-                        <img src="{{ url_for('static', filename='images/setting.png') }}" width="10px" height="10px" alt="Settings Logo">
+                        <img src="{{ url_for('static', filename='images/setting.png') }}" width="10px" height="10px" alt="Settings Icon">
                         <span style="margin-left: 10px">Setting</span>
                     </div>
                     <img class="banner-profile" src="{{ url_for('static', filename='images/dummy.png') }}">
                 </div>
             </div>
             <div class="top-filter-order">
-                s
+                <p style="font-size: 20px; font-weight: 700">Campus & Date Filter.</p>
+                <div class="top-filter-order-selection">
+                    <div class="top-filter-order-selection-campus">
+                        <br>
+                        <label for="campus"></label>
+                            <select id="campus" class="top-filter-order-selection-campus-drop">
+                                <option value="all">All Campus</option>
+                                <option value="wellington">Wellington</option>
+                                <option value="hamilton">Hamilton</option>
+                                <option value="auckland">Auckland</option>
+                            </select>
+                    </div>
+                    <div class="top-filter-order-selection-startdate">
+                        <label for="startdate">Start Date</label>
+                        <br>
+                        <input type="date" id="startdate" name="date" class="date-picker">
+                    </div>
+                    <div class="top-filter-order-selection-enddate">
+                        <label for="end-date">End Date</label>
+                        <br>
+                        <input type="date" id="end-date" name="end-date" class="date-picker">
+                    </div>
+                    <div>
+                        <br>
+                        <div class="top-filter-order-selection-submit">
+                        Submit
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="top-filter-list">
+            <div class="top-filter-search">
                 s
             </div>
         </div>
         <div class="side">
-            s
+            <img class="side-logo" src="{{ url_for('static', filename='images/elite-gold-logo.png') }}">
+            <div class="side-menu">
+                <div class="side-menu-dashboard">
+                    <img src="{{ url_for('static', filename='images/dashboard.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
+                    <span style="margin-left: 15px">Dashboard</span>
+                </div>
+                <div class="side-menu-order">
+                    <img src="{{ url_for('static', filename='images/order.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
+                    <span style="margin-left: 15px">Orders</span>
+                </div>
+                <div class="side-menu-products">
+                    <img src="{{ url_for('static', filename='images/products.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
+                    <span style="margin-left: 15px">Products</span>
+                </div>
+                <div class="side-menu-inventory">
+                    <img src="{{ url_for('static', filename='images/inventory.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
+                    <span style="margin-left: 15px">Inventory</span>
+                </div>
+                <div class="side-menu-users">
+                    <img src="{{ url_for('static', filename='images/dashboard.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
+                    <span style="margin-left: 15px">Users</span>
+                </div>
+            </div>
+            <div class="side-logout">
+                <div class="logout-button">
+                    <img src="{{ url_for('static', filename='images/logout.png') }}" width="16px" height="16px" alt="Logout Icon">
+                    <span style="margin-left: 10px">Logout</span>
+                </div>
+            </div>
         </div>
         <div class="content">
             s

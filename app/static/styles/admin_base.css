@@ -19,6 +19,67 @@ html,body
 {
     grid-area: side;
     background-color: #E4CFA1B3;
+    display: grid;
+    grid-template-rows: 70px 1fr 60px;
+    grid-template-areas:
+    "logo"
+    "menu"
+    "logout";
+}
+.side-logo
+{
+    height: 50px;
+    margin-top: 20px;
+    margin-left: 20px;
+    grid-area: logo;
+}
+.side-menu
+{
+    margin-top: 20px;
+    grid-area: menu;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 400;
+    font-size: 14px;
+}
+.side-menu-dashboard, .side-menu-inventory, .side-menu-order, .side-menu-products, .side-menu-users
+{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    width: 240px;
+    height: 50px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+.side-menu-dashboard:hover,
+.side-menu-inventory:hover,
+.side-menu-order:hover,
+.side-menu-products:hover,
+.side-menu-users:hover {
+    background-color: white;
+}
+
+.side-logout
+{
+    grid-area: logout;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.logout-button
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 240px;
+    height: 40px;
+    background-color: #DB6468FF;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
 }
 .top
 {
@@ -92,15 +153,69 @@ html,body
 }
 .top-filter-order
 {
-    display: none;
+    display: none; /*Flex*/
     height: 144px;
     background-color: red;
     margin-top: 52px;
+    margin-left: 20px;
+    flex-direction: column;
 }
-.top-filter-list
+.top-filter-order-selection
 {
-    display: none;
-    height: 20px;
+    width: 90%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 50px;
+}
+.top-filter-order-selection-campus-drop {
+    width: 300px;
+    height: 40px;
+    border: solid 1px ;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    outline: none;
+    padding: 5px 10px;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+.top-filter-order-selection-campus-drop option{
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+.top-filter-order-selection-submit
+{
+    color: white;
+    background: #e29ba3ff;
+    width: 100px;
+    height: 40px;
+    font-size: 14px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 60px;
+    cursor: pointer;
+}
+.date-picker
+{
+    width: 220px;
+    height: 40px;
+    border: solid 1px ;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    outline: none;
+    padding-left: 15px;
+    background-color: #ffffff;
+}
+.top-filter-search
+{
+    display: flex;
+    height: 40px;
     margin: 20px;
     background-color: yellow;
 }
