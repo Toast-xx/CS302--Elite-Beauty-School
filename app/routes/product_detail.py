@@ -4,8 +4,8 @@
 # If you want dynamic campuses, replace the static list with a database query.
 
 from flask import Blueprint, render_template, abort
-from app.models.product import Product
-from app.utils import *
+from ..models.product import Product
+from ..utils import *
 
 product_detail_bp = Blueprint("product_detail", __name__, url_prefix="/product")
 

@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify, request, session, render_template, redirect
 from flask_login import login_user
 from app.models import User
-from app.utils import *
-from app.utils.email_handler import is_valid_email
-from app.utils.password_handler import hash_password, verify_password
+from ..utils import *
+from ..utils.email_handler import is_valid_email
+from ..utils.password_handler import hash_password, verify_password
 
 auth = Blueprint("auth", __name__)
 
@@ -37,16 +37,16 @@ def login():
             session['username'] = user.name
             
             login_user(user) 
-            return redirect("/") # TODO: add render template for home page
+            return redirect("/")
 
         except Exception as e:
             return render_template("login.html", error=e), 401
 
     # If method is GET
-    return render_template("login.html"), 200 # TODO: add render template for login
+    return render_template("login.html"), 200
 
 
-@auth.route("/auth/logout", methods=["GET","POST"])
+@auth.route("/auth/logout", methods=["GET"])
 @require_clearance(1)
 def logout():
     try:

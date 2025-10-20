@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session, jsonify
 from flask_login import current_user
-from app.models import db, Cart, CartItem, Product
-from app.utils import *
+from ..models import db, Cart, CartItem, Product
+from ..utils import *
 
 
 # Blueprint for cart-related routes

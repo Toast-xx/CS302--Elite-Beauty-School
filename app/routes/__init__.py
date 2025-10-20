@@ -1,10 +1,10 @@
-﻿from app.routes.main import main
-from app.routes.store import products
-from app.routes.user import user
-from app.routes.auth import auth
-from app.routes.product_detail import product_detail_bp
-from app.routes.cart import cart_bp
-from app.routes.checkout import *
+﻿from .main import main
+from .store import products
+from .user import user
+from .auth import auth
+from .product_detail import product_detail_bp
+from .cart import cart_bp
+from .checkout import *
 
 def register_routes(app):
     app.register_blueprint(main)

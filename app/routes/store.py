@@ -3,9 +3,9 @@
 # Depends on Product, Category, and SubCategory models, and expects store.html template and AJAX requests from store.js.
 
 from flask import Blueprint, render_template, render_template_string, request
-from app.models.product import Product
-from app.models.category import Category, SubCategory
-from app.utils import *
+from ..models.product import Product
+from ..models.category import Category, SubCategory
+from ..utils import *
 
 products = Blueprint("products", __name__, url_prefix="/store")
 
