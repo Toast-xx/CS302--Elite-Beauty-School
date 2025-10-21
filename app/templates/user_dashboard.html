@@ -1,0 +1,20 @@
+{% extends "user_Base.html" %}
+{% block title %}Account Dashboard{% endblock %}
+{% block content %}
+{% block extra_css %}
+{% endblock %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/user_dashboard.css') }}">
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4">Account Dashboard</h2>
+        <div class="list-group">
+            <a href="{{ url_for('order_history.order_history') }}" class="list-group-item list-group-item-action">
+                <i class="bi bi-bag me-2"></i> Order History
+            </a>
+            <a href="{{ url_for('account.account') }}" class="list-group-item list-group-item-action">
+                <i class="bi bi-person-circle me-2"></i> Account Details / Password Update
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

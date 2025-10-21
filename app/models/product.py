@@ -10,26 +10,22 @@ class Product(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    price = db.Column(db.Float, nullable=False)
     brand = db.Column(db.String(100), nullable=True)
     sub_category_id = db.Column(db.Integer, db.ForeignKey('sub_category.id'), nullable=False)
-    description = db.Column(db.Text, nullable=True) 
-    image_gallery = db.Column(db.JSON, nullable=True)      # e.g., ['img1.jpg', 'img2.jpg']
-    campus_id = db.Column(db.Integer, db.ForeignKey('campuses.id'), nullable=False)
-    quantity = db.Column(db.Integer, default=0)  
+    description = db.Column(db.Text, nullable=True)
+    image_gallery = db.Column(db.JSON, nullable=True)
+
 
     def __repr__(self):
         return f"<Product {self.name}>"
-
+    
     def to_dict(self):
-        # Converts product instance to dictionary for API or template use
         return {
             "id": self.id,
             "name": self.name,
-            "price": self.price,
             "brand": self.brand,
             "description": self.description,
-            "category": self.category,  # Note: 'category' property must exist or be defined elsewhere
+            "category": self.category,
             "image_gallery": self.image_gallery,
-            "campus_id": self.campus_id,
+            "campuses": [campus.id for campus in self.campuses],
         }

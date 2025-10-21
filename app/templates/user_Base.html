@@ -36,14 +36,35 @@
             </a>
             <!-- Profile image: round and sized in CSS -->
             {% if session.get('username') %}
-            <a href="/profile" class="d-flex align-items-center justify-content-center rounded-circle profile-bubble ms-3">
-                {{ session['username'][0]|upper }}
-            </a>
+            <div class="dropdown ms-3">
+                <a class="d-flex align-items-center justify-content-center rounded-circle profile-bubble"
+                   href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ session['username'][0]|upper }}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <li>
+                        <a class="dropdown-item" href="{{ url_for('account.account') }}">
+                            <i class="bi bi-person me-2"></i> Account
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ url_for('order_history.order_history') }}">
+                            <i class="bi bi-bag me-2"></i> Order History
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">
+                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
             {% else %}
             <a href="/auth/login" class="d-flex align-items-center justify-content-center rounded-circle profile-bubble ms-3">
                 <i class="bi bi-person"></i>
             </a>
             {% endif %}
+
         </div>
     </nav>
 

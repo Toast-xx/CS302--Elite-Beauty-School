@@ -50,8 +50,7 @@
             </div>
             <button type="submit" class="btn btn-primary w-100">Filter</button>
         </form>
-        <a href="{{ url_for('auth.logout') }}" class="btn btn-primary w-100 mt-3">Logout</a>
-    </aside>
+       </aside>
 
     <!-- Main Content -->
     <main class="col-md-9 p-4">
@@ -66,21 +65,22 @@
         <div class="container py-4 product-list">
             <div class="row">
                 {# Render product cards #}
-                {% for product in products %}
+                {% for cp in campus_products %}
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                    <a href="{{ url_for('product_detail.product_detail', product_id=product.id) }}" style="text-decoration: none; color: inherit;">
+                    <a href="{{ url_for('product_detail.product_detail', product_id=cp.product.id) }}" style="text-decoration: none; color: inherit;">
                         <div class="card h-100 shadow-sm position-relative">
-                            {% if product.image_gallery and product.image_gallery[0].startswith('http') %}
-                            <img src="{{ product.image_gallery[0] }}" class="card-img-top" alt="{{ product.name }}">
-                            {% elif product.image_gallery %}
-                            <img src="{{ url_for('static', filename='images/' ~ product.image_gallery[0]) }}" class="card-img-top" alt="{{ product.name }}">
+                            {% if cp.product.image_gallery and cp.product.image_gallery[0].startswith('http') %}
+                            <img src="{{ cp.product.image_gallery[0] }}" class="card-img-top product-img" alt="{{ cp.product.name }}">
+                            {% elif cp.product.image_gallery %}
+                            <img src="{{ url_for('static', filename='images/' ~ cp.product.image_gallery[0]) }}" class="card-img-top product-img" alt="{{ cp.product.name }}">
                             {% else %}
-                            <img src="{{ url_for('static', filename='images/placeholder.png') }}" class="card-img-top" alt="No image">
+                            <img src="{{ url_for('static', filename='images/placeholder.png') }}" class="card-img-top product-img" alt="No image">
                             {% endif %}
                             <div class="card-body">
-                                <h5 class="card-title">{{ product.name }}</h5>
-                                <p class="card-text mb-1"><strong>Brand:</strong> {{ product.brand }}</p>
-                                <p class="card-text mb-1"><strong>Price:</strong> NZD ${{ "%.2f"|format(product.price) }}</p>
+                                <h5 class="card-title">{{ cp.product.name }}</h5>
+                                <p class="card-text mb-1"><strong>Brand:</strong> {{ cp.product.brand }}</p>
+                                <p class="card-text mb-1"><strong>Price:</strong> NZD ${{ "%.2f"|format(cp.price) }}</p>
+                                <p class="card-text mb-1"><strong>Quantity:</strong> {{ cp.quantity }}</p>
                             </div>
                         </div>
                     </a>

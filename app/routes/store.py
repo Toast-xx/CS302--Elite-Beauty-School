@@ -5,6 +5,8 @@
 from flask import Blueprint, render_template, render_template_string, request
 from app.models.product import Product
 from app.models.category import Category, SubCategory
+from app.models.campus_products import CampusProduct
+from flask_login import current_user
 from app.utils import *
 
 products = Blueprint("products", __name__, url_prefix="/store")
@@ -12,7 +14,6 @@ products = Blueprint("products", __name__, url_prefix="/store")
 @products.route("/")
 @require_clearance(1)
 def show_products():
-    # Extract filter parameters from query string
     category_id = request.args.get("category", type=int)
     subcategory_id = request.args.get("subcategory", type=int)
     brand = request.args.get("brand")
@@ -20,55 +21,53 @@ def show_products():
 
     categories = Category.query.all()
     subcategories = []
-    products_query = Product.query
+    campus_products_query = CampusProduct.query.join(Product, CampusProduct.product_id == Product.id)\
+        .filter(CampusProduct.campus_id == current_user.campus_id)
 
-    # Filter products by category and subcategory
     if category_id:
         subcategories = SubCategory.query.filter_by(category_id=category_id).all()
-        if subcategory_id:
-            products_query = products_query.filter_by(sub_category_id=subcategory_id)
-        else:
-            subcat_ids = [sc.id for sc in subcategories]
-            if subcat_ids:
-                products_query = products_query.filter(Product.sub_category_id.in_(subcat_ids))
-    # Filter products by brand
+    if subcategory_id:
+        campus_products_query = campus_products_query.filter(Product.sub_category_id == subcategory_id)
+    else:
+        subcat_ids = [sc.id for sc in subcategories]
+        if subcat_ids:
+            campus_products_query = campus_products_query.filter(Product.sub_category_id.in_(subcat_ids))
     if brand:
-        products_query = products_query.filter_by(brand=brand)
+        campus_products_query = campus_products_query.filter(Product.brand == brand)
 
-    products = products_query.all()
+    campus_products = campus_products_query.all()
     brands = [row[0] for row in Product.query.with_entities(Product.brand).distinct() if row[0]]
 
     if ajax:
-        # For AJAX requests, only render the product grid HTML
         return render_template_string("""
         <div class="row">
-            {% for product in products %}
+            {% for cp in campus_products %}
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                <a href="{{ url_for('product_detail.product_detail', product_id=product.id) }}" style="text-decoration: none; color: inherit;">
+                <a href="{{ url_for('product_detail.product_detail', product_id=cp.product.id) }}" style="text-decoration: none; color: inherit;">
                     <div class="card h-100 shadow-sm position-relative">
-                        {% if product.image_gallery and product.image_gallery[0].startswith('http') %}
-                        <img src="{{ product.image_gallery[0] }}" class="card-img-top product-img" alt="{{ product.name }}">
-                        {% elif product.image_gallery %}
-                        <img src="{{ url_for('static', filename='images/' ~ product.image_gallery[0]) }}" class="card-img-top product-img" alt="{{ product.name }}">
+                        {% if cp.product.image_gallery and cp.product.image_gallery[0].startswith('http') %}
+                        <img src="{{ cp.product.image_gallery[0] }}" class="card-img-top product-img" alt="{{ cp.product.name }}">
+                        {% elif cp.product.image_gallery %}
+                        <img src="{{ url_for('static', filename='images/' ~ cp.product.image_gallery[0]) }}" class="card-img-top product-img" alt="{{ cp.product.name }}">
                         {% else %}
                         <img src="{{ url_for('static', filename='images/placeholder.png') }}" class="card-img-top product-img" alt="No image">
                         {% endif %}
                         <div class="card-body">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text mb-1"><strong>Brand:</strong> {{ product.brand }}</p>
-                            <p class="card-text mb-1"><strong>Price:</strong> NZD ${{ "%.2f"|format(product.price) }}</p>
+                            <h5 class="card-title">{{ cp.product.name }}</h5>
+                            <p class="card-text mb-1"><strong>Brand:</strong> {{ cp.product.brand }}</p>
+                            <p class="card-text mb-1"><strong>Price:</strong> NZD ${{ "%.2f"|format(cp.price) }}</p>
+                            <p class="card-text mb-1"><strong>Quantity:</strong> {{ cp.campus_quantity }}</p>
                         </div>
                     </div>
                 </a>
             </div>
             {% endfor %}
         </div>
-        """, products=products)
+        """, campus_products=campus_products)
     else:
-        # For normal requests, render the full store page
         return render_template(
             "store.html",
-            products=products,
+            campus_products=campus_products,
             categories=categories,
             subcategories=subcategories,
             brands=brands,

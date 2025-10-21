@@ -1,0 +1,29 @@
+/* Dashboard page styling */
+.dashboard-header {
+    color: #6c63ff;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.dashboard-list .list-group-item {
+    border: none;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    background: #f8f6f2;
+    color: #333;
+    font-size: 1.1rem;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+    .dashboard-list .list-group-item:hover {
+        background: #e9e7fd;
+        color: #6c63ff;
+        box-shadow: 0 2px 8px #cbb07333;
+    }
+
+.dashboard-list .bi {
+    color: #cbb073;
+    font-size: 1.3rem;
+    margin-right: 0.5rem;
+}

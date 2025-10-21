@@ -1,0 +1,39 @@
+/* Order history page styling */
+.order-history-header {
+    color: #cbb073;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.table-order-history th {
+    background: #cbb073;
+    color: #fff;
+    border: none;
+}
+
+.table-order-history td {
+    background: #f8f6f2;
+    border: none;
+}
+
+.table-order-history tr {
+    border-radius: 8px;
+}
+
+.order-modal .modal-content {
+    border-radius: 16px;
+    border: 2px solid #cbb073;
+}
+
+.order-modal .modal-header {
+    background: #e9e7fd;
+    color: #6c63ff;
+    border-bottom: 1px solid #cbb073;
+}
+
+.order-modal .list-group-item {
+    background: #f8f6f2;
+    border: none;
+    color: #333;
+}

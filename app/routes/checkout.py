@@ -40,7 +40,7 @@ def checkout():
                 },
             ],
             mode='payment',
-            success_url=url_for('cart.view_cart', _external=True) + '?success=true',
+            success_url=url_for('cart.complete_order', _external=True),
             cancel_url=url_for('cart.checkout', _external=True) + '?canceled=true',
         )
         return redirect(session.url, code=303)
