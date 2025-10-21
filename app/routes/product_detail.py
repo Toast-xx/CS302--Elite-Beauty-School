@@ -8,6 +8,8 @@ from app.models.product import Product
 from flask_login import current_user
 from app.models.campus_products import CampusProduct
 from app.utils import *
+from ..models.product import Product
+
 
 product_detail_bp = Blueprint("product_detail", __name__, url_prefix="/product")
 

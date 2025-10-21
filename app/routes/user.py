@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request, session, render_template, redirect
-from app.utils import *
-from app.utils.email_handler import is_valid_email, validate_new_email
-from app.utils.password_handler import hash_password
-from app.models import User
+from ..utils import *
+from ..utils.email_handler import is_valid_email, validate_new_email
+from ..utils.password_handler import hash_password
+from ..models import User
 
 user = Blueprint("user", __name__)
 

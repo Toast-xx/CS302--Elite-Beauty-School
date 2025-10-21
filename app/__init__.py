@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from config import Config
 from flask_mail import Mail
 
+
 # Initialize Flask extensions (used throughout the app)
 db = SQLAlchemy()         # Database ORM
 migrate = Migrate()       # Database migrations
@@ -39,6 +40,8 @@ def create_app(config_object=Config):
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'  # Endpoint for @login_required redirects
     mail.init_app(app)
+    login_manager.login_view = 'auth.login'
+
 
     # Import models so Alembic can detect them for migrations
     from app import models

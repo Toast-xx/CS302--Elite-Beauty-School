@@ -8,6 +8,10 @@ from app.models.category import Category, SubCategory
 from app.models.campus_products import CampusProduct
 from flask_login import current_user
 from app.utils import *
+from ..models.product import Product
+from ..models.category import Category, SubCategory
+from ..utils import *
+
 
 products = Blueprint("products", __name__, url_prefix="/store")
 

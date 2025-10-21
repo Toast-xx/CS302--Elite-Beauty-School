@@ -3,6 +3,9 @@ from flask_login import current_user
 from app.models import db, Cart, CartItem, Product, Order, OrderItem
 from app.utils import *
 from app.routes.email_handler import send_order_confirmation_email
+from ..models import db, Cart, CartItem, Product
+from ..utils import *
+
 
 # Blueprint for cart-related routes
 cart_bp = Blueprint('cart', __name__)
