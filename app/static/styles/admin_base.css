@@ -88,7 +88,6 @@ html,body
 .top-banner
 {
     height: 64px;
-    background-color: teal;
     display: inline-flex;
     width: 100%;
     align-items: center;
@@ -155,7 +154,6 @@ html,body
 {
     display: none; /*Flex*/
     height: 144px;
-    background-color: red;
     margin-top: 52px;
     margin-left: 20px;
     flex-direction: column;
@@ -214,14 +212,111 @@ html,body
 }
 .top-filter-search
 {
-    display: flex;
+    display: inline-flex;
     height: 40px;
     margin: 20px;
-    background-color: yellow;
+    justify-content: space-between;
+    width: 90%;
+}
+.top-filter-search-first
+{
+    width: 600px;
+    display: inline-flex;
+    justify-content: space-between;
+    gap: 50px;
+}
+.top-filter-search-first-bar
+{
+    height: 40px;
+    border-radius: 10px;
+    border: solid 1px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+}
+.top-filter-search-first-list
+{
+    width: 250px;
+    height: 40px;
+    border: solid 1px ;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    outline: none;
+    padding-left:  10px;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+.top-filter-search-second
+{
+    width: 450px;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+    font-size: 14px;
+}
+.top-filter-search-second-filter
+{
+    display: flex;
+    width: 200px;
+    align-items: center;
+    justify-content: end;
+    height: 40px;
+    border-radius: 10px;
+    border: solid 1px;
+    padding-right: 15px;
+    font-size: 14px;
+}
+.top-filter-search-second-product
+{
+    display: flex;
+    width: 200px;
+    height: 40px;
+    border-radius: 10px;
+    background: #E29BA3FF;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
 }
 .content
 {
     grid-area: content;
     margin: 20px;
-    background-color: gold;
+}
+.products
+{
+    background: chocolate;
+    height: 100%;
+    width: 100%;
+    display: none;
+}
+.users
+{
+    background: darkslategrey;
+    height: 100%;
+    width: 100%;
+    display: none;
+}
+.dashboard
+{
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+.orders
+{
+    background: yellow;
+    height: 100%;
+    width: 100%;
+    display: none;
+}
+.inventory
+{
+    background: aqua;
+    height: 100%;
+    width: 100%;
+    display: none;
 }

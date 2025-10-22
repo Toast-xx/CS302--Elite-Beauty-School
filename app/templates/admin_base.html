@@ -62,7 +62,27 @@
                 </div>
             </div>
             <div class="top-filter-search">
-                s
+                <div class="top-filter-search-first">
+                    <div class="top-filter-search-first-bar">
+                        <img src="{{ url_for('static', filename='images/search.png') }}" width="10px" height="10px" alt="Settings Logo">
+                        <span style="margin-left: 10px">Search</span>
+                    </div>
+                    <label for="campus2"></label>
+                            <select id="campus2" class="top-filter-search-first-list">
+                                <option value="all">All Campus</option>
+                                <option value="wellington">Wellington</option>
+                                <option value="hamilton">Hamilton</option>
+                                <option value="auckland">Auckland</option>
+                            </select>
+                </div>
+                <div class="top-filter-search-second">
+                    <div class="top-filter-search-second-filter">
+                        <img src="{{ url_for('static', filename='images/filter.png') }}" width="10px" height="10px" alt="Settings Logo">
+                    </div>
+                    <div class="top-filter-search-second-product">
+                        Add Product
+                    </div>
+                </div>
             </div>
         </div>
         <div class="side">
@@ -97,7 +117,21 @@
             </div>
         </div>
         <div class="content">
-            s
+            <div class="dashboard">
+                {% include "dashboard.html" %}
+            </div>
+            <div class="orders">
+                {% include "orders.html" %}
+            </div>
+            <div class="products">
+                {% include "products.html" %}
+            </div>
+            <div class="inventory">
+                {% include "inventory.html" %}
+            </div>
+            <div class="users">
+                {% include "users.html" %}
+            </div>
         </div>
     </div>
 </body>

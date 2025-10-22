@@ -1,0 +1,54 @@
+.dashboard
+{
+    flex-direction: column;
+}
+.kpi
+{
+    height: 200px;
+}
+.tables
+{
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 200px 200px 200px 200px 200px;
+    grid-template-rows: 60px 60px;
+    gap: 0;
+}
+.tables > div
+{
+    display: flex;
+    border: solid 1px;
+    align-items: center;
+    padding-left: 10px;
+    font-size: 14px;
+}
+.revenue
+{
+    display: flex;
+    flex-direction: column;
+}
+.diagrams
+{
+    height: 350px;
+    width: 1000px;
+    background: #6c63ff;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+    "status revenue";
+}
+.download
+{
+    margin-top: 20px;
+    margin-right: 50px;
+    align-self: end;
+    display: flex;
+    width: 200px;
+    height: 40px;
+    border-radius: 10px;
+    background: #E29BA3FF;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
