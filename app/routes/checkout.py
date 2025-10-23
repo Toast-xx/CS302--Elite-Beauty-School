@@ -6,6 +6,7 @@
 
 from flask import render_template, redirect, url_for, request
 from flask_login import current_user
+from decimal import Decimal
 from app.routes.cart import get_or_create_cart, cart_bp
 import stripe
 import os
@@ -19,8 +20,8 @@ def checkout():
 
     cart = get_or_create_cart()
     cart_items = cart.items if cart else []
-    subtotal = sum(item.product.price * item.quantity for item in cart_items)
-    shipping = 5.00
+    subtotal = sum(item.campus_product.price * item.quantity for item in cart_items)
+    shipping = Decimal ("5.00")
     total = int((subtotal + shipping) * 100)  # Stripe expects cents
 
     if request.method == 'POST':

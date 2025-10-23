@@ -13,11 +13,7 @@ class Campus(db.Model):
     name = db.Column(db.String(100), nullable=False, unique=True)
     description = db.Column(db.Text, nullable=True)
     location = db.Column(db.String(200), nullable=False)
-    products = db.relationship(
-        'Product',
-        secondary='product_campus',
-        back_populates='campuses'
-    )
+    campus_products = db.relationship('CampusProduct', backref='campus', lazy=True)
 
     def __repr__(self):
         return f"<Campus {self.name}>"
