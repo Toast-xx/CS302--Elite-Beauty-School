@@ -1,12 +1,3 @@
-{#
-    Login page template.
-    - Uses Bootstrap for layout and styling, with custom styles in login.css.
-    - Displays company logo and tagline above the login form.
-    - Form posts to /auth/login and disables autocomplete for security.
-    - Includes email and password fields, both required.
-    - Ensure class and ID names match those in login.css.
-    - Update logo path or tagline as needed for branding.
-#}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +17,7 @@
         <p class="tagline">Professional Beauty Supplies for Every Campus</p>
 
         <!-- Login form -->
-        <form method="POST" action="/auth/login" class="login-form" autocomplete="off">
+        <form method="POST" action="/login" class="login-form" autocomplete="off">
             <!-- Email input field -->
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>

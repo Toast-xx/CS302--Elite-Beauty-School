@@ -1,14 +1,8 @@
-/* Styles for the store page, including product cards, banner, and primary buttons.
-   Ensure these classes and IDs match elements in store.html for consistent appearance.
-   If you update button or banner styles, check for conflicts with other CSS files. */
-
-/* General page styles */
 body {
     font-family: 'Segoe UI', sans-serif;
     background-color: #fdf6ec;
 }
 
-/* Product card styles */
 .card-title {
     font-size: 1.1rem;
     font-weight: 600;
@@ -18,69 +12,16 @@ body {
     color: #555;
 }
 
+.btn-primary {
+    background-color: #6c63ff;
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: #574fd2;
+    }
+
 .product-img {
     height: 200px;
     object-fit: cover;
 }
-
-/* Store banner styles */
-.store-banner-container {
-    position: relative;
-    width: 100%;
-    max-height: 250px;
-    overflow: hidden;
-    border-radius: 12px;
-}
-
-.store-banner-img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    display: block;
-}
-
-.store-banner-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(254, 248, 236, 0.6); /* #FEF8EC, 60% opacity */
-    pointer-events: none;
-}
-
-.store-banner-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    color: #e29ba3;
-    text-transform: uppercase;
-    font-size: 2rem;
-    font-weight: bold;
-    font-family: 'Open Sans', Arial, sans-serif;
-    letter-spacing: 2px;
-    text-align: center;
-    z-index: 2;
-    /* White outline using text-shadow */
-    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
-}
-
-/* Primary button styles */
-    .btn-primary {
-    background: #f7b6b6;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 12px 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.2s;
-}
-
-    .btn-primary:hover {
-        background: #b48a3c;
-    }
-
-

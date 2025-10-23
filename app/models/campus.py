@@ -1,8 +1,3 @@
-# Model for campus information.
-# Represents a campus with name, description, and location.
-# Used for user association, product availability, and delivery options.
-# Includes helper methods for string representation and serialization.
-
 from app import db
 
 class Campus(db.Model):
@@ -17,7 +12,6 @@ class Campus(db.Model):
         return f"<Campus {self.name}>"
 
     def to_dict(self):
-        # Converts campus instance to dictionary for API or template use
         return {
             "id": self.id,
             "name": self.name,
