@@ -9,7 +9,7 @@ from app.routes.dashboard import dashboard_bp
 from app.routes.order_history import order_history_bp
 from app.routes.account import account_bp
 
-﻿from .main import main
+from .main import main
 from .store import products
 from .user import user
 from .auth import auth
