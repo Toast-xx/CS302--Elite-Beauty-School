@@ -113,7 +113,7 @@ def complete_order():
     - Decrements campus_quantity for each purchased product
     - Clears the cart
     - Sends a confirmation email with PDF invoice
-    - Redirects to the order success page
+    - Renders the order success page
     """
     if not current_user.is_authenticated:
         return redirect(url_for('auth.login'))
@@ -154,8 +154,16 @@ def complete_order():
         db.session.commit()
         logging.info(f"Order {order.id} created for user {current_user.id}")
 
-        # Send confirmation email with PDF invoice
-        send_order_confirmation_email(current_user.email, order)
+        # Try to send confirmation email
+        try:
+            send_order_confirmation_email(current_user.email, order)
+        except Exception as mail_error:
+            logging.error(f"Order {order.id}: Email sending failed: {mail_error}")
+            flash("Order placed, but confirmation email could not be sent.", "warning")
+
+        # Always render the order success page after a successful order
+        return render_template('order_success.html', order=order)
+
     except Exception as e:
         db.session.rollback()
         logging.error(f"Order creation failed: {e}")

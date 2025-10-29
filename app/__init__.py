@@ -9,6 +9,10 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from app.config import Config
 from flask_mail import Mail
+import stripe
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Initialize Flask extensions (used throughout the app)
 db = SQLAlchemy()         # Database ORM
@@ -28,6 +32,10 @@ def create_app(config_object=Config):
     Returns:
         app: The configured Flask application instance.
     """
+
+    # Initialize Stripe API key
+    stripe.api_key = os.environ.get("STRIPE_API_KEY")
+
     # Create the Flask app instance
     app = Flask(__name__)
 
