@@ -2,5 +2,46 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/inventory.css') }}" />
 <script src="{{ url_for('static', filename='java/inventory.js') }}"></script>
 <div class="inventory">
-  Inventory
+  <h3>Update Inventory</h3>
+  <div class="box">
+    <div class="header">
+      <div style="margin-left: 15px;">Product</div>
+      <div style="margin-left: 15px;">Sku</div>
+      <div>Store Stock</div>
+      <div>Campus Stock</div>
+    </div>
+    <div class="list">
+      {% for item in items %}
+        <div class="data">
+          <div style="align-items: center; display: flex;">
+            <img style="width: 140px; height: 110px; margin-right: 10px;" src="{{ url_for('static', filename='images/placeholder1.jpg') }}">
+            <span>{{ item.id }}</span>
+          </div>
+          <div>{{ item.date }}</div>
+          <div>{{ item.percentage }}%</div>
+          <div>{{ item.amount }}</div>
+          <div class="buttons">
+            <div class="button" onclick="overlay('transfer')">Transfer</div>
+            <div class="button" onclick="overlay('add')">Add</div>
+            <div class="button" onclick="overlay('delete')">Delete</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <h3>Low Stock Alert.</h3>
+  <div class="alert">
+    <div class="header">
+      <div style="justify-content: center; display: flex;">Product</div>
+      <div class="title">Alert</div>
+    </div>
+    <div class="list">
+      {% for item in items %}
+        <div class="data">
+          <div style="justify-content: center; display: flex;">{{ item.id }}</div>
+          <div class="notice">Low Stock</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 </div>

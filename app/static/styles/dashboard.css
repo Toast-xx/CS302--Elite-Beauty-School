@@ -1,6 +1,7 @@
-.dashboard
+.dashboard.active
 {
     flex-direction: column;
+    display: flex;
 }
 .kpi
 {
@@ -32,7 +33,6 @@
 {
     height: 350px;
     width: 1000px;
-    background: #6c63ff;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
@@ -51,4 +51,11 @@
     color: white;
     justify-content: center;
     align-items: center;
+}
+canvas 
+{
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    width: 500px;
+    height: 500px;
 }

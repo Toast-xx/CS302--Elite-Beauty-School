@@ -83,6 +83,7 @@ html,body
 }
 .top
 {
+    display: block;/*block*/
     grid-area: top;
 }
 .top-banner
@@ -152,7 +153,7 @@ html,body
 }
 .top-filter-order
 {
-    display: none; /*Flex*/
+    display: flex; /*Flex*/
     height: 144px;
     margin-top: 52px;
     margin-left: 20px;
@@ -212,7 +213,7 @@ html,body
 }
 .top-filter-search
 {
-    display: inline-flex;
+    display:inline-flex;/*inline-flex*/
     height: 40px;
     margin: 20px;
     justify-content: space-between;
@@ -224,16 +225,6 @@ html,body
     display: inline-flex;
     justify-content: space-between;
     gap: 50px;
-}
-.top-filter-search-first-bar
-{
-    height: 40px;
-    border-radius: 10px;
-    border: solid 1px;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    padding-left: 15px;
 }
 .top-filter-search-first-list
 {
@@ -280,43 +271,64 @@ html,body
     justify-content: center;
     align-items: center;
     font-size: 14px;
+    cursor: pointer;
+    border: solid 1px black;
+}
+.top-filter-search-second-product:hover
+{
+    color: black;
+    background-color: white;
 }
 .content
 {
+    display: block;/*block*/
     grid-area: content;
     margin: 20px;
 }
-.products
+.section
 {
-    background: chocolate;
-    height: 100%;
     width: 100%;
+    height: 100%;
     display: none;
 }
-.users
+.products.active
 {
-    background: darkslategrey;
+    background: white;
     height: 100%;
     width: 100%;
-    display: none;
+    display: flex;
 }
-.dashboard
+.users.active
 {
     height: 100%;
     width: 100%;
     display: flex;
 }
-.orders
+.dashboard.active
 {
-    background: yellow;
     height: 100%;
     width: 100%;
-    display: none;
+    display: flex;
 }
-.inventory
+.orders.active
 {
-    background: aqua;
     height: 100%;
     width: 100%;
+    display: flex;
+}
+.inventory.active
+{
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+.popup
+{
+    width: 100%;
+    position:absolute;
+    height: 100vh;
     display: none;
+    top: 0;
+    align-items: center;
+    justify-content: center;
 }

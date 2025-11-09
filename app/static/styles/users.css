@@ -1,4 +1,110 @@
 .users
 {
-
+    flex-direction: column;
+}
+.users .listed
+{
+    width: 1000px;
+    height: 165px;
+}
+.users .listed .header
+{
+    display: grid;
+    grid-template-columns: 100px 190px 250px 250px 1fr;
+    width: 100%;
+    height: 55px;
+}
+.users .listed .header div
+{
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    border: solid 1px black;
+    display: flex;
+    align-items: center;
+    text-indent: 10px;
+}
+.users .listed .containers
+{
+    background-color: white;
+    width: calc(100%);
+    height: 110px;
+    display: block;
+    border: solid 1px black;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    overflow-y:scroll;
+}
+.users .listed .containers .data
+{
+    display: grid;
+    height: 55px;
+    grid-template-columns: 100px 190px 250px 250px 1fr;
+    cursor: pointer;
+}
+.users .listed .containers .data:hover
+{
+    background-color: #E29BA3FF;
+    color: white;
+}
+.users .listed .containers .data div
+{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    text-indent: 10px;
+}
+.users .edit
+{
+    height: 60px;
+    width: 1000px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    margin-top: 10px;
+}
+.users .edit .containers
+{
+    display: flex;
+    flex-direction: column;
+}
+.users .edit .containers input
+{
+    width: 100%;
+    border-radius: 10px;
+    height: 40px;
+    text-indent: 5px;
+}
+.users .edit .containers select
+{
+    text-align: center;
+    width: 200px;
+    height: 40px;
+    border-radius: 10px;
+    appearance: none;
+}
+.users .edit .buttons
+{
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+.users .edit .buttons div
+{
+    width: 60px;
+    height: 40px;
+    background-color: white;
+    cursor: pointer;
+    border: solid 1px black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.users .edit .buttons div:hover
+{
+    color: white;
+    background-color: black;
 }

@@ -2,5 +2,29 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/orders.css') }}" />
 <script src="{{ url_for('static', filename='java/orders.js') }}"></script>
 <div class="orders">
-  Orders
+  <div class="list">
+    <h3>Campus Order Summary</h3>
+    <p>Recent orders for Auckland Campus.</p>
+    <div class="header">
+      <div>Order ID</div>
+      <div>Date</div>
+      <div>Promotion</div>
+      <div>Total</div>
+      <div>Status</div>
+    </div>
+    <div class="data">
+      {% for item in items %}
+        <div class="value">
+          <div>{{ item.id }}</div>
+          <div>{{ item.date }}</div>
+          <div>{{ item.percentage }}%</div>
+          <div>{{ item.amount }}</div>
+          <div class="{% if item.status == 'Completed' %} completed{% elif item.status == 'Cancelled' %} cancelled {% elif item.status == 'Processing' %} processing {% endif %}">{{ item.status }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="download">
+      Download PDF
+  </div>
 </div>

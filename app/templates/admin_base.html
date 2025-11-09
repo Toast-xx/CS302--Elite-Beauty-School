@@ -8,6 +8,7 @@
     <script src="{{ url_for('static', filename='java/admin_base.js') }}"></script>
 </head>
 <body>
+    <input type="checkbox" id="superstatus" checked style="display: none;">
     <div class="container">
         <div class="top">
             <div class="top-banner">
@@ -15,10 +16,7 @@
                     Banner
                 </div>
                 <div class="banner-right">
-                    <div class="banner-search">
-                        <img src="{{ url_for('static', filename='images/search.png') }}" width="10px" height="10px" alt="Settings Logo">
-                        <span style="margin-left: 10px">Search</span>
-                    </div>
+                    {% include "searchbar.html" %}
                     <div class="banner-notification">
                         <img src="{{ url_for('static', filename='images/notification.png') }}" width="10px" height="10px" alt="Settings Logo">
                         <span style="margin-left: 10px">Notifications</span>
@@ -30,7 +28,7 @@
                     <img class="banner-profile" src="{{ url_for('static', filename='images/dummy.png') }}">
                 </div>
             </div>
-            <div class="top-filter-order">
+            <div class="top-filter-order" id="filter-order">
                 <p style="font-size: 20px; font-weight: 700">Campus & Date Filter.</p>
                 <div class="top-filter-order-selection">
                     <div class="top-filter-order-selection-campus">
@@ -51,22 +49,19 @@
                     <div class="top-filter-order-selection-enddate">
                         <label for="end-date">End Date</label>
                         <br>
-                        <input type="date" id="end-date" name="end-date" class="date-picker">
+                        <input type="date" id="enddate" name="end-date" class="date-picker">
                     </div>
                     <div>
                         <br>
-                        <div class="top-filter-order-selection-submit">
+                        <div class="top-filter-order-selection-submit" onclick="submitFilter()">
                         Submit
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="top-filter-search">
+            <div class="top-filter-search" id="filter-search">
                 <div class="top-filter-search-first">
-                    <div class="top-filter-search-first-bar">
-                        <img src="{{ url_for('static', filename='images/search.png') }}" width="10px" height="10px" alt="Settings Logo">
-                        <span style="margin-left: 10px">Search</span>
-                    </div>
+                    {% include "searchbar.html" %}
                     <label for="campus2"></label>
                             <select id="campus2" class="top-filter-search-first-list">
                                 <option value="all">All Campus</option>
@@ -75,11 +70,11 @@
                                 <option value="auckland">Auckland</option>
                             </select>
                 </div>
-                <div class="top-filter-search-second">
+                <div class="top-filter-search-second" id="secondFilter">
                     <div class="top-filter-search-second-filter">
                         <img src="{{ url_for('static', filename='images/filter.png') }}" width="10px" height="10px" alt="Settings Logo">
                     </div>
-                    <div class="top-filter-search-second-product">
+                    <div class="top-filter-search-second-product" onclick="addProduct()" id="addProduct">
                         Add Product
                     </div>
                 </div>
@@ -88,23 +83,23 @@
         <div class="side">
             <img class="side-logo" src="{{ url_for('static', filename='images/elite-gold-logo.png') }}">
             <div class="side-menu">
-                <div class="side-menu-dashboard">
+                <div class="side-menu-dashboard" onclick="section('Dashboard')">
                     <img src="{{ url_for('static', filename='images/dashboard.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
                     <span style="margin-left: 15px">Dashboard</span>
                 </div>
-                <div class="side-menu-order">
+                <div class="side-menu-order" onclick="section('Orders')">
                     <img src="{{ url_for('static', filename='images/order.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
                     <span style="margin-left: 15px">Orders</span>
                 </div>
-                <div class="side-menu-products">
+                <div class="side-menu-products" onclick="section('Products')">
                     <img src="{{ url_for('static', filename='images/products.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
                     <span style="margin-left: 15px">Products</span>
                 </div>
-                <div class="side-menu-inventory">
+                <div class="side-menu-inventory" onclick="section('Inventory')">
                     <img src="{{ url_for('static', filename='images/inventory.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
                     <span style="margin-left: 15px">Inventory</span>
                 </div>
-                <div class="side-menu-users">
+                <div class="side-menu-users" onclick="section('Users')">
                     <img src="{{ url_for('static', filename='images/dashboard.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
                     <span style="margin-left: 15px">Users</span>
                 </div>
@@ -116,23 +111,27 @@
                 </div>
             </div>
         </div>
-        <div class="content">
-            <div class="dashboard">
+        <div class="content" id="content">
+            <div class="section dashboard" data-id="Dashboard">
                 {% include "dashboard.html" %}
             </div>
-            <div class="orders">
+            <div class="section orders" data-id="Orders">
                 {% include "orders.html" %}
             </div>
-            <div class="products">
+            <div class="section products" data-id="Products">
                 {% include "products.html" %}
             </div>
-            <div class="inventory">
+            <div class="section inventory" data-id="Inventory">
                 {% include "inventory.html" %}
             </div>
-            <div class="users">
+            <div class="section users" data-id="Users">
                 {% include "users.html" %}
             </div>
         </div>
+        {% include "add.html" %} 
+    </div>
+    <div class="popup" id="popup">
+        {% include "popup.html" %}
     </div>
 </body>
 </html>
