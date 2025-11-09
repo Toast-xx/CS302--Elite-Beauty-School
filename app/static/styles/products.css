@@ -1,0 +1,76 @@
+.products
+{
+    border-radius: 10px;
+    flex-direction: column;
+}
+.products .header
+{
+    padding-left: 10px;
+    align-items: center;
+    height: 70px;
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    width: calc(100%-10px);
+}
+.products .list
+{
+    width: calc(100% + 5px);
+    height: 500px;
+    overflow-y: scroll;
+    padding-left: 10px;
+    display: block;
+}
+.products .list .data
+{
+    height: 120px;
+    width: 100%;
+    border-top: solid 1px black;
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+}
+.products .list .data .buttons
+{
+    display: grid;
+    width: 200px;
+    height: 40px;
+    border: solid 1px black;
+    border-radius: 10px;
+    grid-template-columns: repeat(2,1fr);
+    text-align: center;
+    align-items: center;
+}
+.products .list .data .buttons .edit
+{
+    background-color: white;
+    border-right: solid 1px black;
+    width: 100%;
+    height: 100%;
+    border: solid 1px black;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.products .list .data .buttons .delete
+{
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    border: solid 1px black;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.products .list .data .buttons .edit:hover,
+.products .list .data .buttons .delete:hover {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+}

@@ -1,0 +1,78 @@
+<title>Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/users.css') }}" />
+<script src="{{ url_for('static', filename='java/users.js') }}"></script>
+<div class="users">
+  <h3>User List</h3>
+  <div class="listed">
+    <div class="header">
+      <div style="border-top-left-radius: 10px;"></div>
+      <div>User ID</div>
+      <div>Username</div>
+      <div>Email</div>
+      <div style="border-top-right-radius: 10px;">Password</div>
+    </div>
+    <div class="containers">
+      {% for item in items %}
+        <div class="data">
+          <div style=" justify-content: center;">
+            <input type="checkbox" name="select" value="no">
+          </div>
+          <div>{{ item.date }}</div>
+          <div style="align-items: center; display: flex;">
+            <img style="width: 40px; height: 40px; margin-right: 10px; border-radius: 100px;" src="{{ url_for('static', filename='images/dummy.png') }}">
+            <span>{{ item.id }}</span>
+          </div>
+          <div>{{ item.date }}</div>
+          <div>{{ item.percentage }}%</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <h3>Add/Edit User</h3>
+  <div class="edit">
+    <div class="containers">
+      Name
+      <input id="userName" type="text" placeholder="Username">
+    </div>
+    <div class="containers">
+      Email
+      <input id="userEmail" type="text" placeholder="Email">
+    </div>
+  </div>
+  <div class="edit">
+    <div class="containers">
+      Campus
+      <select id="userCampus" name="campus">
+        <option value="">-- Campus Option --</option>
+        <option value="auckland">Auckland</option>
+        <option value="wellington">Wellington</option>
+        <option value="christchurch">Christchurch</option>
+      </select>
+    </div>
+    <div class="containers">
+      Role
+      <select id="userRole" name="role">
+        <option value="">-- Role Option --</option>
+        <option value="s">Student</option>
+        <option value="a">Admin</option>
+      </select>
+    </div>
+  </div>
+  <div style="display: flex; width: 1000px; justify-content: end; margin-top: 30px;">
+    <input id="userActive" type="checkbox" name="select" value="no"> Inactive
+  </div>
+  <div class="edit" style=" grid-template-columns: 1fr 1fr 1fr;">
+    <div class="containers">
+      Start Date
+      <input id="userStart" type="date" name="startdate" value="">
+    </div>
+    <div class="containers">
+      End Date
+      <input id="userEnd" type="date" name="enddate"value="">
+    </div>
+    <div class="buttons">
+      <div onclick="saveUser()">Save</div>
+      <div>Exit</div>
+    </div>
+  </div>
+</div>
