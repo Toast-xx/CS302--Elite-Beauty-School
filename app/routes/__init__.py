@@ -1,21 +1,14 @@
-from app.routes.main import main
-from app.routes.store import products
-from app.routes.user import user
-from app.routes.auth import auth
-from app.routes.product_detail import product_detail_bp
-from app.routes.cart import cart_bp
-from app.routes.checkout import *
-from app.routes.dashboard import dashboard_bp
-from app.routes.order_history import order_history_bp
-from app.routes.account import account_bp
-
-﻿from .main import main
+from .main import main
 from .store import products
 from .user import user
 from .auth import auth
 from .product_detail import product_detail_bp
 from .cart import cart_bp
 from .checkout import *
+from .dashboard import dashboard_bp
+from .order_history import order_history_bp
+from .account import account_bp
+
 
 
 def register_routes(app):

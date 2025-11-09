@@ -1,13 +1,16 @@
-# Models for shopping cart and cart items.
-# Cart is linked to a user and contains multiple CartItems.
-# CartItem links to a product and tracks quantity.
-# Cascade delete ensures cart items are removed when a cart is deleted.
-# The product relationship in CartItem allows easy access to product details.
+"""
+Models for shopping cart and cart items.
+Cart is linked to a user and contains multiple CartItems.
+CartItem links to a campus product and tracks quantity.
+Cascade delete ensures cart items are removed when a cart is deleted.
+"""
 
 from app import db
 
-
 class Cart(db.Model):
+    """
+    Represents a user's shopping cart.
+    """
     __tablename__ = "cart"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -16,6 +19,9 @@ class Cart(db.Model):
     items = db.relationship('CartItem', backref='carts', lazy=True, cascade="all, delete-orphan")
 
     def to_dict(self):
+        """
+        Convert the Cart object to a dictionary.
+        """
         return {
             "id": self.id,
             "user_id": self.user_id,
@@ -23,24 +29,24 @@ class Cart(db.Model):
             "items": self.items
         }
 
-
 class CartItem(db.Model):
+    """
+    Represents an item in a user's cart, linked to a campus product.
+    """
     __tablename__ = "cart_item"
-
     id = db.Column(db.Integer, primary_key=True)
     cart_id = db.Column(db.Integer, db.ForeignKey('cart.id'), nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
-    quantity = db.Column(db.Integer, default=1, nullable=False)
-
-    # Relationship to Product for convenient access to product details
-    product = db.relationship('Product')
-
+    campus_product_id = db.Column(db.Integer, db.ForeignKey('campus_products.id'), nullable=False)
+    quantity = db.Column(db.Integer, default=1)
+    campus_product = db.relationship('CampusProduct')
 
     def to_dict(self):
+        """
+        Convert the CartItem object to a dictionary.
+        """
         return {
             "id": self.id,
             "cart_id": self.cart_id,
             "product_id": self.product_id,
             "quantity": self.quantity
         }
-

@@ -31,10 +31,12 @@ class OrderItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False, default=1)
-    price = db.Column(db.Numeric(10, 2), nullable=False)
+    campus_product_id = db.Column(db.Integer, db.ForeignKey('campus_products.id'))
+    quantity = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Numeric(10, 2), nullable=False)  # Added price attribute
 
-    product = db.relationship("Product")
+    campus_product = db.relationship('CampusProduct')
+    product = db.relationship('Product')
 
     def to_dict(self):
         return {
@@ -42,6 +44,6 @@ class OrderItem(db.Model):
             "order_id": self.order_id,
             "product_id": self.product_id,
             "quantity": self.quantity,
-            "price": float(self.price),
+            "price": float(self.price),  # Include price in dict
             "product": self.product.to_dict() if self.product else None
         }

@@ -1,10 +1,18 @@
+"""
+Flask application factory and extension initialization.
+Sets up database, migrations, login manager, mail, and blueprint registration.
+"""
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from config import Config
+from app.config import Config
 from flask_mail import Mail
-
+import stripe
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Initialize Flask extensions (used throughout the app)
 db = SQLAlchemy()         # Database ORM
@@ -24,6 +32,10 @@ def create_app(config_object=Config):
     Returns:
         app: The configured Flask application instance.
     """
+
+    # Initialize Stripe API key
+    stripe.api_key = os.environ.get("STRIPE_API_KEY")
+
     # Create the Flask app instance
     app = Flask(__name__)
 
@@ -41,7 +53,6 @@ def create_app(config_object=Config):
     login_manager.login_view = 'auth.login'  # Endpoint for @login_required redirects
     mail.init_app(app)
     login_manager.login_view = 'auth.login'
-
 
     # Import models so Alembic can detect them for migrations
     from app import models
