@@ -47,7 +47,7 @@
             <div class="product-detail-quantity">
                 In stock: {{ campus_product.campus_quantity }}
             </div>
-            <form action="{{ url_for('cart.add_to_cart', product_id=product.id) }}" method="post" style="display:inline;">
+            <form action="{{ url_for('cart.add_to_cart', campus_product_id=campus_product.id) }}" method="post" style="display:inline;">
                 <div class="product-detail-qty mb-3">
                     <button type="button" id="qty-minus">-</button>
                     <input type="text" id="qty-input" name="quantity" value="1" class="product-detail-qty-input" readonly>

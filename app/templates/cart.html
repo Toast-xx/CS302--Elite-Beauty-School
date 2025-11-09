@@ -1,13 +1,4 @@
-﻿{#
-    Cart page template.
-    - Displays all items in the user's cart with quantity controls, item removal, and cost calculation.
-    - Shows order summary, shipping, and total cost.
-    - Integrates with cart.js for dynamic updates and cart.css for styling.
-    - "Proceed to Secure Checkout" button posts to the checkout route.
-    - Stripe image and note indicate secure payment.
-    - Ensure all referenced IDs/classes match those in cart.js and cart.css.
-#}
-{% extends 'user_Base.html' %}
+﻿{% extends 'user_Base.html' %}
 {% block title %}Your Cart{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/cart.css') }}">
@@ -18,21 +9,21 @@
         <div class="cart-items">
             {# Loop through cart items and render each with controls #}
             {% for item in cart_items %}
-            <div class="cart-item" id="cart-item-{{ item.product.id }}">
+            <div class="cart-item" id="cart-item-{{ item.campus_product.id }}">
                 <!-- Product image logic unchanged -->
                 <div class="cart-item-info">
-                    <div class="cart-item-title">{{ item.product.name }}</div>
-                    <div class="cart-item-price">${{ "%.2f"|format(item.product.price) }}</div>
+                    <div class="cart-item-title">{{ item.campus_product.product.name }}</div>
+                    <div class="cart-item-price">${{ "%.2f"|format(item.campus_product.price) }}</div>
                 </div>
                 <div class="cart-item-qty">
-                    <button type="button" class="qty-btn" data-product-id="{{ item.product.id }}" data-delta="-1">-</button>
-                    <span id="quantity-{{ item.product.id }}">{{ item.quantity }}</span>
-                    <button type="button" class="qty-btn" data-product-id="{{ item.product.id }}" data-delta="1">+</button>
+                    <button type="button" class="qty-btn" data-campus-product-id="{{ item.campus_product.id }}" data-delta="-1">-</button>
+                    <span id="quantity-{{ item.campus_product.id }}">{{ item.quantity }}</span>
+                    <button type="button" class="qty-btn" data-campus-product-id="{{ item.campus_product.id }}" data-delta="1">+</button>
                 </div>
                 <div class="cart-item-cost">
-                    $<span id="cost-{{ item.product.id }}">{{ "%.2f"|format(item.product.price * item.quantity) }}</span>
+                    $<span id="cost-{{ item.campus_product.id }}">{{ "%.2f"|format(item.campus_product.price * item.quantity) }}</span>
                 </div>
-                <button type="button" class="cart-item-remove" data-product-id="{{ item.product.id }}">&#128465;</button>
+                <button type="button" class="cart-item-remove" data-campus-product-id="{{ item.campus_product.id }}">&#128465;</button>
             </div>
             {% endfor %}
             <a href="{{ url_for('products.show_products') }}" class="btn btn-secondary mt-3">← Continue Shopping</a>
