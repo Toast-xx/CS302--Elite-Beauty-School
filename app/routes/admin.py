@@ -1,38 +1,35 @@
-from flask import jsonify,request, Blueprint, render_template
+from flask import Blueprint, jsonify, request
 from app.utils import *
+from app.models.user import User  # ✅ import your User model
 
 admin = Blueprint("admin", __name__)
 
-@admin.route("/searchUser",methods=['GET'])
-def searchUser():
-    query = request.args.get("q", "")
+@admin.route("/searchAdmin", methods=['GET'])
+def search_user():
+    query = request.args.get("q", "").strip()
+
     if not query:
         return jsonify({"error": "No search query provided"}), 400
 
-    search_pattern = f"%{query}%"
     try:
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute("""
-            SELECT user.id, user.name
-            FROM user
-            WHERE user.role = 'student' AND user.name LIKE ?;
-        """,
-            (search_pattern,),
+        users = (
+            User.query
+            .filter(User.clearance_level == 1)  # same logic as role='student'
+            .filter(User.name.ilike(f"%{query}%"))  # case-insensitive match
+            .all()
         )
-        results = cursor.fetchall()
+        user_list = [
+            {
+                "id": user.id,
+                "name": user.name,
+                "email": user.email,
+                "campus_id": user.campus_id,
+            }
+            for user in users
+        ]
 
-        user = []
-        for row in results:
-            id,name= row
-            user.append(
-                {
-                    "name": name,
-                    "id": id,
-                }
-            )
-
-        return jsonify(user)
+        return jsonify(user_list)
 
     except Exception as ex:
+        print(f"Error in /searchAdmin: {ex}")
         return jsonify({"error": "Internal server error"}), 500

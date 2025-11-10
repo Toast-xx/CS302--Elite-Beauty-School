@@ -6,7 +6,7 @@ window.addEventListener('load', function() {
     searchInput.addEventListener('input', function() {
       const query = this.value.trim();
       if (query.length > 0) {
-        fetch(`/search?q=${encodeURIComponent(query)}`)
+        fetch(`/searchAdmin?q=${encodeURIComponent(query)}`)
           .then(response => response.json())
           .then(userlist => {
             resultsList.innerHTML = '';
