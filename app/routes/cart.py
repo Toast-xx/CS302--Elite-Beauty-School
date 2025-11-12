@@ -1,6 +1,11 @@
 """
-Cart routes: Handles all cart-related operations including viewing, adding, updating,
-deleting cart items, and completing orders. Also manages inventory updates for online purchases.
+    - Handles all cart-related operations: viewing, adding, updating, and deleting cart items.
+    - Manages order completion, including inventory updates, order creation, and sending confirmation emails.
+    - Integrates with Flask-Login for user authentication and session management.
+    - Uses utility functions for email and password handling.
+    - Provides both HTML views and JSON endpoints for cart actions.
+    - Ensures inventory consistency for campus-specific products.
+    - Renders cart and order success templates for user feedback.
 """
 
 from flask import Blueprint, render_template, redirect, url_for, request, session, jsonify, flash

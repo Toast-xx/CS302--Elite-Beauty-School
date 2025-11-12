@@ -1,8 +1,17 @@
+﻿{#
+    Account Details Template
+    - Allows users to view and update their account information.
+    - Displays flash messages for feedback on updates.
+    - Includes form fields for name, email, and password change.
+    - Integrates with account.css for custom styling.
+    - Extends user_Base.html for consistent layout and navigation.
+#}
 {% extends "user_Base.html" %}
 {% block title %}Account Details{% endblock %}
 {% block extra_css %}
 {% endblock %}
 {% block content %}
+<a href="{{ url_for('products.show_products') }}" class="btn-continue-shopping">← Continue Shopping</a>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/account.css') }}">
 <div class="row justify-content-center">
     <div class="col-md-6">

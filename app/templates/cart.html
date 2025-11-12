@@ -1,4 +1,13 @@
-﻿{% extends 'user_Base.html' %}
+﻿{#
+    Cart Template
+    - Displays all items currently in the user's shopping cart.
+    - Allows quantity adjustment and item removal for each product.
+    - Shows order summary including subtotal, shipping, and total cost.
+    - Provides delivery options and secure checkout via Stripe.
+    - Integrates with cart.css for styling and cart.js for interactive controls.
+    - Extends user_Base.html for consistent navigation and layout.
+#}
+{% extends 'user_Base.html' %}
 {% block title %}Your Cart{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/cart.css') }}">
@@ -10,7 +19,7 @@
             {# Loop through cart items and render each with controls #}
             {% for item in cart_items %}
             <div class="cart-item" id="cart-item-{{ item.campus_product.id }}">
-                <!-- Product image logic unchanged -->
+                
                 <div class="cart-item-info">
                     <div class="cart-item-title">{{ item.campus_product.product.name }}</div>
                     <div class="cart-item-price">${{ "%.2f"|format(item.campus_product.price) }}</div>

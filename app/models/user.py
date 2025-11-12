@@ -1,8 +1,11 @@
-# User model for authentication and user management.
-# Integrates with Flask-Login via UserMixin.
-# Stores user info, password hash, clearance level, and campus relationship.
-# Includes helper methods for user creation and lookup.
-# Handles database integrity errors and provides clear return messages.
+"""
+    - Handles authentication and user management for the application.
+    - Integrates with Flask-Login via UserMixin for session management.
+    - Stores user information, password hash, clearance level, and campus relationship.
+    - Provides helper methods for user creation and lookup.
+    - Handles database integrity errors and returns clear status messages.
+    - Used throughout the app for login, registration, and user-related queries.
+"""
 
 from flask_login import UserMixin
 from enum import Enum

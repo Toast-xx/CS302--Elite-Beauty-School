@@ -23,6 +23,7 @@ def upgrade():
     sa.Column('campus_id', sa.Integer(), nullable=False),
     sa.Column('product_id', sa.Integer(), nullable=False),
     sa.Column('campus_quantity', sa.Integer(), nullable=True),
+    sa.Column('price', sa.Numeric(10, 2), nullable=True),
     sa.ForeignKeyConstraint(['campus_id'], ['campuses.id'], ),
     sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
     sa.PrimaryKeyConstraint('id')

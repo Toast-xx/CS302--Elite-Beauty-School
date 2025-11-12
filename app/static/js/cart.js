@@ -1,13 +1,12 @@
-function updateShipping(amount) {
-    document.getElementById('shipping-cost').textContent = amount === 0 ? 'Free' : '$' + amount.toFixed(2);
-    document.getElementById('shipping-summary').textContent = amount === 0 ? 'Free' : '$' + amount.toFixed(2);
 
-    var subtotal = parseFloat(document.getElementById('subtotal-cost').textContent.replace('$', ''));
-    var total = subtotal + amount;
-    document.getElementById('total-cost').textContent = '$' + total.toFixed(2);
-}
+// - Handles cart item quantity updates, item removal, and summary recalculation via AJAX.
+// - Updates shipping and total cost dynamically on the cart page.
+// - Integrates with Flask backend endpoints for cart operations.
+// - Attaches event listeners to quantity and remove buttons for interactive cart management.
+
 
 function updateQty(campusProductId, delta) {
+    // Send AJAX request to update item quantity in the cart
     fetch(`/cart/update_quantity/${campusProductId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -27,6 +26,7 @@ function updateQty(campusProductId, delta) {
 }
 
 function removeFromCart(campusProductId) {
+    // Send AJAX request to remove item from the cart
     fetch(`/cart/delete_item/${campusProductId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
@@ -43,6 +43,7 @@ function removeFromCart(campusProductId) {
 }
 
 function updateCartSummary() {
+    // Recalculate and update subtotal, shipping, and total cost
     let subtotal = 0;
     document.querySelectorAll('.cart-item-cost span').forEach(function (costSpan) {
         subtotal += parseFloat(costSpan.textContent);
@@ -58,6 +59,7 @@ function updateCartSummary() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Attach event listeners to quantity buttons
     document.querySelectorAll('.qty-btn').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
             e.preventDefault(); // Prevent form submission if inside a form
@@ -67,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // Attach event listeners to remove buttons
     document.querySelectorAll('.cart-item-remove').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
             e.preventDefault(); // Prevent form submission if inside a form

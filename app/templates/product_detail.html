@@ -1,4 +1,4 @@
-{# 
+﻿{# 
     Product detail page template.
     - Displays main product image, gallery, details, and description.
     - Includes quantity controls and "Add to Cart" form.
@@ -13,6 +13,7 @@
 {{ super() }}
 {% endblock %}
 {% block content %}
+<a href="{{ url_for('products.show_products') }}" class="btn-continue-shopping">← Continue Shopping</a>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/product_detail.css') }}">
 <div class="row">
     <!-- Product Image & Gallery -->

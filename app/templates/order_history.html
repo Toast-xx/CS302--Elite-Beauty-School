@@ -1,4 +1,4 @@
-{#
+﻿{#
 Order History Template
 Displays a table of all user orders and a modal for order details.
 Shows product images, names, quantities, unit prices, subtotals, shipping, and total.
@@ -8,7 +8,7 @@ Shows product images, names, quantities, unit prices, subtotals, shipping, and t
 {% block content %}
 {% block extra_css %}
 {% endblock %}
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/order_history.css') }}">
+<a href="{{ url_for('products.show_products') }}" class="btn-continue-shopping">← Continue Shopping</a>
 <div class="row justify-content-center">
     <div class="col-md-10">
         <h2 class="mb-4">Order History</h2>

@@ -1,3 +1,10 @@
+"""
+    - Imports and registers all route blueprints for the application.
+    - Centralizes blueprint registration for modular route management.
+    - Ensures each feature (main, store, user, auth, product detail, cart, checkout, dashboard, order history, account) is available in the Flask app.
+    - Call register_routes(app) in your app factory to attach all routes.
+"""
+
 from .main import main
 from .store import products
 from .user import user
@@ -9,8 +16,6 @@ from .dashboard import dashboard_bp
 from .order_history import order_history_bp
 from .account import account_bp
 
-
-
 def register_routes(app):
     app.register_blueprint(main)
     app.register_blueprint(products)
@@ -21,4 +26,3 @@ def register_routes(app):
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(order_history_bp)
     app.register_blueprint(account_bp)
-    

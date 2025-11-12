@@ -1,3 +1,12 @@
+"""
+    - Handles user account details view and update functionality.
+    - Allows users to update their name, email, and password.
+    - Integrates with Flask-Login for authentication and session management.
+    - Uses utility functions for email validation and password hashing.
+    - Commits changes to the database and provides user feedback via flash messages.
+    - Renders the account.html template with current user data.
+"""
+
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from app.utils.email_handler import validate_new_email

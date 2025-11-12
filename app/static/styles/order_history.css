@@ -1,4 +1,11 @@
-/* Order history page styling */
+/*
+    - Styles the order history table, headers, and modal dialogs for the order history page.
+    - Ensures class names match those in order_history.html for seamless integration.
+    - Customizes table appearance, modal content, and list group items for a consistent look.
+    - Uses Elite Beauty School color palette for branding.
+    - Designed for use with Bootstrap components and responsive layouts.
+*/
+
 .order-history-header {
     color: #cbb073;
     font-weight: 600;

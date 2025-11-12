@@ -1,3 +1,14 @@
+"""
+    User Route
+    ----------
+    - Handles user management operations, specifically user creation via POST requests.
+    - Integrates with utility functions for email validation and password hashing.
+    - Uses the User model for database interaction and user creation.
+    - Protects the route with @require_clearance(2) to restrict access to authorized users.
+    - Returns JSON responses for success and error cases.
+    - Blueprint is registered as 'user' for modular route management.
+"""
+
 from flask import Blueprint, jsonify, request, session, render_template, redirect
 from ..utils import *
 from ..utils.email_handler import is_valid_email, validate_new_email
@@ -5,7 +16,6 @@ from ..utils.password_handler import hash_password
 from ..models import User
 
 user = Blueprint("user", __name__)
-
 
 @user.route("/user/add", methods=["POST"])
 @require_clearance(2)
@@ -33,4 +43,3 @@ def add_user():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-

@@ -1,6 +1,8 @@
 """
-Model for linking products to campuses and tracking campus-specific inventory.
-Each CampusProduct entry associates a product with a campus and stores the available quantity.
+    - Links products to campuses and tracks campus-specific inventory and pricing.
+    - Each CampusProduct entry associates a product with a campus and stores available quantities for online (campus) and internal SPA/training use.
+    - Integrates with the Product and Campus models via foreign keys and relationships.
+    - Used for inventory management, pricing, and product availability per campus.
 """
 
 from app.models.product import Product

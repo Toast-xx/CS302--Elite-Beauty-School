@@ -1,3 +1,11 @@
+"""
+    - Defines the Order model for tracking user orders, status, total, and creation date.
+    - Defines the OrderItem model for individual items within an order, including product, campus product, quantity, and price.
+    - Integrates with User, Product, and CampusProduct models via foreign keys and relationships.
+    - Provides helper methods for serialization to dictionaries for API or template use.
+    - Used for order management, history, and checkout processes throughout the application.
+"""
+
 from app import db
 
 class Order(db.Model):
@@ -33,7 +41,7 @@ class OrderItem(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     campus_product_id = db.Column(db.Integer, db.ForeignKey('campus_products.id'))
     quantity = db.Column(db.Integer, nullable=False)
-    price = db.Column(db.Numeric(10, 2), nullable=False)  # Added price attribute
+    price = db.Column(db.Numeric(10, 2), nullable=False)  
 
     campus_product = db.relationship('CampusProduct')
     product = db.relationship('Product')
@@ -44,6 +52,6 @@ class OrderItem(db.Model):
             "order_id": self.order_id,
             "product_id": self.product_id,
             "quantity": self.quantity,
-            "price": float(self.price),  # Include price in dict
+            "price": float(self.price),  
             "product": self.product.to_dict() if self.product else None
         }

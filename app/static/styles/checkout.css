@@ -1,8 +1,10 @@
-/* Styles for the checkout page.
-   - Applies layout, spacing, and visual design to checkout container, summary, and form.
-   - Ensure class names match those in checkout.html.
-   - Button styles here override global .btn-primary for checkout context.
-   - Responsive adjustments for smaller screens included.
+/* 
+    - Styles the checkout container, summary, and form for the checkout page.
+    - Ensures class names match those in checkout.html for seamless integration.
+    - Customizes button styles for checkout context, overriding global .btn-primary.
+    - Includes utility classes for layout and text formatting.
+    - Provides responsive adjustments for smaller screens.
+    - Designed for use with Bootstrap grid and components.
 */
 
 .checkout-container {

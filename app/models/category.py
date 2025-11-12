@@ -1,8 +1,9 @@
-# Models for product categories and subcategories.
-# Category has a one-to-many relationship with SubCategory.
-# SubCategory has a one-to-many relationship with Product.
-# Ensure foreign key and relationship names match those in related models.
-
+"""
+ Models for product categories and subcategories.
+ Category has a one-to-many relationship with SubCategory.
+ SubCategory has a one-to-many relationship with Product.
+ Ensure foreign key and relationship names match those in related models.
+"""
 from app import db
 
 class Category(db.Model):

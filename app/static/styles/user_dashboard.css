@@ -1,4 +1,11 @@
-/* Dashboard page styling */
+/* 
+    - Styles the dashboard header and navigation list for the user dashboard page.
+    - Ensures class names match those in user_dashboard.html for seamless integration.
+    - Customizes list group items for a clean, interactive look with hover effects.
+    - Uses Elite Beauty School color palette for branding and visual consistency.
+    - Designed for use with Bootstrap components and responsive layouts.
+*/
+
 .dashboard-header {
     color: #6c63ff;
     font-weight: 600;

@@ -153,3 +153,26 @@ Button Styling
     object-fit: cover;
     border: none;
 }
+/* Continue Shopping Button - Custom Style */
+.btn-continue-shopping {
+    color: #b29c6c;
+    background: #fff;
+    border: 2px solid #b29c6c;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 6px 18px;
+    transition: background 0.2s, color 0.2s;
+    display: inline-block;
+    margin-top: 10px;
+    text-align: center;
+    line-height: 1.2;
+}
+
+    .btn-continue-shopping:hover,
+    .btn-continue-shopping:focus {
+        background: #f7b6b6;
+        color: #fff;
+        border-color: #b29c6c;
+        text-decoration: none;
+    }

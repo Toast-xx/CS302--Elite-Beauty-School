@@ -1,8 +1,10 @@
-/* Styles for the cart page.
-   - Layouts cart container, items, summary, and controls.
-   - Ensure class names match those in cart.html and cart.js.
-   - Button styles here override global .btn-primary for cart context.
-   - Responsive adjustments for smaller screens included.
+/* 
+    - Styles the cart container, items, summary, and controls for the shopping cart page.
+    - Ensures class names match those in cart.html and cart.js for seamless integration.
+    - Customizes button styles for cart context, overriding global .btn-primary.
+    - Includes utility classes for layout and text formatting.
+    - Provides responsive adjustments for smaller screens.
+    - Designed for use with Bootstrap grid and components.
 */
 
 .cart-container {

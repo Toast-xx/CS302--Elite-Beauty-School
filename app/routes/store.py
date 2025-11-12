@@ -1,17 +1,13 @@
-# Handles product listing, filtering, and AJAX-based updates for the store page.
-# Provides both full page rendering and partial product grid rendering for dynamic updates.
-# Depends on Product, Category, and SubCategory models, and expects store.html template and AJAX requests from store.js.
+# Adds search bar logic to existing product filtering and live search suggestions (autocomplete)
+# Now supports autocomplete for product name, category, subcategory, and brand
 
-from flask import Blueprint, render_template, render_template_string, request
+from flask import Blueprint, render_template, render_template_string, request, jsonify
 from app.models.product import Product
 from app.models.category import Category, SubCategory
 from app.models.campus_products import CampusProduct
 from flask_login import current_user
 from app.utils import *
-from ..models.product import Product
-from ..models.category import Category, SubCategory
-from ..utils import *
-
+from sqlalchemy import or_
 
 products = Blueprint("products", __name__, url_prefix="/store")
 
@@ -21,6 +17,7 @@ def show_products():
     category_id = request.args.get("category", type=int)
     subcategory_id = request.args.get("subcategory", type=int)
     brand = request.args.get("brand")
+    search = request.args.get("search", type=str)
     ajax = request.args.get("ajax", type=int)
 
     categories = Category.query.all()
@@ -38,6 +35,20 @@ def show_products():
             campus_products_query = campus_products_query.filter(Product.sub_category_id.in_(subcat_ids))
     if brand:
         campus_products_query = campus_products_query.filter(Product.brand == brand)
+    if search:
+        # Search by product name, category name, subcategory name, or brand
+        campus_products_query = campus_products_query.join(
+            SubCategory, Product.sub_category_id == SubCategory.id
+        ).join(
+            Category, SubCategory.category_id == Category.id
+        ).filter(
+            or_(
+                Product.name.ilike(f"%{search}%"),
+                Category.name.ilike(f"%{search}%"),
+                SubCategory.name.ilike(f"%{search}%"),
+                Product.brand.ilike(f"%{search}%")
+            )
+        )
 
     campus_products = campus_products_query.all()
     brands = [row[0] for row in Product.query.with_entities(Product.brand).distinct() if row[0]]
@@ -78,4 +89,37 @@ def show_products():
             selected_category=category_id,
             selected_subcategory=subcategory_id,
             selected_brand=brand,
+            search=search,
         )
+
+@products.route("/search_suggestions")
+@require_clearance(1)
+def search_suggestions():
+    term = request.args.get("q", type=str)
+    results = []
+    if term:
+        # Product name matches
+        products = Product.query.filter(Product.name.ilike(f"%{term}%")).limit(5).all()
+        results += [
+            {"id": p.id, "name": p.name, "type": "product", "image": p.image_gallery[0] if p.image_gallery else ""}
+            for p in products
+        ]
+        # Category matches
+        categories = Category.query.filter(Category.name.ilike(f"%{term}%")).limit(3).all()
+        results += [
+            {"id": c.id, "name": c.name, "type": "category", "image": ""}
+            for c in categories
+        ]
+        # SubCategory matches
+        subcategories = SubCategory.query.filter(SubCategory.name.ilike(f"%{term}%")).limit(3).all()
+        results += [
+            {"id": sc.id, "name": sc.name, "type": "subcategory", "image": ""}
+            for sc in subcategories
+        ]
+        # Brand matches
+        brands = Product.query.with_entities(Product.brand).filter(Product.brand.ilike(f"%{term}%")).distinct().limit(3).all()
+        results += [
+            {"id": None, "name": b[0], "type": "brand", "image": ""}
+            for b in brands if b[0]
+        ]
+    return jsonify(results)

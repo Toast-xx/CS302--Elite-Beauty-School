@@ -17,25 +17,21 @@ depends_on = None
 def upgrade():
     # Make campus_products.price NOT NULL
     with op.batch_alter_table('campus_products', schema=None) as batch_op:
-        batch_op.alter_column('price', sa.Numeric(10, 2), nullable=False,)
+        batch_op.alter_column('price', type_=sa.Numeric(10, 2), nullable=False)
 
-    # Add campus_product_id and price to order_items
+    # Add campus_product_id to order_items (do NOT add price column again)
     with op.batch_alter_table('order_items', schema=None) as batch_op:
         batch_op.add_column(sa.Column('campus_product_id', sa.Integer(), nullable=True))
         batch_op.create_foreign_key(None, 'campus_products', ['campus_product_id'], ['id'])
-        # 1. Add price as nullable with default
-        batch_op.add_column(sa.Column('price', sa.Numeric(10, 2), nullable=True, server_default='0.00'))
-
-    # 2. (Optional) If you want to set a different value for existing rows, do it here:
-    # op.execute('UPDATE order_items SET price = <some_value> WHERE price IS NULL')
-
+       
+    # Set price to NOT NULL and remove default (only alter, do not add)
     with op.batch_alter_table('order_items', schema=None) as batch_op:
-        # 3. Set price to NOT NULL and remove default
         batch_op.alter_column('price', nullable=False, server_default=None)
 
     # Drop quantity from products
     with op.batch_alter_table('products', schema=None) as batch_op:
         batch_op.drop_column('quantity')
+
 def downgrade():
     with op.batch_alter_table('products', schema=None) as batch_op:
         batch_op.add_column(sa.Column('quantity', sa.INTEGER(), autoincrement=False, nullable=True))

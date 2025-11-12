@@ -1,3 +1,10 @@
+{#
+    - Displays a grid of product cards for the store or category page.
+    - Each card shows product image, name, brand, and price.
+    - Supports both external and local product images, with a fallback placeholder.
+    - Integrates with product_detail.html for detailed product view via card links.
+    - Designed for use within a Bootstrap container and row for responsive layout.
+#}
 <div class="container py-4">
     <div class="row">
         {% for product in products %}

@@ -1,6 +1,9 @@
 """
-Order history route: Displays all orders for the current user,
-including eager loading of related order items and campus products.
+    - Displays all orders for the current user.
+    - Eager loads related order items and campus products for efficient template rendering.
+    - Integrates with Flask-Login for authentication and session management.
+    - Uses SQLAlchemy's joinedload for optimized database queries.
+    - Renders the order_history.html template with the user's orders.
 """
 
 from flask import Blueprint, render_template
