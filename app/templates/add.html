@@ -1,0 +1,53 @@
+<title>Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/add.css') }}" />
+<script src="{{ url_for('static', filename='java/add.js') }}"></script>
+<div class="add-container" id="add_product">
+    <div class="box">
+        <div style="text-align: center; margin-top: 40px;">
+            <h1>Add New Product</h1>
+        </div>
+        <div class="middle">
+            <div>
+                Product Name
+                <br>
+                <input type="text" class="name" placeholder="Input text" id="addName">
+            </div>
+            <div>
+                Description
+                <br>
+                <textarea class="description" placeholder="Input text" id="addDescription"></textarea>
+            </div>
+            <div class="image" onclick="overlay('upload')">
+                Add Images
+            </div>
+            <div class="line">
+                <div>
+                    Price
+                    <br>
+                    <input type="number" min="0" step="0.01"class="input" id="addPrice">
+                </div>
+                <div>
+                    SKU
+                    <br>
+                    <input type="text" placeholder="Input text" class="input" id="addSKU">
+
+                </div>
+            </div>
+            <div class="line">
+                <div>
+                    Category
+                    <br>
+                    <input type="text" placeholder="Input text" class="input" id="addCategory">
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="button" onclick="saveProduct()">
+                Save
+            </div>
+            <div class="button" onclick="section('Dashboard')">
+                Close
+            </div>
+        </div>
+    </div>
+</div>

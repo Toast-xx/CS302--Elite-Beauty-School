@@ -1,0 +1,65 @@
+.orders
+{
+    flex-direction: column;
+}
+.orders .list
+{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border-radius: 10px;
+    height: 90%;
+    background-color: white;
+    padding-left: 15px;
+}
+.orders .list .header
+{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    height: 50px;
+}
+.orders .list .data
+{
+    display: block;
+    overflow-y: scroll;
+    height: 400px;
+    width: calc(100% + 15px);
+}
+.orders .list .data .value
+{
+    border-top: solid 1px black;
+    height: 50px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+}
+.completed {
+    background-color: green;
+    color: white;
+    width: 100px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+}
+.cancelled {
+    background-color: red;
+    color: white;
+    width: 100px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+}
+.processing {
+    background-color: chocolate;
+    color: white;
+    width: 100px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+}

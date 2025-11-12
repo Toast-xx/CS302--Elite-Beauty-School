@@ -1,0 +1,25 @@
+<title>Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/products.css') }}" />
+<script src="{{ url_for('static', filename='java/products.js') }}"></script>
+<div class="products">
+  <div class="header">
+    <div>Image</div>
+    <div>Products</div>
+    <div>Price</div>
+    <div>Campus</div>
+  </div>
+  <div class="list">
+    {% for item in items %}
+        <div class="data">
+          <img style="width: 140px; height: 110px;" src="{{ url_for('static', filename='images/placeholder1.jpg') }}">
+          <div>{{ item.date }}</div>
+          <div>{{ item.percentage }}%</div>
+          <div>{{ item.amount }}</div>
+          <div class="buttons">
+            <div class="edit">Edit</div>
+            <div class="delete" onclick="overlay('delete')">Delete</div>
+          </div>
+        </div>
+      {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,107 @@
+.add-container
+{
+    display: none;
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+.add-container .box
+{
+    width: 840px;
+    height: 730px;
+    background-color: white;
+}
+.box .bottom
+{
+    display: flex;
+    justify-content: end;
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+.box .middle
+{
+    display: block;
+    width: calc(100% - 60px);
+    height: 560px;
+    margin-left: 30px;
+}
+.box .middle .name
+{
+    width: 550px;
+    height: 40px;
+    text-indent: 10px;
+    border: solid 1px black;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.box .middle .description
+{
+    height: 100px;
+    width: 780px;
+    border-radius: 10px;
+    font-family: sans-serif;
+    text-indent: 10px;
+    margin-bottom: 30px;
+}
+.box .middle .image
+{
+    width: 260px;
+    height: 40px;
+    border: 1px solid black;
+    border-radius: 10px;
+    color: white;
+    background-color: #E29BA3FF;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.box .middle .line
+{
+    display: flex;
+    gap: 160px;
+    margin-bottom: 30px;
+}
+.box .middle .line .input
+{
+    height: 40px;
+    width: 260px;
+    border-radius: 10px;
+    border: solid 1px black;
+    text-indent: 10px;
+}
+.box .middle .line .input
+{
+    height: 40px;
+    width: 260px;
+    border-radius: 10px;
+    border: solid 1px black;
+    text-indent: 10px;
+}
+.box .middle .image:hover
+{
+    color: black;
+    background-color: white;
+}
+.bottom .button
+{
+    display: flex;
+    width: 80px;
+    height: 40px;
+    font-size: 14px;
+    background-color: #E29BA3FF;
+    color: white;
+    margin-left: 10px;
+    align-items: center;
+    justify-content: center;
+    border-radius:10px;
+    border: solid 1px black;
+    cursor: pointer;
+}
+.bottom .button:hover
+{
+    background-color: white;
+    color: black;
+}
