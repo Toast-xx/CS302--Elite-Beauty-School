@@ -1,6 +1,4 @@
 """
-    User Route
-    ----------
     - Handles user management operations, specifically user creation via POST requests.
     - Integrates with utility functions for email validation and password hashing.
     - Uses the User model for database interaction and user creation.

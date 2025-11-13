@@ -1,8 +1,16 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, render_template
+from app.utils import require_clearance
 from app.utils import *
 from app.models.user import User  # ✅ import your User model
 
 admin = Blueprint("admin", __name__)
+
+@admin.route("/admin")
+@require_clearance(2)  # Only users with clearance_level >= 2 can access
+def admin_base():
+    if session.get('clearance_level') != 2:
+        return redirect("/")
+    return render_template("admin_base.html")
 
 @admin.route("/searchAdmin", methods=['GET'])
 def search_user():

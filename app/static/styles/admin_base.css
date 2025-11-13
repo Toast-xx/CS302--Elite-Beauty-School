@@ -1,40 +1,46 @@
-html,body
-{
+html, body {
     height: 100%;
     margin: 0;
+    padding: 0;
     font-family: sans-serif;
+    box-sizing: border-box;
 }
-.container
-{
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+.admin-container {
     display: grid;
-    grid-template-columns: 255px 1fr;
+    grid-template-columns: 250px 1fr;
     grid-template-rows: auto 1fr;
     grid-template-areas:
-      "side top"
-      "side content";
-    height: 100%;
+        "side top"
+        "side content";
+    min-height: 100vh;
     width: 100%;
+    background: #fff;
 }
-.side
-{
+
+.side {
     grid-area: side;
     background-color: #E4CFA1B3;
     display: grid;
     grid-template-rows: 70px 1fr 60px;
     grid-template-areas:
-    "logo"
-    "menu"
-    "logout";
+        "logo"
+        "menu"
+        "logout";
 }
-.side-logo
-{
+
+.side-logo {
     height: 50px;
     margin-top: 20px;
     margin-left: 20px;
     grid-area: logo;
 }
-.side-menu
-{
+
+.side-menu {
     margin-top: 20px;
     grid-area: menu;
     display: flex;
@@ -43,8 +49,8 @@ html,body
     font-weight: 400;
     font-size: 14px;
 }
-.side-menu-dashboard, .side-menu-inventory, .side-menu-order, .side-menu-products, .side-menu-users
-{
+
+.side-menu-dashboard, .side-menu-inventory, .side-menu-order, .side-menu-products, .side-menu-users {
     display: flex;
     justify-items: center;
     align-items: center;
@@ -54,23 +60,23 @@ html,body
     margin-top: 10px;
     border-radius: 10px;
 }
-.side-menu-dashboard:hover,
-.side-menu-inventory:hover,
-.side-menu-order:hover,
-.side-menu-products:hover,
-.side-menu-users:hover {
-    background-color: white;
-}
 
-.side-logout
-{
+    .side-menu-dashboard:hover,
+    .side-menu-inventory:hover,
+    .side-menu-order:hover,
+    .side-menu-products:hover,
+    .side-menu-users:hover {
+        background-color: white;
+    }
+
+.side-logout {
     grid-area: logout;
     align-items: center;
     justify-content: center;
     display: flex;
 }
-.logout-button
-{
+
+.logout-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -81,251 +87,137 @@ html,body
     color: white;
     cursor: pointer;
 }
-.top
-{
-    display: block;/*block*/
+
+.top {
     grid-area: top;
+    display: block;
 }
-.top-banner
-{
+
+.top-banner {
     height: 64px;
-    display: inline-flex;
+    display: flex;
     width: 100%;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 1px solid #dee2e6;
+    background: #fff;
+    padding: 0 24px;
 }
-.banner-name
-{
-    margin-left: 20px;
+
+.banner-name {
     font-size: 30px;
     font-weight: bold;
+    margin-right: 32px;
 }
-.banner-right
-{
-    display: inline-flex;
-    align-items: center;
-    font-size: 14px;
-}
-.banner-search
-{
-    width: 241px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 10px;
-    cursor: pointer;
-    border-radius: 6px;
-    border-width: 1px;
-    border-color: #DEE1E6FF;
-    border-style: solid;
-}
-.banner-notification
-{
-    width: 131px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 10px;
-    cursor: pointer;
-}
-.banner-setting
-{
-    width: 102px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 20px;
-    cursor: pointer;
-}
-.banner-profile
-{
-    width: 36px;
-    height: 36px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 24px;
-    cursor: pointer;
-    border-radius: 20px;
-}
-.top-filter-order
-{
-    display: flex; /*Flex*/
-    height: 144px;
-    margin-top: 52px;
-    margin-left: 20px;
-    flex-direction: column;
-}
-.top-filter-order-selection
-{
-    width: 90%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 50px;
-}
-.top-filter-order-selection-campus-drop {
-    width: 300px;
-    height: 40px;
-    border: solid 1px ;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 700;
-    outline: none;
-    padding: 5px 10px;
-    background-color: #ffffff;
-    cursor: pointer;
-}
-.top-filter-order-selection-campus-drop option{
-    font-size: 14px;
-    font-weight: 700;
-    background-color: #ffffff;
-    cursor: pointer;
-}
-.top-filter-order-selection-submit
-{
-    color: white;
-    background: #e29ba3ff;
-    width: 100px;
-    height: 40px;
-    font-size: 14px;
-    border-radius: 10px;
+
+.banner-right {
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin-left: 60px;
-    cursor: pointer;
+    gap: 16px;
 }
-.date-picker
-{
-    width: 220px;
+
+/* --- New styles from user_Base.css --- */
+.navbar-search {
+    width: 240px;
+}
+
+    .navbar-search .form-control {
+        border-radius: 20px;
+    }
+
+    .navbar-search .btn {
+        border-radius: 20px;
+    }
+
+.profile-bubble {
+    width: 40px;
     height: 40px;
-    border: solid 1px ;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 700;
-    outline: none;
-    padding-left: 15px;
-    background-color: #ffffff;
-}
-.top-filter-search
-{
-    display:inline-flex;/*inline-flex*/
-    height: 40px;
-    margin: 20px;
-    justify-content: space-between;
-    width: 90%;
-}
-.top-filter-search-first
-{
-    width: 600px;
-    display: inline-flex;
-    justify-content: space-between;
-    gap: 50px;
-}
-.top-filter-search-first-list
-{
-    width: 250px;
-    height: 40px;
-    border: solid 1px ;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 700;
-    outline: none;
-    padding-left:  10px;
-    background-color: #ffffff;
-    cursor: pointer;
-}
-.top-filter-search-second
-{
-    width: 450px;
-    display: inline-flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 50px;
-    font-size: 14px;
-}
-.top-filter-search-second-filter
-{
+    background: #e4cfa1;
+    color: #222;
+    font-weight: bold;
+    font-size: 1.25rem;
     display: flex;
-    width: 200px;
     align-items: center;
-    justify-content: end;
-    height: 40px;
-    border-radius: 10px;
-    border: solid 1px;
-    padding-right: 15px;
-    font-size: 14px;
-}
-.top-filter-search-second-product
-{
-    display: flex;
-    width: 200px;
-    height: 40px;
-    border-radius: 10px;
-    background: #E29BA3FF;
-    color: white;
     justify-content: center;
-    align-items: center;
-    font-size: 14px;
+    border-radius: 50%;
     cursor: pointer;
-    border: solid 1px black;
+    text-decoration: none;
+    transition: background 0.2s;
 }
-.top-filter-search-second-product:hover
-{
-    color: black;
-    background-color: white;
+
+    .profile-bubble:hover {
+        background: #db6468;
+        color: #fff;
+    }
+
+.dropdown-menu {
+    min-width: 180px;
+    font-size: 1rem;
 }
-.content
-{
-    display: block;/*block*/
+
+.dropdown-item i {
+    margin-right: 8px;
+}
+
+/* --- Layout and filter fixes --- */
+.content {
     grid-area: content;
-    margin: 20px;
+    margin: 20px 0 20px 0;
+    width: 100%;
+    max-width: none;
+    display: block;
+    background: #fff;
 }
-.section
-{
+
+.top-filter-order-selection {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 40px;
+}
+
+.top-filter-order-selection-campus,
+.top-filter-order-selection-startdate,
+.top-filter-order-selection-enddate,
+.top-filter-order-selection-submit {
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+}
+
+.top-filter-order-selection-campus-drop,
+.date-picker {
+    width: 180px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    padding: 5px 10px;
+    background-color: #fff;
+}
+
+/* Section and popup styles */
+.section {
     width: 100%;
     height: 100%;
     display: none;
 }
-.products.active
-{
+
+.products.active,
+.users.active,
+.dashboard.active,
+.orders.active,
+.inventory.active {
     background: white;
     height: 100%;
     width: 100%;
     display: flex;
 }
-.users.active
-{
-    height: 100%;
+
+.popup {
     width: 100%;
-    display: flex;
-}
-.dashboard.active
-{
-    height: 100%;
-    width: 100%;
-    display: flex;
-}
-.orders.active
-{
-    height: 100%;
-    width: 100%;
-    display: flex;
-}
-.inventory.active
-{
-    height: 100%;
-    width: 100%;
-    display: flex;
-}
-.popup
-{
-    width: 100%;
-    position:absolute;
+    position: absolute;
     height: 100vh;
     display: none;
     top: 0;

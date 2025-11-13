@@ -4,7 +4,7 @@
     - Ensures each feature (main, store, user, auth, product detail, cart, checkout, dashboard, order history, account) is available in the Flask app.
     - Call register_routes(app) in your app factory to attach all routes.
 """
-
+from .admin import admin
 from .main import main
 from .store import products
 from .user import user
@@ -26,3 +26,4 @@ def register_routes(app):
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(order_history_bp)
     app.register_blueprint(account_bp)
+    app.register_blueprint(admin)
