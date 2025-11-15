@@ -19,15 +19,20 @@ from datetime import date
 # Blueprint for user management routes
 user = Blueprint("user", __name__)
 
-@user.route("/user/list", methods=["GET"])
-@require_clearance(2)
-def list_users():
-    """
-    Lists all users for admin view.
-    Renders the users.html template with user data.
-    """
-    users = User.query.all()
-    return render_template("users.html", items=users, today=date.today())
+# Helper for serialization (if not in User model)
+def user_to_dict(user):
+    return {
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "campus": user.campus.to_dict() if user.campus else None,
+        "campus_id": user.campus_id,
+        "clearance_level": user.clearance_level,
+        "start_date": user.start_date.isoformat() if user.start_date else None,
+        "end_date": user.end_date.isoformat() if user.end_date else None,
+        "active": user.active,
+        # Add other fields as needed
+    }
 
 @user.route("/user/add", methods=["POST"])
 @require_clearance(2)
@@ -84,7 +89,6 @@ def add_user():
         hashed_password = hash_password(password)
 
         # Handle 'Inactive' checkbox logic:
-        # If checked, value is '0' (inactive); if unchecked, value is None (active)
         active_raw = request.form.get('active')
         active = False if active_raw == '0' else True
 
@@ -92,12 +96,11 @@ def add_user():
             name, email, hashed_password, clearance, campus_id, start_date, end_date, active
         )
         if new_user:
-            return jsonify({"message": message, "user": new_user.to_dict()}), 201
+            return jsonify({"message": message, "user": user_to_dict(new_user)}), 201
         else:
             return jsonify({"error": message}), 400
 
     except Exception as e:
-        # Log and return unexpected errors
         import traceback
         print(traceback.format_exc())
         return jsonify({"error": str(e)}), 500
@@ -157,7 +160,6 @@ def edit_user(user_id):
             return jsonify({"error": "Email already in use."}), 400
 
         # Handle 'Inactive' checkbox logic:
-        # If checked, value is '0' (inactive); if unchecked, value is None (active)
         active_raw = request.form.get('active')
         user_obj.active = False if active_raw == '0' else True
 
@@ -172,13 +174,36 @@ def edit_user(user_id):
             user_obj.password_hash = hash_password(password)
         try:
             db.session.commit()
-            return jsonify({"message": "User details updated successfully!", "user": user_obj.to_dict()}), 200
+            return jsonify({"message": "User details updated successfully!", "user": user_to_dict(user_obj)}), 200
         except Exception as e:
             db.session.rollback()
             return jsonify({"error": str(e)}), 500
 
     except Exception as e:
-        # Log and return unexpected errors
         import traceback
         print(traceback.format_exc())
         return jsonify({"error": str(e)}), 500
+@user.route("/user/search", methods=["GET"])
+@require_clearance(2)
+def search_users():
+    """
+    Search users by any detail: name, email, campus name, etc.
+    Returns a JSON list of matching users.
+    """
+    query = request.args.get("q", "").strip().lower()
+    campus = request.args.get("campus", "All")
+    if not query:
+        return jsonify([])
+
+    users = User.query.filter(User.name.ilike(f"%{query}%")).all()
+    user_list = [
+        {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "campus_id": user.campus_id,
+            "campus_name": user.campus.name if user.campus else None
+        }
+        for user in users
+    ]
+    return jsonify(user_list)

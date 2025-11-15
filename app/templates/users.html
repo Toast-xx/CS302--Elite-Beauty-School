@@ -94,20 +94,24 @@
         <div class="edit">
             <div class="containers">
                 Campus
-                <select id="userCampus" name="campus_id" class="wide-campus-dropdown" required>
+                <select id="userCampus" name="campus_id" required>
                     <option value="">-- Campus Option --</option>
-                    <option value="1">Auckland Campus</option>
-                    <option value="2">Hamilton Campus</option>
-                    <option value="3">Wellington Campus</option>
+                    {% for campus in campuses %}
+                    <option value="{{ campus.id }}">{{ campus.name }}</option>
+                    {% endfor %}
                 </select>
+
+                
             </div>
             <div class="containers">
                 Role
                 <select id="userRole" name="clearance_level" required>
                     <option value="">-- Role Option --</option>
-                    <option value="1">User</option>
-                    <option value="2">Admin</option>
-                    <option value="3">Super Admin</option>
+                    {% for role in allowed_roles %}
+                    <option value="{{ role }}">
+                        {% if role == 1 %}User{% elif role == 2 %}Admin{% elif role == 3 %}Super Admin{% endif %}
+                    </option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -149,3 +153,4 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/users.js') }}"></script>
+<script src="{{ url_for('static', filename='java/searchbar.js') }}"></script>

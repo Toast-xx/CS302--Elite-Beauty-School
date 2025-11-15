@@ -23,20 +23,38 @@ import datetime
 # Blueprint for admin-related routes
 admin = Blueprint("admin", __name__)
 
+def get_admin_campus():
+    user_id = session.get('user_id')
+    admin_user = User.query.get(user_id)
+    if not admin_user:
+        return None, None, None
+    return admin_user.campus_id, admin_user.clearance_level, admin_user
+
 @admin.route("/admin")
-@require_clearance(2)  # Only users with clearance_level >= 2 can access
+@require_clearance(2)
 def admin_base():
-    """
-    Renders the admin dashboard with a list of all users.
-    Only accessible to admins.
-    """
-    if session.get('clearance_level') != 2:
+    campus_id, clearance, admin_user = get_admin_campus()
+    if not campus_id:
         return redirect("/")
-    users = User.query.all()
-    return render_template("admin_base.html", items=users, today=date.today())
+    # Super admin sees all users/campuses/roles, admin sees only their campus and roles
+    if clearance == 3:
+        users = User.query.all()
+        campuses = Campus.query.all()
+        allowed_roles = [1, 2, 3]
+    else:
+        users = User.query.filter_by(campus_id=campus_id).all()
+        campuses = [Campus.query.get(campus_id)]
+        allowed_roles = [1, 2]
+    return render_template(
+        "admin_base.html",
+        items=users,
+        campuses=campuses,
+        allowed_roles=allowed_roles,
+        today=date.today()
+    )
 
 @admin.route("/superadmin_dashboard")
-@require_clearance(3)  # Only users with clearance_level >= 3 can access
+@require_clearance(3)
 def superadmin_dashboard():
     clearance = session.get('clearance_level')
     banner = "Dashboard"
@@ -49,7 +67,7 @@ def dashboard_request():
     data = request.json
     start_date = datetime.datetime.strptime(data.get("start_date"), "%Y-%m-%d")
     end_date = datetime.datetime.strptime(data.get("end_date"), "%Y-%m-%d")
-    campus = data.get("campus")
+    campus_id, clearance, _ = get_admin_campus()
 
     query = (
         db.session.query(Order)
@@ -58,8 +76,8 @@ def dashboard_request():
         .filter(Order.created_at >= start_date)
         .filter(Order.created_at <= end_date)
     )
-    if campus and campus not in ["Super Admin", "All"]:
-        query = query.filter(Campus.name == campus)
+    if clearance != 3 and campus_id:
+        query = query.filter(Campus.id == campus_id)
 
     orders = query.all()
 
@@ -127,7 +145,7 @@ def orders_request():
     data = request.json
     start_date = datetime.datetime.strptime(data.get("start_date"), "%Y-%m-%d")
     end_date = datetime.datetime.strptime(data.get("end_date"), "%Y-%m-%d")
-    campus = data.get("campus")
+    campus_id, clearance, _ = get_admin_campus()
 
     query = (
         db.session.query(Order)
@@ -136,8 +154,8 @@ def orders_request():
         .filter(Order.created_at >= start_date)
         .filter(Order.created_at <= end_date)
     )
-    if campus and campus not in ["Super Admin", "All"]:
-        query = query.filter(Campus.name == campus)
+    if clearance != 3 and campus_id:
+        query = query.filter(Campus.id == campus_id)
     orders = query.all()
     order_list = [
         {
@@ -153,13 +171,10 @@ def orders_request():
 
 @admin.route("/products_request", methods=["POST"])
 def products_request():
-    data = request.json
-    campus = data.get("campus")
-
+    campus_id, clearance, _ = get_admin_campus()
     query = db.session.query(CampusProduct).join(Product).join(Campus)
-
-    if campus and campus not in ["Super Admin", "All"]:
-        query = query.filter(Campus.name == campus)
+    if clearance != 3 and campus_id:
+        query = query.filter(Campus.id == campus_id)
     campus_products = query.all()
     product_list = [
         {
@@ -178,96 +193,114 @@ def products_request():
 
     return jsonify({"products": product_list})
 
-@admin.route("/search_users", methods=['GET'])
-def search_user():
-    """
-    Searches for users with clearance_level == 1 (students) by name, email, or campus.
-    Returns a JSON list of matching users.
-    """
+@admin.route("/user/search", methods=['GET'])
+@require_clearance(2)
+def search_users():
     query = request.args.get("q", "").strip()
-    campus_id = request.args.get("campus_id", "").strip()
+    campus_id, clearance, _ = get_admin_campus()
+    if not query:
+        return jsonify([])
 
-    if not query and not campus_id:
-        return jsonify({"error": "No search query provided"}), 400
+    filters = []
+    if query:
+        filters.append(
+            (User.name.ilike(f"%{query}%")) |
+            (User.email.ilike(f"%{query}%"))
+        )
+    if clearance != 3 and campus_id:
+        filters.append(User.campus_id == campus_id)
 
-    try:
-        filters = [User.clearance_level == 1]
-        if query:
-            filters.append(
-                (User.name.ilike(f"%{query}%")) |
-                (User.email.ilike(f"%{query}%"))
-            )
-        if campus_id:
-            filters.append(User.campus_id == campus_id)
+    users = User.query.filter(*filters).all()
+    user_list = [
+        {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "campus_id": user.campus_id,
+            "campus_name": user.campus.name if user.campus else None,
+            "clearance_level": user.clearance_level,
+            "start_date": str(user.start_date) if user.start_date else "",
+            "end_date": str(user.end_date) if user.end_date else "",
+            "active": user.active
+        }
+        for user in users
+    ]
+    return jsonify(user_list)
 
-        users = User.query.filter(*filters).all()
-        user_list = [
-            {
-                "id": user.id,
-                "name": user.name,
-                "email": user.email,
-                "campus_id": user.campus_id,
-                "campus_name": user.campus.name if hasattr(user, 'campus') else None
-            }
-            for user in users
-        ]
-        return jsonify(user_list)
-    except Exception as ex:
-        print(f"Error in /search_users: {ex}")
-        return jsonify({"error": "Internal server error"}), 500
-
-@admin.route("/admin/add_user", methods=["POST"])
+@admin.route("/admin/add_user", methods=["GET", "POST"])
 @require_clearance(2)
 def add_user():
-    """
-    Adds a new user or edits an existing user.
-    Validates form fields and handles database updates.
-    Renders the admin dashboard with error messages if validation fails.
-    """
+    campus_id, clearance, admin_user = get_admin_campus()
+    # For GET: render form with correct campuses and roles
+    if request.method == "GET":
+        if clearance == 3:
+            campuses = Campus.query.all()
+            allowed_roles = [1, 2, 3]
+        else:
+            campuses = [Campus.query.get(campus_id)]
+            allowed_roles = [1, 2]
+        return render_template(
+            "add_user.html",
+            campuses=campuses,
+            allowed_roles=allowed_roles
+        )
+
+    # For POST: process form submission
     user_id = request.form.get("user_id")
     name = request.form.get("name")
     email = request.form.get("email")
     password = request.form.get("password")
-    campus_id = request.form.get("campus_id")
+    campus_id_form = request.form.get("campus_id")
     clearance_level = int(request.form.get("clearance_level", 1))
     start_date = request.form.get("start_date")
     end_date = request.form.get("end_date")
 
     # Validate required fields
-    if not all([name, email, campus_id]):
-        users = User.query.all()
-        return render_template("admin_base.html", error="All fields are required", items=users), 400
+    if not all([name, email, campus_id_form]):
+        error = "All fields are required"
+        campuses = [Campus.query.get(campus_id)] if clearance != 3 else Campus.query.all()
+        allowed_roles = [1, 2] if clearance != 3 else [1, 2, 3]
+        return render_template("add_user.html", error=error, campuses=campuses, allowed_roles=allowed_roles), 400
+
+    # Only super admins can add super admin users
+    if clearance_level == 3 and clearance != 3:
+        error = "Only super admins can add super admin users."
+        campuses = [Campus.query.get(campus_id)] if clearance != 3 else Campus.query.all()
+        allowed_roles = [1, 2] if clearance != 3 else [1, 2, 3]
+        return render_template("add_user.html", error=error, campuses=campuses, allowed_roles=allowed_roles), 403
 
     if user_id:
-        # Edit existing user
         user = User.query.get(user_id)
         if not user:
-            users = User.query.all()
-            return render_template("admin_base.html", error="User not found", items=users), 404
-        # Only block email if it belongs to another user
+            error = "User not found"
+            campuses = [Campus.query.get(campus_id)] if clearance != 3 else Campus.query.all()
+            allowed_roles = [1, 2] if clearance != 3 else [1, 2, 3]
+            return render_template("add_user.html", error=error, campuses=campuses, allowed_roles=allowed_roles), 404
         existing_user = User.query.filter_by(email=email).first()
         if user.email != email and existing_user and existing_user.id != user.id:
-            users = User.query.all()
-            return render_template("admin_base.html", error="User with this email already exists", items=users), 400
-        # Update user fields
+            error = "User with this email already exists"
+            campuses = [Campus.query.get(campus_id)] if clearance != 3 else Campus.query.all()
+            allowed_roles = [1, 2] if clearance != 3 else [1, 2, 3]
+            return render_template("add_user.html", error=error, campuses=campuses, allowed_roles=allowed_roles), 400
         user.name = name
         user.email = email
-        user.campus_id = campus_id
+        user.campus_id = campus_id_form
         user.clearance_level = clearance_level
         user.start_date = start_date
         user.end_date = end_date
         if password:
             user.password_hash = hash_password(password)
     else:
-        # Add new user
         if User.query.filter_by(email=email).first():
-            users = User.query.all()
-            return render_template("admin_base.html", error="User with this email already exists", items=users), 400
+            error = "User with this email already exists"
+            campuses = [Campus.query.get(campus_id)] if clearance != 3 else Campus.query.all()
+            allowed_roles = [1, 2] if clearance != 3 else [1, 2, 3]
+            return render_template("add_user.html", error=error, campuses=campuses, allowed_roles=allowed_roles), 400
         user = User(
             name=name,
             email=email,
             password_hash=hash_password(password),
-            campus_id=campus_id,
+            campus_id=campus_id_form,
             clearance_level=clearance_level,
             start_date=start_date,
             end_date=end_date
@@ -278,49 +311,45 @@ def add_user():
         return redirect(url_for('admin.admin_base', success=1))
     except Exception as ex:
         db.session.rollback()
-        users = User.query.all()
-        return render_template("admin_base.html", error="Failed to save user", items=users), 500
+        error = "Failed to save user"
+        campuses = [Campus.query.get(campus_id)] if clearance != 3 else Campus.query.all()
+        allowed_roles = [1, 2] if clearance != 3 else [1, 2, 3]
+        return render_template("add_user.html", error=error, campuses=campuses, allowed_roles=allowed_roles), 500
 
 @admin.route("/search_products", methods=['GET'])
 def search_products():
     query = request.args.get("q", "").strip()
-    campus = request.args.get("campus", "All")
-
+    campus_id, clearance, _ = get_admin_campus()
     if not query:
-        return jsonify({"error": "No search query provided"}), 400
+        return jsonify([])
 
-    try:
-        campus_products = (
-            CampusProduct.query
-            .join(Product, CampusProduct.product_id == Product.id)
-            .join(Campus, CampusProduct.campus_id == Campus.id)
-            .filter(Product.name.ilike(f"%{query}%")) 
-        )
-        if campus and campus not in ["All", "Super Admin"]:
-            campus_products = campus_products.filter(Campus.name == campus)
+    campus_products = (
+        CampusProduct.query
+        .join(Product, CampusProduct.product_id == Product.id)
+        .join(Campus, CampusProduct.campus_id == Campus.id)
+        .filter(Product.name.ilike(f"%{query}%")) 
+    )
+    if clearance != 3 and campus_id:
+        campus_products = campus_products.filter(Campus.id == campus_id)
 
-        campus_products = campus_products.all()
+    campus_products = campus_products.all()
 
-        product_list = [
-            {
-                "id": cp.id,
-                "name": cp.product.name,
-                "brand": cp.product.brand,
-                "description": cp.product.description,
-                "image": cp.product.image_gallery[0] if cp.product.image_gallery else None,
-                "price": float(cp.price),
-                "campus_quantity": cp.campus_quantity,
-                "spa_quantity": cp.spa_quantity,
-                "campus": cp.campus.name,
-            }
-            for cp in campus_products
-        ]
+    product_list = [
+        {
+            "id": cp.id,
+            "name": cp.product.name,
+            "brand": cp.product.brand,
+            "description": cp.product.description,
+            "image": cp.product.image_gallery[0] if cp.product.image_gallery else None,
+            "price": float(cp.price),
+            "campus_quantity": cp.campus_quantity,
+            "spa_quantity": cp.spa_quantity,
+            "campus": cp.campus.name,
+        }
+        for cp in campus_products
+    ]
 
-        return jsonify(product_list)
-
-    except Exception as ex:
-        print(f"Error in /search_products: {ex}")
-        return jsonify({"error": "Internal server error"}), 500
+    return jsonify(product_list)
 
 @admin.route("/delete_product", methods=["POST"])
 def delete_product():

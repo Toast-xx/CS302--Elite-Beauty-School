@@ -19,7 +19,7 @@
 </head>
 <body>
     <!-- Hidden checkbox for super admin status (used by JS) -->
-    <input type="checkbox" id="superstatus" {% if clearance= =3 %}checked{% endif %} style="display: none;">
+    <input type="checkbox" id="superstatus" {% if clearance == 3 %}checked{% endif %} style="display: none;">
     <div class="admin-container">
         <!-- Sidebar Navigation -->
         <div class="side">
@@ -105,9 +105,9 @@
                         <label for="campus"></label>
                         <select id="campus" class="top-filter-order-selection-campus-drop">
                             <option value="All">All Campus</option>
-                            <option value="Wellington">Wellington</option>
-                            <option value="Hamilton">Hamilton</option>
-                            <option value="Auckland">Auckland</option>
+                            <option value="1">Wellington</option>
+                            <option value="2">Hamilton</option>
+                            <option value="3">Auckland</option>
                         </select>
                     </div>
                     <div class="top-filter-order-selection-startdate">
@@ -135,9 +135,9 @@
                     <label for="campus2"></label>
                     <select id="campus2" class="top-filter-search-first-list">
                         <option value="All">All Campus</option>
-                        <option value="Wellington">Wellington</option>
-                        <option value="Hamilton">Hamilton</option>
-                        <option value="Auckland">Auckland</option>
+                        <option value="1">Auckland Campus</option>
+                        <option value="2">Hamilton Campus</option>
+                        <option value="3">Wellington Campus</option>
                     </select>
                 </div>
                 <div class="top-filter-search-second" id="secondFilter">
