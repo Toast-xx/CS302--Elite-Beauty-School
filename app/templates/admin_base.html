@@ -9,11 +9,82 @@
 </head>
 <body>
     <input type="checkbox" id="superstatus" {% if clearance == 3 %}checked{% endif %} style="display: none;">
-    <div class="admin-container">
+    <div class="container">
+        <div class="top">
+            <div class="top-banner">
+                <p class="banner-name" id="campus-name">{{campus}}</p>
+                <div class="banner-name" id="banner-name">
+                    Banner
+                </div>
+                <div class="banner-right">
+                    {% include "searchbar.html" %}
+                    <div class="banner-notification">
+                        <img src="{{ url_for('static', filename='images/notification.png') }}" width="10px" height="10px" alt="Settings Logo">
+                        <span style="margin-left: 10px">Notifications</span>
+                    </div>
+                    <div class="banner-setting">
+                        <img src="{{ url_for('static', filename='images/setting.png') }}" width="10px" height="10px" alt="Settings Icon">
+                        <span style="margin-left: 10px">Setting</span>
+                    </div>
+                    <img class="banner-profile" src="{{ url_for('static', filename='images/dummy.png') }}">
+                </div>
+            </div>
+            <div class="top-filter-order" id="filter-order">
+                <p style="font-size: 20px; font-weight: 700">Campus & Date Filter.</p>
+                <div class="top-filter-order-selection">
+                    <div class="top-filter-order-selection-campus">
+                        <br>
+                        <label for="campus"></label>
+                            <select id="campus" class="top-filter-order-selection-campus-drop">
+                                <option value="All">All Campus</option>
+                                <option value="Wellington Campus">Wellington</option>
+                                <option value="Hamilton Campus">Hamilton</option>
+                                <option value="Auckland Campus">Auckland</option>
+                            </select>
+                    </div>
+                    <div class="top-filter-order-selection-startdate">
+                        <label for="startdate">Start Date</label>
+                        <br>
+                        <input type="date" id="startdate" name="date" class="date-picker">
+                    </div>
+                    <div class="top-filter-order-selection-enddate">
+                        <label for="end-date">End Date</label>
+                        <br>
+                        <input type="date" id="enddate" name="end-date" class="date-picker">
+                    </div>
+                    <div>
+                        <br>
+                        <div class="top-filter-order-selection-submit" onclick="submitFilter()">
+                        Submit
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="top-filter-search" id="filter-search">
+                <div class="top-filter-search-first">
+                    {% include "searchbar.html" %}
+                    <label for="campus2"></label>
+                            <select id="campus2" class="top-filter-search-first-list">
+                                <option value="All">All Campus</option>
+                                <option value="Wellington Campus">Wellington</option>
+                                <option value="Hamilton Campus">Hamilton</option>
+                                <option value="Auckland Campus">Auckland</option>
+                            </select>
+                </div>
+                <div class="top-filter-search-second" id="secondFilter">
+                    <div class="top-filter-search-second-filter">
+                        <img src="{{ url_for('static', filename='images/filter.png') }}" width="10px" height="10px" alt="Settings Logo">
+                    </div>
+                    <div class="top-filter-search-second-product" onclick="addProduct()" id="addProduct">
+                        Add Product
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="side">
             <img class="side-logo" src="{{ url_for('static', filename='images/elite-gold-logo.png') }}">
             <div class="side-menu">
-                <div class="side-menu-dashboard" onclick="section('Dashboard')">
+                <div class="side-menu-dashboard" onclick="section('Dashboard'); dashboardRequest()">
                     <img src="{{ url_for('static', filename='images/dashboard.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
                     <span style="margin-left: 15px">Dashboard</span>
                 </div>
@@ -34,102 +105,10 @@
                     <span style="margin-left: 15px">Users</span>
                 </div>
             </div>
-            <div class="side-logout">
+            <div class="side-logout" onclick="logout()">
                 <div class="logout-button">
                     <img src="{{ url_for('static', filename='images/logout.png') }}" width="16px" height="16px" alt="Logout Icon">
                     <span style="margin-left: 10px">Logout</span>
-                </div>
-            </div>
-        </div>
-        <div class="top">
-            <div class="top-banner">
-                <p class="banner-name" id="campus-name">{{campus}}</p>
-                <div class="banner-name" id="banner-name">
-                    {{banner}}
-                </div>
-                <div class="banner-right">
-                    <form class="d-flex me-3 navbar-search" role="search" method="get" action="{{ url_for('products.show_products') }}">
-                        <input class="form-control me-2" type="search" name="search" placeholder="Search products..." aria-label="Search" value="{{ request.args.get('search', '') }}">
-                        <button class="btn btn-outline-primary" type="submit">Go</button>
-                    </form>
-                    {% if session.get('username') %}
-                    <div class="dropdown ms-3">
-                        <a class="d-flex align-items-center justify-content-center rounded-circle profile-bubble"
-                           href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ session['username'][0]|upper }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('account.account') }}">
-                                    <i class="bi bi-person me-2"></i> Account
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">
-                                    <i class="bi bi-box-arrow-right me-2"></i> Logout
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    {% else %}
-                    <a href="/auth/login" class="d-flex align-items-center justify-content-center rounded-circle profile-bubble ms-3">
-                        <i class="bi bi-person"></i>
-                    </a>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="top-filter-order" id="filter-order">
-                <p style="font-size: 20px; font-weight: 700">Campus & Date Filter.</p>
-                <div class="top-filter-order-selection">
-                    <div class="top-filter-order-selection-campus">
-                        <br>
-                        <label for="campus"></label>
-                        <select id="campus" class="top-filter-order-selection-campus-drop">
-                            <option value="All">All Campus</option>
-                            <option value="Wellington">Wellington</option>
-                            <option value="Hamilton">Hamilton</option>
-                            <option value="Auckland">Auckland</option>
-                        </select>
-                    </div>
-                    <div class="top-filter-order-selection-startdate">
-                        <label for="startdate">Start Date</label>
-                        <br>
-                        <input type="date" id="startdate" name="date" class="date-picker">
-                    </div>
-                    <div class="top-filter-order-selection-enddate">
-                        <label for="end-date">End Date</label>
-                        <br>
-                        <input type="date" id="enddate" name="end-date" class="date-picker">
-                    </div>
-                    <div>
-                        <br>
-                        <div class="top-filter-order-selection-submit" onclick="submitFilter()">
-                            Submit
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="top-filter-search" id="filter-search">
-                <div class="top-filter-search-first">
-                    <form class="d-flex me-3 navbar-search" role="search" method="get" action="{{ url_for('products.show_products') }}">
-                        <input class="form-control me-2" type="search" name="search" placeholder="Search products..." aria-label="Search" value="{{ request.args.get('search', '') }}">
-                        <button class="btn btn-outline-primary" type="submit">Go</button>
-                    </form>
-                    <label for="campus2"></label>
-                    <select id="campus2" class="top-filter-search-first-list">
-                        <option value="All">All Campus</option>
-                        <option value="Wellington">Wellington</option>
-                        <option value="Hamilton">Hamilton</option>
-                        <option value="Auckland">Auckland</option>
-                    </select>
-                </div>
-                <div class="top-filter-search-second" id="secondFilter">
-                    <div class="top-filter-search-second-filter">
-                        <img src="{{ url_for('static', filename='images/filter.png') }}" width="10px" height="10px" alt="Settings Logo">
-                    </div>
-                    <div class="top-filter-search-second-product" onclick="addProduct()" id="addProduct">
-                        Add Product
-                    </div>
                 </div>
             </div>
         </div>
@@ -155,11 +134,10 @@
     <div class="popup" id="popup">
         {% include "popup.html" %}
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 <script>
-    section("{{banner}}");
+    section('{{banner}}');
     const endDate = new Date();
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - 7);

@@ -4,12 +4,12 @@ window.addEventListener('load', function() {
 function dashboardRequest() {
     const start_date = document.getElementById("startdate").value;
     const end_date = document.getElementById("enddate").value;
-    const campus = document.getElementById("campus-name").value;
+    let campus = document.getElementById("campus-name").textContent;
     const admin=document.getElementById('superstatus');
     if(admin.checked)
     {
         const temp=document.getElementById('campus').value;
-        document.getElementById('campus-name').value=temp;
+        document.getElementById('campus-name').textContent=temp;
         campus=temp;
     }
     fetch("/dashboard_request", {

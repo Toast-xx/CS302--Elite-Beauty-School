@@ -53,7 +53,7 @@ function submitFilter()
 {
   const start=document.getElementById('startdate');
   const end=document.getElementById('enddate');
-  const banner=document.getElementById('banner-name').value;
+  const banner=document.getElementById('banner-name').textContent;
   if(start.value>end.value)
   {
     alert("Please select the correct date range!");
@@ -67,4 +67,13 @@ function submitFilter()
   {
     ordersRequest();
   }
+}
+function deleteID(id)
+{
+    const target=document.getElementById('deleteID');
+    target.value=id;
+}
+function logout()
+{
+  window.location.href = "/auth/logout";
 }

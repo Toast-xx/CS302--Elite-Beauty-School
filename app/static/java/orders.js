@@ -2,12 +2,12 @@ function ordersRequest()
 {
     const start_date = document.getElementById("startdate").value;
     const end_date = document.getElementById("enddate").value;
-    const campus = document.getElementById("campus-name").value;
+    let campus = document.getElementById("campus-name").textContent;
     const admin=document.getElementById('superstatus');
     if(admin.checked)
     {
         const temp=document.getElementById('campus').value;
-        document.getElementById('campus-name').value=temp;
+        document.getElementById('campus-name').textContent=temp;
         campus=temp;
     }
     fetch("/orders_request", {
@@ -17,7 +17,8 @@ function ordersRequest()
     })
     .then(response => response.json())
     .then(data => {
-        updateOrders(data);
+        const orders = data.orders || [];
+        updateOrders(orders);
     })
     .catch(err => console.error("Orders request failed:", err));
 }
@@ -35,9 +36,9 @@ function updateOrders(data)
         container.innerHTML += `
             <div class="value">
                 <div>${item.id}</div>
-                <div>${item.date}</div>
-                <div>${item.percentage}%</div>
-                <div>${item.amount}</div>
+                <div>${item.created_at}</div>
+                <div>${item.user_id}</div>
+                <div>$${item.total}</div>
                 <div class="${statusClass}">${item.status}</div>
             </div>
         `;

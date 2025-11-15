@@ -1,4 +1,3 @@
-import datetime
 from flask import Blueprint, jsonify, request, render_template
 from app.utils import require_clearance
 from app.utils import *
@@ -7,8 +6,12 @@ from app.models.campus import Campus
 from app.models.order import Order
 from app.models.product import Product
 from app.models.campus_products import CampusProduct
+from app.models.category import Category
+from app.models.category import SubCategory
 from collections import Counter
 from datetime import timedelta
+from datetime import datetime
+from app import db
 
 
 admin = Blueprint("admin", __name__)
@@ -144,17 +147,21 @@ def products_request():
     data = request.json
     campus = data.get("campus")
 
-    query = db.session.query(CampusProduct).join(Product).join(Campus)
+    query = db.session.query(CampusProduct).join(Product).join(SubCategory).join(Category).join(Campus)
 
     if campus and campus not in ["Super Admin", "All"]:
         query = query.filter(Campus.name == campus)
+        
     campus_products = query.all()
+    
     product_list = [
         {
             "id": cp.id,
             "name": cp.product.name,
             "brand": cp.product.brand,
             "description": cp.product.description,
+            "category": cp.product.sub_category.category.name,  # <-- added category
+            "sub_category": cp.product.sub_category.name,       # <-- added sub-category
             "image": cp.product.image_gallery[0] if cp.product.image_gallery else None,
             "price": float(cp.price),
             "campus_quantity": cp.campus_quantity,
@@ -165,6 +172,43 @@ def products_request():
     ]
 
     return jsonify({"products": product_list})
+
+@admin.route("/inventory_request", methods=["POST"])
+def inventory_request():
+    data = request.json
+    campus = data.get("campus")
+
+    query = db.session.query(CampusProduct).join(Product).join(Campus)
+
+    if campus and campus not in ["Super Admin", "All"]:
+        query = query.filter(Campus.name == campus)
+
+    campus_products = query.all()
+
+    inventory_list = [
+        {
+            "id": cp.id,
+            "name": cp.product.name,
+            "campus_quantity": cp.campus_quantity,
+            "spa_quantity":cp.spa_quantity,
+        }
+        for cp in campus_products
+    ]
+    
+    lowstock_list = [
+        {
+            "id": cp.id,
+            "name": cp.product.name,
+            "campus_quantity": cp.campus_quantity,
+        }
+        for cp in campus_products if cp.campus_quantity < 5
+    ]
+
+    return jsonify({
+        "inventory": inventory_list,
+        "lowstock": lowstock_list
+    })
+
 
 @admin.route("/search_users", methods=['GET'])
 def search_user():
@@ -201,7 +245,6 @@ def search_user():
         print(f"Error in /search_users: {ex}")
         return jsonify({"error": "Internal server error"}), 500
 
-
 @admin.route("/search_products", methods=['GET'])
 def search_products():
     query = request.args.get("q", "").strip()
@@ -215,6 +258,8 @@ def search_products():
             CampusProduct.query
             .join(Product, CampusProduct.product_id == Product.id)
             .join(Campus, CampusProduct.campus_id == Campus.id)
+            .join(SubCategory, Product.sub_category_id == SubCategory.id)
+            .join(Category, SubCategory.category_id == Category.id)
             .filter(Product.name.ilike(f"%{query}%")) 
         )
         if campus and campus not in ["All", "Super Admin"]:
@@ -228,6 +273,8 @@ def search_products():
                 "name": cp.product.name,
                 "brand": cp.product.brand,
                 "description": cp.product.description,
+                "category": cp.product.sub_category.category.name,  # <-- added category
+                "sub_category": cp.product.sub_category.name,       # optionally include sub-category
                 "image": cp.product.image_gallery[0] if cp.product.image_gallery else None,
                 "price": float(cp.price),
                 "campus_quantity": cp.campus_quantity,
@@ -243,7 +290,6 @@ def search_products():
         print(f"Error in /search_products: {ex}")
         return jsonify({"error": "Internal server error"}), 500
 
-
 @admin.route("/delete_product", methods=["POST"])
 def delete_product():
     data = request.json
@@ -256,3 +302,91 @@ def delete_product():
     db.session.delete(campus_product)
     db.session.commit()
     return jsonify({"success": True})
+
+@admin.route("/update_product", methods=["POST"])
+def update_product():
+    data = request.get_json()
+
+    if not data or "id" not in data:
+        return jsonify({"success": False, "message": "Missing campus product ID"}), 400
+
+    campus_product_id = data.pop("id")
+    campus_product = CampusProduct.query.get(campus_product_id)
+
+    if not campus_product:
+        return jsonify({"success": False, "message": "Campus product not found"}), 404
+
+    product = campus_product.product
+    updated_fields = {}
+
+    try:
+        # --- Update Product name ---
+        if "name" in data:
+            name = str(data["name"]).strip()
+            if name and name != product.name:
+                product.name = name
+                updated_fields["name"] = name
+
+        # --- Update Product description ---
+        if "description" in data:
+            description = str(data["description"]).strip()
+            if description != product.description:
+                product.description = description
+                updated_fields["description"] = description
+
+        # --- Update CampusProduct price ---
+        if "price" in data:
+            raw_price = data["price"]
+            try:
+                new_price = float(raw_price)
+            except (ValueError, TypeError):
+                return jsonify({"success": False, "message": "Invalid price value"}), 400
+
+            if new_price != float(campus_product.price):
+                campus_product.price = new_price
+                updated_fields["price"] = new_price
+
+        # --- Update Product category ---
+        if "category" in data:
+            category_name = data["category"]
+            if isinstance(category_name, dict):
+                category_name = str(category_name.get("name", "")).strip()
+            else:
+                category_name = str(category_name).strip()
+
+            if category_name:
+                # Get or create Category
+                category = Category.query.filter_by(name=category_name).first()
+                if not category:
+                    category = Category(name=category_name)
+                    db.session.add(category)
+                    db.session.flush()  # Assign ID
+
+                # Keep existing sub-category name
+                sub_category_name = product.sub_category.name if product.sub_category else "Default"
+                sub_category = SubCategory.query.filter_by(
+                    name=sub_category_name, category_id=category.id
+                ).first()
+                if not sub_category:
+                    sub_category = SubCategory(name=sub_category_name, category_id=category.id)
+                    db.session.add(sub_category)
+                    db.session.flush()
+
+                product.sub_category = sub_category
+                updated_fields["category"] = category_name
+
+        # --- Commit changes ---
+        if not updated_fields:
+            return jsonify({"success": False, "message": "No changes detected!"})
+
+        db.session.commit()
+
+        return jsonify({
+            "success": True,
+            "message": "Product updated successfully!",
+            "updated_fields": updated_fields
+        })
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"success": False, "message": str(e)}), 500

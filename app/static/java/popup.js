@@ -110,7 +110,7 @@ function addStock()
     }
 }
 function deleteProduct() {
-    const idValue = Number(document.getElementById('deleteID').value);
+    let idValue = Number(document.getElementById('deleteID').value);
     if (!confirm("Are you sure you want to delete this product?")) {
         return;
     }
@@ -125,8 +125,8 @@ function deleteProduct() {
     .then(data => {
         if (data.success) {
             productsRequest();
-            alert("Product deleted successfully.");
             CloseOverlay();
+            alert("Product deleted successfully.");
         } else {
             alert("Error deleting product: " + data.message);
         }

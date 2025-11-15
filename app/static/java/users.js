@@ -4,7 +4,7 @@ window.addEventListener('load', function()
     if(admin.checked)
     {
         const campusSelect = document.getElementById('campus2');
-        const banner=document.getElementById('banner-name').value;
+        const banner=document.getElementById('banner-name').textContent;
         if(banner==="Users")
         {
             campusSelect.addEventListener('change', function() {

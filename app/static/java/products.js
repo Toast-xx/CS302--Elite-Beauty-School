@@ -1,26 +1,22 @@
 window.addEventListener('load', function() 
 {
     const admin=document.getElementById('superstatus');
-    if(admin.checked)
-    {
-        const campusSelect = document.getElementById('campus2');
-        const banner=document.getElementById('banner-name').value;
-        if(banner==="Products")
-        {
-            campusSelect.addEventListener('change', function() {
-                productsRequest();
-            });
+    const campusSelect = document.getElementById('campus2');
+    campusSelect.addEventListener('change', function() {
+        const banner = document.getElementById('banner-name').textContent;
+        if (admin.checked && banner === "Products") {
+            productsRequest();
         }
-    }
+    });
 });
 function productsRequest()
 {
-    const campus = document.getElementById("campus-name").value;
+    let campus = document.getElementById("campus-name").textContent;
     const admin=document.getElementById('superstatus');
     if(admin.checked)
     {
         const temp=document.getElementById('campus2').value;
-        document.getElementById('campus-name').value=temp;
+        document.getElementById('campus-name').textContent=temp;
         campus=temp;
     }
     fetch("/products_request", {
@@ -30,7 +26,8 @@ function productsRequest()
     })
     .then(response => response.json())
     .then(data => {
-        updateProducts(data);
+        const products = data.products || [];
+        updateProducts(products);
     })
     .catch(err => console.error("Products request failed:", err));
 }
@@ -40,25 +37,21 @@ function updateProducts(data)
     container.innerHTML = "";
 
     data.forEach(product => {
+        const productStr = JSON.stringify(product).replace(/'/g, "&apos;");
         container.innerHTML += `
             <div class="data">
                 <img style="width: 140px; height: 110px;"
                      src="/static/images/placeholder1.jpg">
 
                 <div>${product.name}</div>
-                <div>${product.price}%</div>
+                <div>$${product.price}</div>
                 <div>${product.campus}</div>
 
                 <div class="buttons">
-                    <div class="edit" onclick="editProduct('${product.id}')">Edit</div>
+                    <div class="edit" onclick='editProduct(${productStr})')">Edit</div>
                     <div class="delete" onclick="overlay('delete'); deleteID('${product.id}')">Delete</div>
                 </div>
             </div>
         `;
     });
-}
-function deleteID(id)
-{
-    const target=document.getElementById('deleteID');
-    target.value=id;
 }

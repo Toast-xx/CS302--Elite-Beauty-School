@@ -26,6 +26,8 @@
 }
 .search-result
 {
+    margin-left: -30px;
+    margin-top: 100px;
     position: absolute;
     display: none;
     list-style-type: none;
