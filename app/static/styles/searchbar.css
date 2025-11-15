@@ -50,3 +50,7 @@
     background-color: #e29ba3ff;
     border-radius: 10px;
 }
+.selected {
+    background-color: #e29ba3ff;
+    color: white;
+}
