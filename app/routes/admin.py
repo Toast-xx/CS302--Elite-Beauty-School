@@ -44,7 +44,6 @@ def admin_base():
         items=users,
         campuses=campuses,
         allowed_roles=allowed_roles,
-        today=date.today()
     )
 
 @admin.route("/superadmin_dashboard")
