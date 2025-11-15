@@ -33,7 +33,7 @@ window.addEventListener('load', function() {
                 searchInput.value = '';
                 resultsList.innerHTML = '';
                 resultsList.style.display = 'none';
-                window.location.href = `/user/${user.id}`;
+                ;
               });
               resultsList.appendChild(li);
             });
