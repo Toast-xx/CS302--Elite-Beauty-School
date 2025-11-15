@@ -422,7 +422,37 @@ def search_products():
         print(f"Error in /search_products: {ex}")
         return jsonify({"error": "Internal server error"}), 500
 
+@admin.route("/users_request", methods=["POST"])
+def users_request():
+    data = request.json
+    campus_name = data.get("campus", "").strip()
 
+    try:
+        query = User.query.join(Campus, isouter=True)
+        if campus_name and campus_name not in ["All", "Super Admin"]:
+            query = query.filter(Campus.name == campus_name)
+
+        users = query.all()
+
+        user_list = [
+            {
+                "id": u.id,
+                "name": u.name,
+                "email": u.email,
+                "campus_id": u.campus_id,
+                "campus_name": u.campus.name if u.campus else None,
+                "clearance_level": u.clearance_level,
+                "start_date": str(u.start_date) if u.start_date else None,
+                "end_date": str(u.end_date) if u.end_date else None,
+                "active": u.active
+            }
+            for u in users
+        ]
+        return jsonify({"users": user_list})
+
+    except Exception as ex:
+        print(f"Error in /users_request: {ex}")
+        return jsonify({"error": "Internal server error"}), 500
 
 @admin.route("/delete_product", methods=["POST"])
 def delete_product():

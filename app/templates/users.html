@@ -11,19 +11,19 @@
       <div>Email</div>
       <div style="border-top-right-radius: 10px;">Password</div>
     </div>
-    <div class="containers">
-      {% for item in items %}
+    <div class="containers" id="users_container">
+      {% for user in users %}
         <div class="data">
           <div style=" justify-content: center;">
             <input type="checkbox" name="select" value="no">
           </div>
-          <div>{{ item.date }}</div>
+          <div>{{ user.id }}</div>
           <div style="align-items: center; display: flex;">
             <img style="width: 40px; height: 40px; margin-right: 10px; border-radius: 100px;" src="{{ url_for('static', filename='images/dummy.png') }}">
-            <span>{{ item.id }}</span>
+            <span>{{ user.name }}</span>
           </div>
-          <div>{{ item.date }}</div>
-          <div>{{ item.percentage }}%</div>
+          <div>{{ user.email }}</div>
+          <div>{{ user.password }}%</div>
         </div>
       {% endfor %}
     </div>

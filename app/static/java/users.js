@@ -15,7 +15,52 @@ window.addEventListener('load', function()
 });
 function usersRequest()
 {
-    
+    let campus = document.getElementById("campus-name").textContent;
+    const admin=document.getElementById('superstatus');
+    if(admin.checked)
+    {
+        const temp=document.getElementById('campus2').value;
+        document.getElementById('campus-name').textContent=temp;
+        campus=temp;
+    }
+    fetch("/users_request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ campus })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const users = data.users || [];
+        updateUsers(users);
+    })
+    .catch(err => console.error("Products request failed:", err));
+}
+function updateUsers(users)
+{
+    const container = document.getElementById("users_container");
+    container.innerHTML = "";
+
+    users.forEach(user => {
+        const userStr = JSON.stringify(user).replace(/'/g, "&apos;");
+        container.innerHTML += `
+            <div class="data" onclick='editUser(${userStr})'>
+                <div style=" justify-content: center;">
+                    <input type="checkbox" name="select" value="no" ${user.active ? "checked" : ""} disabled>
+                </div>
+                <div>${ user.id }</div>
+                <div style="align-items: center; display: flex;">
+                    <img style="width: 40px; height: 40px; margin-right: 10px; border-radius: 100px;" src="{{ url_for('static', filename='images/dummy.png') }}">
+                    <span>${ user.name }</span>
+                </div>
+                <div>${ user.email }</div>
+                <div>${ user.password }%</div>
+            </div>
+        `;
+    });
+}
+function editUser(user)
+{
+    alert(user.id);
 }
 function saveUser()
 {
