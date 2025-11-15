@@ -1,156 +1,78 @@
-{#
-    User Management Dashboard Template
-    - Displays a list of users with edit functionality.
-    - Provides a form for adding/editing users.
-    - Integrates with users.js for AJAX form submission and overlays.
-    - Success overlay shown after user is added/edited.
-    - Expects 'items' context variable: list of user objects.
-#}
 <title>Dashboard</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/users.css') }}" />
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/add_user_success.css') }}" />
-
-<!-- User Search Bar (Users section) -->
-<div class="banner-search" id="user-search-bar">
-    <input id="userSearchInput" type="text" placeholder="Search users by name or email...">
-    <button class="btn btn-outline-primary" type="button" id="userSearchGo">Go</button>
-    <ul class="search-result" id="user-search-result"></ul>
-</div>
-<!-- User List Section -->
-<div class="section users" data-id="Users">
-    <h3>User List</h3>
-    <div class="listed">
-        <div class="header">
-            <div>Name</div>
-            <div>Email</div>
-            <div>Campus</div>
-            <div>Role</div>
-            <div>Status</div>
-            <div>Actions</div>
-        </div>
-        <div class="containers">
-            {% for item in items %}
-            <div class="data">
-                <div style="align-items: center; display: flex;">
-                    <span>{{ item.name }}</span>
-                </div>
-                <div>{{ item.email }}</div>
-                <div>{{ item.campus.name if item.campus else 'N/A' }}</div>
-                <div>
-                    {% if item.clearance_level == 1 %}
-                    User
-                    {% elif item.clearance_level == 2 %}
-                    Admin
-                    {% elif item.clearance_level == 3 %}
-                    Super Admin
-                    {% else %}
-                    Unknown
-                    {% endif %}
-                </div>
-                <div>
-                    {% set start = item.start_date %}
-                    {% set end = item.end_date %}
-                    {% if start and start > today %}
-                    <span style="color:orange;">Pending</span>
-                    {% elif not item.active %}
-                    <span style="color:red;">Inactive</span>
-                    {% elif start and end and start <= today <= end and item.active %}
-                    <span style="color:green;">Active</span>
-                    {% else %}
-                    <span style="color:red;">Inactive</span>
-                    {% endif %}
-                </div>
-                <div>
-                    <button class="btn btn-sm btn-secondary"
-                            onclick="editUser('{{ item.id }}', '{{ item.name }}', '{{ item.email }}', '{{ item.campus_id }}', '{{ item.clearance_level }}', '{{ item.start_date|default('') }}', '{{ item.end_date|default('') }}', '{{ item.active|default(1) }}')">
-                        Edit
-                    </button>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+<script src="{{ url_for('static', filename='java/users.js') }}"></script>
+<div class="users">
+  <h3>User List</h3>
+  <div class="listed">
+    <div class="header">
+      <div style="border-top-left-radius: 10px;"></div>
+      <div>User ID</div>
+      <div>Username</div>
+      <div>Email</div>
+      <div style="border-top-right-radius: 10px;">Password</div>
     </div>
-</div>
-
-<!-- Add/Edit User Form Section -->
-<h3>Add/Edit User</h3>
-<div class="add-edit-container">
-    <form id="userForm" method="POST" action="{{ url_for('user.add_user') }}">
-        <input type="hidden" id="userId" name="user_id" value="">
-        <div class="edit">
-            <div class="containers">
-                Name
-                <input id="userName" name="name" type="text" placeholder="Name" required minlength="2">
-            </div>
-            <div class="containers">
-                Email
-                <input id="userEmail" name="email" type="email" placeholder="Email" required>
-            </div>
-            <div class="containers">
-                Password
-                <input id="userPassword" name="password" type="password" placeholder="Password" minlength="6">
-            </div>
+    <div class="containers">
+      {% for item in items %}
+        <div class="data">
+          <div style=" justify-content: center;">
+            <input type="checkbox" name="select" value="no">
+          </div>
+          <div>{{ item.date }}</div>
+          <div style="align-items: center; display: flex;">
+            <img style="width: 40px; height: 40px; margin-right: 10px; border-radius: 100px;" src="{{ url_for('static', filename='images/dummy.png') }}">
+            <span>{{ item.id }}</span>
+          </div>
+          <div>{{ item.date }}</div>
+          <div>{{ item.percentage }}%</div>
         </div>
-        <div class="edit">
-            <div class="containers">
-                Campus
-                <select id="userCampus" name="campus_id" required>
-                    <option value="">-- Campus Option --</option>
-                    {% for campus in campuses %}
-                    <option value="{{ campus.id }}">{{ campus.name }}</option>
-                    {% endfor %}
-                </select>
-
-                
-            </div>
-            <div class="containers">
-                Role
-                <select id="userRole" name="clearance_level" required>
-                    <option value="">-- Role Option --</option>
-                    {% for role in allowed_roles %}
-                    <option value="{{ role }}">
-                        {% if role == 1 %}User{% elif role == 2 %}Admin{% elif role == 3 %}Super Admin{% endif %}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-        <div style="display: flex; width: 1000px; justify-content: end; margin-top: 30px;">
-            <input id="userActive" name="active" type="checkbox" value="0"> Inactive
-        </div>
-        <div class="edit" style="grid-template-columns: 1fr 1fr 1fr;">
-            <div class="containers">
-                Start Date
-                <input id="userStart" name="start_date" type="date" value="">
-            </div>
-            <div class="containers">
-                End Date
-                <input id="userEnd" name="end_date" type="date" value="">
-            </div>
-            <div class="buttons">
-                <button type="submit" class="btn btn-primary">Save</button>
-                <button type="button" class="btn btn-secondary" onclick="resetUserForm()">Exit</button>
-            </div>
-        </div>
-        <script src="{{ url_for('static', filename='java/users.js') }}"></script>
-    </form>
-</div>
-
-<!-- Success Overlay Section -->
-<div id="popup" style="display:none;">
-    <div class="overlay success" id="successUserOverlay">
-        <div class="top">
-            <h2>User Added</h2>
-            <img onclick="closeSuccessOverlay()" src="{{ url_for('static', filename='images/close.png') }}" width="30px" height="30px" alt="Close Logo" style="cursor: pointer;">
-        </div>
-        <div class="middle">
-            <span>User was added successfully!</span>
-        </div>
-        <div class="bottom">
-            <div class="button" onclick="closeSuccessOverlay()">OK</div>
-        </div>
+      {% endfor %}
     </div>
+  </div>
+  <h3>Add/Edit User</h3>
+  <div class="edit">
+    <div class="containers">
+      Name
+      <input id="userName" type="text" placeholder="Username">
+    </div>
+    <div class="containers">
+      Email
+      <input id="userEmail" type="text" placeholder="Email">
+    </div>
+  </div>
+  <div class="edit">
+    <div class="containers">
+      Campus
+      <select id="userCampus" name="campus">
+        <option value="">-- Campus Option --</option>
+        <option value="auckland">Auckland</option>
+        <option value="wellington">Wellington</option>
+        <option value="christchurch">Christchurch</option>
+      </select>
+    </div>
+    <div class="containers">
+      Role
+      <select id="userRole" name="role">
+        <option value="">-- Role Option --</option>
+        <option value="s">Student</option>
+        <option value="a">Admin</option>
+      </select>
+    </div>
+  </div>
+  <div style="display: flex; width: 1000px; justify-content: end; margin-top: 30px;">
+    <input id="userActive" type="checkbox" name="select" value="no"> Inactive
+  </div>
+  <div class="edit" style=" grid-template-columns: 1fr 1fr 1fr;">
+    <div class="containers">
+      Start Date
+      <input id="userStart" type="date" name="startdate" value="">
+    </div>
+    <div class="containers">
+      End Date
+      <input id="userEnd" type="date" name="enddate"value="">
+    </div>
+    <div class="buttons">
+      <div onclick="saveUser()">Save</div>
+      <div>Exit</div>
+    </div>
+  </div>
 </div>
-
-<script src="{{ url_for('static', filename='js/users.js') }}"></script>
-<script src="{{ url_for('static', filename='java/searchbar.js') }}"></script>
