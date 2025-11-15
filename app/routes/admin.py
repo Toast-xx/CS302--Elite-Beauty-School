@@ -27,24 +27,12 @@ def get_admin_campus():
 @admin.route("/admin")
 @require_clearance(2)
 def admin_base():
-    campus_id, clearance, admin_user = get_admin_campus()
-    if not campus_id:
+    clearance = session.get('clearance_level')
+    banner = "Dashboard"
+    campus= session.get('campus')
+    if clearance != 2:
         return redirect("/")
-    # Super admin sees all users/campuses/roles, admin sees only their campus and roles
-    if clearance == 3:
-        users = User.query.all()
-        campuses = Campus.query.all()
-        allowed_roles = [1, 2, 3]
-    else:
-        users = User.query.filter_by(campus_id=campus_id).all()
-        campuses = [Campus.query.get(campus_id)]
-        allowed_roles = [1, 2]
-    return render_template(
-        "admin_base.html",
-        items=users,
-        campuses=campuses,
-        allowed_roles=allowed_roles,
-    )
+    return render_template("admin_base.html", clearance=clearance, banner=banner, campus=campus)
 
 @admin.route("/superadmin_dashboard")
 @require_clearance(3)
