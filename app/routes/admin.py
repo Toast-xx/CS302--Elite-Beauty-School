@@ -9,8 +9,7 @@ from app.models.campus_products import CampusProduct
 from app.models.category import Category
 from app.models.category import SubCategory
 from collections import Counter
-from datetime import timedelta
-from datetime import datetime
+from datetime import datetime, timedelta
 from app import db
 
 
@@ -45,123 +44,157 @@ def superadmin_dashboard():
 
 @admin.route("/dashboard_request", methods=["POST"])
 def dashboard_request():
-    data = request.json
-    start_date = datetime.datetime.strptime(data.get("start_date"), "%Y-%m-%d")
-    end_date = datetime.datetime.strptime(data.get("end_date"), "%Y-%m-%d")
-    campus_id, clearance, _ = get_admin_campus()
+    try:
+        data = request.json
+        start_date_str = data.get("start_date")
+        end_date_str = data.get("end_date")
+        campus = data.get("campus")
 
-    query = (
-        db.session.query(Order)
-        .join(User, Order.user_id == User.id)
-        .join(Campus, User.campus_id == Campus.id)
-        .filter(Order.created_at >= start_date)
-        .filter(Order.created_at <= end_date)
-    )
-    if clearance != 3 and campus_id:
-        query = query.filter(Campus.id == campus_id)
+        # Convert dates
+        start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
+        end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
 
-    orders = query.all()
+        # Base query
+        query = db.session.query(Order).join(User).join(Campus)
+        query = query.filter(Order.created_at >= start_date, Order.created_at <= end_date)
 
-    # Basic metrics
-    orders_completed = sum(1 for o in orders if o.status == "Completed")
-    total_sales = sum(float(o.total) for o in orders if o.status == "Completed")
-    refunds = sum(1 for o in orders if o.status in ["Refunded", "Returned"])
-    average_order_value = total_sales / orders_completed if orders_completed > 0 else 0
+        # Optional campus filter
+        if campus not in ["All", "Super Admin"] and campus:
+            query = query.filter(Campus.name == campus)
 
-    # Top products
-    all_items = [item.product.name for o in orders if o.status == "Completed" for item in o.items]
-    product_counter = Counter(all_items)
-    top3 = product_counter.most_common(3)
-    colors_pie = ['#f28e2b', '#e15759', '#59a14f']
-    dataSetsPie = [
-        {"value": count, "name": name, "itemStyle": {"color": colors_pie[idx] if idx < len(colors_pie) else "#000"}}
-        for idx, (name, count) in enumerate(top3)
-    ]
-    top_product = top3[0][0] if top3 else "N/A"
+        orders = query.all()
 
-    # Weekly diagram
-    week_ranges = []
-    for i in range(5, 0, -1):
-        week_end = end_date - timedelta(days=(i-1)*7)
-        week_start = week_end - timedelta(days=6)
-        week_ranges.append((week_start, week_end))
+        # ================= BASIC METRICS =======================
+        completed_orders = [o for o in orders if o.status == "Completed"]
+        orders_completed = len(completed_orders)
+        total_sales = sum(float(o.total) for o in completed_orders)
+        average_order_value = total_sales / orders_completed if orders_completed else 0
 
-    status_list = ["Completed", "Pending", "Cancelled", "Refunded"]
-    diagram_data = {status: [0]*5 for status in status_list}
+        # ================= TOP PRODUCTS =======================
+        # Flatten all product names from completed orders
+        all_items = []
+        for order in completed_orders:
+            for item in order.items:
+                all_items.append(item.product.name)
 
-    for idx, (start, end) in enumerate(week_ranges):
-        for order in orders:
-            if start <= order.created_at <= end and order.status in status_list:
-                diagram_data[order.status][idx] += 1
+        # Count products manually
+        product_counts = Counter(all_items)
+        top3 = product_counts.most_common(3)
 
-    week_labels = [f"{w[0].strftime('%b %d')} - {w[1].strftime('%b %d')}" for w in week_ranges]
+        # Format pie chart data
+        colors_pie = ['#f28e2b', '#e15759', '#59a14f']
+        dataSetsPie = [
+            {"value": count, "name": name, "itemStyle": {"color": colors_pie[idx] if idx < len(colors_pie) else "#000"}}
+            for idx, (name, count) in enumerate(top3)
+        ]
+        top_product = top3[0][0] if top3 else "N/A"
 
-    colors_bar = {
-        "Completed": "#59a14f",
-        "Pending": "#f28e2b",
-        "Cancelled": "#e15759",
-        "Refunded": "#4e79a7"
-    }
-    dataSetsBar = [
-        {"name": status, "data": diagram_data[status], "color": colors_bar[status]}
-        for status in status_list
-    ]
+        # ================= LAST 5 WEEKS =======================
+        week_ranges = []
+        for i in range(5, 0, -1):
+            week_end = end_date - timedelta(days=(i - 1) * 7)
+            week_start = week_end - timedelta(days=6)
+            week_ranges.append((week_start, week_end))
 
-    response = {
-        "dashboard": {
-            "total_sales": round(total_sales, 2),
-            "orders_completed": orders_completed,
-            "refunds": refunds,
-            "average_order_value": round(average_order_value, 2),
-            "top_product": top_product
-        },
-        "dataSetsPie": dataSetsPie,
-        "dataSetsBar": dataSetsBar,
-        "week_labels": week_labels
-    }
-    return jsonify(response)
+        status_list = ["Completed", "Pending", "Cancelled", "Refunded"]
+        diagram_data = {status: [0]*5 for status in status_list}
+
+        for idx, (wk_start, wk_end) in enumerate(week_ranges):
+            for order in orders:
+                if wk_start <= order.created_at <= wk_end and order.status in status_list:
+                    diagram_data[order.status][idx] += 1
+
+        week_labels = [f"{w[0].strftime('%b %d')} - {w[1].strftime('%b %d')}" for w in week_ranges]
+
+        colors_bar = {
+            "Completed": "#59a14f",
+            "Pending": "#f28e2b",
+            "Cancelled": "#e15759",
+            "Refunded": "#4e79a7"
+        }
+
+        dataSetsBar = [
+            {"name": status, "data": diagram_data[status], "color": colors_bar[status]}
+            for status in status_list
+        ]
+
+        response = {
+            "dashboard": {
+                "total_sales": round(total_sales, 2),
+                "orders_completed": orders_completed,
+                "average_order_value": round(average_order_value, 2),
+                "top_product": top_product
+            },
+            "dataSetsPie": dataSetsPie,
+            "dataSetsBar": dataSetsBar,
+            "week_labels": week_labels
+        }
+
+        return jsonify(response)
+
+    except Exception as ex:
+        print("ERROR /dashboard_request:", ex)
+        return jsonify({"error": "Internal server error"}), 500
+
 
 @admin.route("/orders_request", methods=["POST"])
 def orders_request():
-    data = request.json
-    start_date = datetime.datetime.strptime(data.get("start_date"), "%Y-%m-%d")
-    end_date = datetime.datetime.strptime(data.get("end_date"), "%Y-%m-%d")
-    campus_id, clearance, _ = get_admin_campus()
+    try:
+        data = request.json
+        start_date_str = data.get("start_date")
+        end_date_str = data.get("end_date")
+        campus = data.get("campus")
 
-    query = (
-        db.session.query(Order)
-        .join(User, Order.user_id == User.id)
-        .join(Campus, User.campus_id == Campus.id)
-        .filter(Order.created_at >= start_date)
-        .filter(Order.created_at <= end_date)
-    )
-    if clearance != 3 and campus_id:
-        query = query.filter(Campus.id == campus_id)
-    orders = query.all()
-    order_list = [
-        {
-            "id": o.id,
-            "user_id": o.user_id,
-            "created_at": o.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "status": o.status,
-            "total": float(o.total)
-        }
-        for o in orders
-    ]
-    return jsonify({"orders": order_list})
+        # Convert strings to datetime
+        start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
+        end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
+
+        # Base query
+        query = (
+            db.session.query(Order)
+            .join(User, Order.user_id == User.id)
+            .join(Campus, User.campus_id == Campus.id)
+            .filter(Order.created_at >= start_date)
+            .filter(Order.created_at <= end_date)
+        )
+
+        # Filter by campus if provided and not "All" or "Super Admin"
+        if campus and campus not in ["All", "Super Admin"]:
+            query = query.filter(Campus.name == campus)
+
+        orders = query.all()
+
+        # Format orders for JSON response
+        order_list = [
+            {
+                "id": o.id,
+                "user_id": o.user_id,
+                "created_at": o.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                "status": o.status,
+                "total": float(o.total)
+            }
+            for o in orders
+        ]
+
+        return jsonify({"orders": order_list})
+
+    except Exception as ex:
+        print("ERROR /orders_request:", ex)
+        return jsonify({"error": "Internal server error"}), 500
+
 
 @admin.route("/products_request", methods=["POST"])
 def products_request():
     data = request.json
     campus = data.get("campus")
-
     query = db.session.query(CampusProduct).join(Product).join(SubCategory).join(Category).join(Campus)
-
+    
     if campus and campus not in ["Super Admin", "All"]:
         query = query.filter(Campus.name == campus)
         
     campus_products = query.all()
     
+    print("All CampusProducts:", campus_products)
     product_list = [
         {
             "id": cp.id,
@@ -178,7 +211,6 @@ def products_request():
         }
         for cp in campus_products
     ]
-
     return jsonify({"products": product_list})
 
 @admin.route("/inventory_request", methods=["POST"])
@@ -217,24 +249,27 @@ def inventory_request():
         "lowstock": lowstock_list
     })
 
-
 @admin.route("/search_users", methods=['GET'])
 def search_user():
     query = request.args.get("q", "").strip()
-    campus_id, clearance, _ = get_admin_campus()
+    campus_name = request.args.get("campus", "").strip()
+
     if not query:
         return jsonify([])
 
     filters = []
-    if query:
-        filters.append(
-            (User.name.ilike(f"%{query}%")) |
-            (User.email.ilike(f"%{query}%"))
-        )
-    if clearance != 3 and campus_id:
-        filters.append(User.campus_id == campus_id)
+    # Filter by name or email
+    filters.append(
+        (User.name.ilike(f"%{query}%")) |
+        (User.email.ilike(f"%{query}%"))
+    )
+
+    # Filter by campus if provided
+    if campus_name and campus_name not in ["Super Admin", "All"]:
+        filters.append(User.campus.has(Campus.name == campus_name))
 
     users = User.query.filter(*filters).all()
+
     user_list = [
         {
             "id": user.id,
@@ -250,6 +285,7 @@ def search_user():
         for user in users
     ]
     return jsonify(user_list)
+
 
 @admin.route("/admin/add_user", methods=["GET", "POST"])
 @require_clearance(2)
@@ -340,7 +376,7 @@ def add_user():
 @admin.route("/search_products", methods=["GET"])
 def search_products():
     query = request.args.get("q", "").strip()
-    campus_id, clearance, campus_name = get_admin_campus()
+    campus_name = request.args.get("campus", "").strip()  # Get campus from request
 
     if not query:
         return jsonify([])
@@ -355,9 +391,9 @@ def search_products():
             .filter(Product.name.ilike(f"%{query}%"))
         )
 
-        # apply campus filter if not Super Admin
-        if campus_name not in ["All", "Super Admin"]:
-            campus_products = campus_products.filter(Campus.id == campus_id)
+        # Apply campus filter if provided and not "All" or "Super Admin"
+        if campus_name and campus_name not in ["All", "Super Admin"]:
+            campus_products = campus_products.filter(Campus.name == campus_name)
 
         campus_products = campus_products.all()
 
@@ -378,11 +414,14 @@ def search_products():
             for cp in campus_products
         ]
 
+        print("SEARCHED PRODUCTS:", product_list)  # Debug output
+
         return jsonify(product_list)
 
     except Exception as ex:
         print(f"Error in /search_products: {ex}")
         return jsonify({"error": "Internal server error"}), 500
+
 
 
 @admin.route("/delete_product", methods=["POST"])

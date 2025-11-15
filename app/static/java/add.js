@@ -9,6 +9,17 @@ function addProduct()
     document.getElementById('product-banner').textContent='Add Product';
     document.getElementById('product-button').textContent='Add';
     document.getElementById('product-upload').style.display='flex';
+    const name = document.getElementById('addName');
+    const description = document.getElementById('addDescription');
+    const price = document.getElementById('addPrice');
+    const sku = document.getElementById('addSKU');
+    const category = document.getElementById('addCategory');
+    name.value = '';
+    description.value = '';
+    price.value = '';
+    sku.value = '';
+    category.value = '';
+    selectedProduct = null;
 }
 function editProduct(product)
 {

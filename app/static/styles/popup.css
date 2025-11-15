@@ -1,17 +1,9 @@
-/*
-    Popup Overlay Stylesheet
-    - Styles for upload, transfer, add, and delete overlays in popup.html.
-    - Used for modal dialogs and interactive forms in the admin/user dashboard.
-    - Ensures overlays are visually distinct, centered, and responsive.
-*/
-
-/* --- Overlay Base --- */
-.overlay {
-    display: none; /* Hidden by default, shown when .active is added */
+.overlay
+{
+    display: none;
 }
-
-/* --- Upload Overlay --- */
-.upload.active {
+.upload.active
+{
     display: block;
     width: 450px;
     height: 420px;
@@ -19,24 +11,21 @@
     border: solid 1px black;
     border-radius: 10px;
 }
-
-/* Top section: title and close button */
-.upload .top {
+.upload .top
+{
     display: flex;
     justify-content: space-between;
     margin-left: 25px;
     margin-right: 25px;
     align-items: center;
 }
-
-/* File submit form styling */
-.submit_form_file {
+.submit_form_file
+{
     border: solid white;
     border-radius: 0 0 20px 20px;
 }
-
-/* Drag-and-drop area for file uploads */
-#drop-area {
+#drop-area
+{
     border: 3px dashed #ccc;
     border-radius: 10px;
     width: 400px;
@@ -46,29 +35,25 @@
     margin: 0px auto;
     transition: background-color 0.3s ease;
 }
-
-    /* Highlight drop area when dragging files */
-    #drop-area.highlight {
-        background-color: #f0f8ff;
-    }
-
-/* File list display */
-#file-list {
+#drop-area.highlight
+{
+    background-color: #f0f8ff;
+}
+#file-list
+{
     margin: auto auto;
     font-size: 15px;
     color: #333;
 }
-
-/* Bottom section: action buttons */
-.upload .bottom {
+.upload .bottom
+{
     display: flex;
     justify-content: end;
     align-items: center;
     margin: 20px;
 }
-
-/* Button styling for actions */
-.bottom .button {
+.bottom .button
+{
     display: flex;
     width: 80px;
     height: 40px;
@@ -78,19 +63,17 @@
     margin-left: 10px;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+    border-radius:10px;
     border: solid 1px black;
     cursor: pointer;
 }
-
-    /* Button hover effect */
-    .bottom .button:hover {
-        background-color: white;
-        color: black;
-    }
-
-/* --- Transfer Overlay --- */
-.transfer.active {
+.bottom .button:hover
+{
+    background-color: white;
+    color: black;
+}
+.transfer.active
+{
     width: 510px;
     height: 630px;
     background-color: white;
@@ -98,16 +81,14 @@
     display: block;
     border: solid 1px black;
 }
-
-/* Top section: centered title */
-.transfer .top {
+.transfer .top
+{
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-/* Middle section: form fields and layout */
-.transfer .middle {
+.transfer .middle
+{
     width: 100%;
     height: 450px;
     margin-top: 20px;
@@ -115,31 +96,29 @@
     align-items: center;
     flex-direction: column;
 }
-
-    /* Campus selection styling */
-    .transfer .middle .direction {
-        width: 390px;
-    }
-
-        .transfer .middle .direction .campus {
-            height: 40px;
-            width: 390px;
-            border-radius: 10px;
-            font-size: 16px;
-            text-indent: 15px;
-        }
-
-    /* Quantity input row */
-    .transfer .middle .quantity {
-        width: 390px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 50px;
-        margin-top: 50px;
-    }
-
-.middle .quantity .title {
+.transfer .middle .direction
+{
+    width: 390px;
+}
+.transfer .middle .direction .campus
+{
+    height: 40px;
+    width: 390px;
+    border-radius: 10px;
+    font-size: 16px;
+    text-indent: 15px;
+}
+.transfer .middle .quantity
+{
+    width: 390px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    margin-top: 50px;
+}
+.middle .quantity .title
+{
     height: 50px;
     width: 200px;
     text-indent: 15px;
@@ -148,8 +127,8 @@
     border-radius: 10px;
     background-color: #F3F4F6FF;
 }
-
-.middle .quantity .input {
+.middle .quantity .input
+{
     width: 120px;
     height: 40px;
     border: solid black 1px;
@@ -157,30 +136,27 @@
     font-size: 16px;
     text-indent: 10px;
 }
-
-/* Reason textarea styling */
-.transfer .middle .reason {
+.transfer .middle .reason
+{
     width: 390px;
 }
-
-    .transfer .middle .reason .textarea {
-        width: 100%;
-        height: 110px;
-        font: 14px;
-        border-radius: 10px;
-        font-family: sans-serif;
-    }
-
-/* Bottom section: action buttons */
-.transfer .bottom {
+.transfer .middle .reason .textarea
+{
+    width: 100%;
+    height: 110px;
+    font: 14px;
+    border-radius: 10px;
+    font-family: sans-serif;
+}
+.transfer .bottom
+{
     display: flex;
     justify-content: end;
     align-items: center;
     margin: 20px;
 }
-
-/* --- Add Overlay --- */
-.overlay.add.active {
+.overlay.add.active
+{
     width: 510px;
     height: 360px;
     background-color: white;
@@ -188,36 +164,35 @@
     border-radius: 10px;
     border: solid 1px black;
 }
-
-.overlay.add .top {
+.overlay.add .top
+{
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-.overlay.add .middle {
-    width: 100%;
+.overlay.add .middle
+{
+    width:100%;
     height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
-    .overlay.add .middle .quantity {
-        display: flex;
-        width: 390px;
-        justify-content: space-between;
-    }
-
-.overlay.add .bottom {
+.overlay.add .middle .quantity
+{
+    display: flex;
+    width:390px;
+    justify-content: space-between;
+}
+.overlay.add .bottom
+{
     display: flex;
     justify-content: end;
     align-items: center;
     margin: 20px;
 }
-
-/* --- Delete Overlay --- */
-.overlay.delete.active {
+.overlay.delete.active
+{
     display: block;
     width: 510px;
     height: 460px;
@@ -225,15 +200,15 @@
     border-radius: 10px;
     border: 1px solid black;
 }
-
-.overlay.delete .top {
-    display: flex;
+.overlay.delete .top
+{
+    display:flex;
     justify-content: center;
     align-items: center;
 }
-
-.overlay.delete .middle {
-    width: 100%;
+.overlay.delete .middle
+{
+    width:100%;
     height: 300px;
     display: flex;
     align-items: center;
@@ -241,8 +216,8 @@
     font-size: 24px;
     text-align: center;
 }
-
-.overlay.delete .bottom {
+.overlay.delete .bottom
+{
     display: flex;
     justify-content: space-between;
     margin-left: 60px;

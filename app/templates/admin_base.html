@@ -113,7 +113,6 @@
             </div>
         </div>
         <div class="content" id="content">
-            <!-- Each section is loaded via template include for modularity -->
             <div class="section dashboard" data-id="Dashboard">
                 {% include "dashboard.html" %}
             </div>
@@ -130,11 +129,9 @@
                 {% include "users.html" %}
             </div>
         </div>
-        <!-- Add Product/User Popup Section -->
         {% include "add.html" %}
     </div>
-    <!-- Popup Overlay for Success/Error messages -->
-    <div class="popup" id="popup">
+    <div class="popups">
         {% include "popup.html" %}
     </div>
 </body>

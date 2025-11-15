@@ -48,7 +48,7 @@ function updateProducts(data)
                 <div>${product.campus}</div>
 
                 <div class="buttons">
-                    <div class="edit" onclick='editProduct(${productStr})')">Edit</div>
+                    <div class="edit" onclick='editProduct(${productStr})'>Edit</div>
                     <div class="delete" onclick="overlay('delete'); deleteID('${product.id}')">Delete</div>
                 </div>
             </div>

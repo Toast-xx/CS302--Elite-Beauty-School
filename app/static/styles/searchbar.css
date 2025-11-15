@@ -1,5 +1,4 @@
-.banner-search
-{
+.banner-search {
     width: 241px;
     height: 40px;
     display: inline-flex;
@@ -8,49 +7,60 @@
     margin-right: 10px;
     cursor: pointer;
     border-radius: 6px;
-    border-width: 1px;
-    border-color: #DEE1E6FF;
-    border-style: solid;
+    border: 1px solid #DEE1E6FF;
+    position: relative; 
 }
+
 #searchBar {
     text-indent: 10px;
     border: none;
     outline: none;
     box-shadow: none;
     font-size: 14px;
+    width: 100%;
 }
+
 #searchBar:focus {
     border: none;
     outline: none;
     box-shadow: none;
 }
-.search-result
-{
-    margin-left: -30px;
-    margin-top: 100px;
+
+/* Dropdown container */
+.search-result {
     position: absolute;
-    display: none;
+    top: 100%; /* positions dropdown directly below the search bar */
+    left: 0;
+    width: 100%;
+    max-height: 300px; /* scrollable if too many items */
+    overflow-y: auto;
+    display: none; /* initially hidden */
     list-style-type: none;
     font-size: 14px;
-    z-index: 1;
-}
-.search-result li
-{
-    border-color:black ;
-    border-width: 2px;
-    border-style: solid;
-    border-radius: 14px;
+    padding: 0;
+    margin: 5px 0 0 0;
     background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    z-index: 10;
+}
+
+/* Dropdown items */
+.search-result li {
+    text-indent: 10px;
     padding: 10px;
-    margin: 5px;
+    margin: 0; /* remove margin to stack neatly */
+    border-bottom: 1px solid #eee;
     cursor: pointer;
-    z-index: 2;
+    border-radius: 0; /* remove rounded corners for stacking */
 }
-.search-result li:hover {
-    background-color: #e29ba3ff;
-    border-radius: 10px;
+
+.search-result li:last-child {
+    border-bottom: none;
 }
-.selected {
+
+.search-result li:hover,
+.search-result li.selected {
     background-color: #e29ba3ff;
     color: white;
 }
