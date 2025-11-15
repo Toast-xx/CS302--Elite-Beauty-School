@@ -34,7 +34,7 @@
     align-items: center;
 }
 .completed {
-    background-color: green;
+    background-color: #59a14f;
     color: white;
     width: 100px;
     height: 25px;
@@ -44,7 +44,7 @@
     border-radius: 100px;
 }
 .cancelled {
-    background-color: red;
+    background-color: #e15759;
     color: white;
     width: 100px;
     height: 25px;
@@ -53,8 +53,18 @@
     align-items: center;
     border-radius: 100px;
 }
-.processing {
-    background-color: chocolate;
+.pending {
+    background-color: #f28e2b;
+    color: white;
+    width: 100px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+}
+.refunded {
+    background-color: #4e79a7;
     color: white;
     width: 100px;
     height: 25px;

@@ -12,14 +12,14 @@
       <div>Total</div>
       <div>Status</div>
     </div>
-    <div class="data">
-      {% for item in items %}
+    <div class="data" id="orders_container">
+      {% for order in orders %}
         <div class="value">
-          <div>{{ item.id }}</div>
-          <div>{{ item.date }}</div>
-          <div>{{ item.percentage }}%</div>
-          <div>{{ item.amount }}</div>
-          <div class="{% if item.status == 'Completed' %} completed{% elif item.status == 'Cancelled' %} cancelled {% elif item.status == 'Processing' %} processing {% endif %}">{{ item.status }}</div>
+          <div>{{ order.id }}</div>
+          <div>{{ order.date }}</div>
+          <div>{{ order.percentage }}%</div>
+          <div>{{ order.amount }}</div>
+          <div class="{% if order.status == 'Completed' %} completed{% elif order.status == 'Cancelled' %} cancelled {% elif order.status == 'Pending' %} pending {% elif order.status == 'Refunded' %} refunded{% endif %}">{{ order.status }}</div>
         </div>
       {% endfor %}
     </div>

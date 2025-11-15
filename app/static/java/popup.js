@@ -109,7 +109,27 @@ function addStock()
         return;
     }
 }
-function deleteProduct()
-{
-
+function deleteProduct() {
+    const idValue = Number(document.getElementById('deleteID').value);
+    if (!confirm("Are you sure you want to delete this product?")) {
+        return;
+    }
+    fetch("/delete_product", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id: idValue })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            productsRequest();
+            alert("Product deleted successfully.");
+            CloseOverlay();
+        } else {
+            alert("Error deleting product: " + data.message);
+        }
+    })
+    .catch(err => console.error(err));
 }

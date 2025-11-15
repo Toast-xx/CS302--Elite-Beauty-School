@@ -1,10 +1,6 @@
-window.addEventListener('load', function() {
-    section("Dashboard");
-    const endDate = new Date();
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - 7);
-    document.getElementById('startdate').value = startDate.toISOString().split('T')[0];
-    document.getElementById('enddate').value = endDate.toISOString().split('T')[0];
+window.addEventListener('load', function() 
+{
+
 });
 function section(id)
 {
@@ -55,13 +51,20 @@ function filter(id)
 }
 function submitFilter()
 {
-  const campus=document.getElementById('campus');
   const start=document.getElementById('startdate');
   const end=document.getElementById('enddate');
-  const banner=document.getElementById('banner-name');
+  const banner=document.getElementById('banner-name').value;
   if(start.value>end.value)
   {
     alert("Please select the correct date range!");
     return;
+  }
+  if (banner=='Dashboard')
+  {
+    dashboardRequest();
+  }
+  else
+  {
+    ordersRequest();
   }
 }

@@ -1,3 +1,22 @@
+window.addEventListener('load', function() 
+{
+    const admin=document.getElementById('superstatus');
+    if(admin.checked)
+    {
+        const campusSelect = document.getElementById('campus2');
+        const banner=document.getElementById('banner-name').value;
+        if(banner==="Users")
+        {
+            campusSelect.addEventListener('change', function() {
+                usersRequest();
+            });
+        }
+    }
+});
+function usersRequest()
+{
+    
+}
 function saveUser()
 {
     const name=document.getElementById('userName');
