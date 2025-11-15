@@ -1,0 +1,24 @@
+{#
+    Add User Success Overlay Template
+    - Displays a popup overlay when a user is successfully added.
+    - Used in user management/admin dashboard for feedback.
+    - Integrates with closeSuccessOverlay() JS function to hide the overlay.
+    - Styled via add_user_success.css for consistent appearance.
+#}
+<div id="popup" style="display:none;">
+    <!-- Success overlay for user addition -->
+    <div class="overlay success" id="successUserOverlay">
+        <div class="top">
+            <h2>User Added</h2>
+            <!-- Close button triggers JS to hide overlay -->
+            <img onclick="closeSuccessOverlay()" src="{{ url_for('static', filename='images/close.png') }}" width="30px" height="30px" alt="Close Logo" style="cursor: pointer;">
+        </div>
+        <div class="middle">
+            <span>User was added successfully!</span>
+        </div>
+        <div class="bottom">
+            <!-- OK button also closes the overlay -->
+            <div class="button" onclick="closeSuccessOverlay()">OK</div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,18 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/searchbar.css') }}" />
 <script src="{{ url_for('static', filename='java/searchbar.js') }}"></script>
 
-<div class="banner-search">
+<!-- Product Search Bar -->
+<div class="banner-search" id="product-search-bar" style="display: none;">
     <img src="{{ url_for('static', filename='images/search.png') }}" width="10px" height="10px" alt="Search Logo">
-    <input id="searchBar" type="text" placeholder="Search">
-    <ul class="search-result" id="search-result"></ul>
+    <input id="productSearchInput" type="text" placeholder="Search products...">
+    <button class="btn btn-outline-primary" type="button" onclick="performProductSearch()">Go</button>
+    <ul class="search-result" id="product-search-result"></ul>
+</div>
+
+<!-- User Search Bar -->
+<div class="banner-search" id="user-search-bar">
+    <img src="{{ url_for('static', filename='images/search.png') }}" width="10px" height="10px" alt="Search Logo">
+    <input id="userSearchInput" type="text" placeholder="Search users by name or email...">
+    <button class="btn btn-outline-primary" type="button" id="userSearchGo">Go</button>
+    <ul class="search-result" id="user-search-result"></ul>
 </div>

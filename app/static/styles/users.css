@@ -1,110 +1,175 @@
-.users
-{
+/*
+    User Management Stylesheet
+    - Styles the user list, add/edit user form, and responsive layout.
+    - Used in users.html for admin/user management dashboard.
+    - Responsive for desktop and mobile.
+*/
+
+/* --- User List Section --- */
+.users {
     flex-direction: column;
-}
-.users .listed
-{
-    width: 1000px;
-    height: 165px;
-}
-.users .listed .header
-{
-    display: grid;
-    grid-template-columns: 100px 190px 250px 250px 1fr;
     width: 100%;
-    height: 55px;
+    max-width: 100vw;
+    box-sizing: border-box;
 }
-.users .listed .header div
-{
-    background-color: white;
-    width: 100%;
-    height: 100%;
-    border: solid 1px black;
-    display: flex;
-    align-items: center;
-    text-indent: 10px;
+
+    /* User List Container: Responsive width, border, rounded corners */
+    .users .listed {
+        width: 100%;
+        max-width: 100vw;
+        height: auto;
+        overflow-x: auto;
+        border: 1.5px solid #e4cfa1;
+        border-radius: 12px;
+        background: #fff;
+        margin-bottom: 32px;
+    }
+
+        /* Responsive grid for header and data rows */
+        .users .listed .header,
+        .users .listed .containers .data {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr); /* 7 columns, equal width */
+            width: 100%;
+            height: 48px;
+            background: #fff;
+            border-radius: 10px 10px 0 0;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+            /* Header and data cell styling */
+            .users .listed .header div,
+            .users .listed .containers .data div {
+                background: none;
+                border: none;
+                display: flex;
+                align-items: center;
+                text-indent: 10px;
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+        /* Data container: scrollable, rounded corners */
+        .users .listed .containers {
+            background: #fff;
+            width: 100%;
+            max-width: 100vw;
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 0 0 10px 10px;
+            box-shadow: none;
+            border: none;
+        }
+
+            /* Row separation for clarity */
+            .users .listed .containers .data {
+                border-bottom: 1px solid #f3f3f3;
+                transition: background 0.2s;
+            }
+
+                /* Highlight row on hover */
+                .users .listed .containers .data:hover {
+                    background-color: #E4CFA1B3;
+                    color: #222;
+                }
+
+    /* --- Add/Edit User Section --- */
+    /* Leave as is for layout consistency */
+    .users .edit {
+        width: 100%;
+        max-width: 100vw;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-top: 20px;
+    }
+
+        /* Form field containers */
+        .users .edit .containers {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+            /* Input and select styling */
+            .users .edit .containers input,
+            .users .edit .containers select {
+                width: 100%;
+                border-radius: 10px;
+                height: 40px;
+                text-indent: 5px;
+                border: none;
+                margin-bottom: 8px;
+                box-sizing: border-box;
+                background: #f7f7f7;
+            }
+
+        /* Button group styling */
+        .users .edit .buttons {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: end;
+            gap: 10px;
+        }
+
+            /* Button and div styling for actions */
+            .users .edit .buttons div,
+            .users .edit .buttons button {
+                width: 60px;
+                height: 40px;
+                background-color: #fff;
+                cursor: pointer;
+                border: 1px solid #DB6468FF;
+                border-radius: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: 500;
+                transition: background 0.2s, color 0.2s;
+            }
+
+                /* Button hover effect */
+                .users .edit .buttons div:hover,
+                .users .edit .buttons button:hover {
+                    color: #fff;
+                    background-color: #DB6468FF;
+                }
+
+/* --- Responsive Adjustments --- */
+/* Tablet breakpoint */
+@media (max-width: 900px) {
+    .users .listed .header,
+    .users .listed .containers .data {
+        font-size: 0.95rem;
+        grid-template-columns: repeat(7, 1fr);
+    }
+
+    .users .edit {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
 }
-.users .listed .containers
-{
-    background-color: white;
-    width: calc(100%);
-    height: 110px;
-    display: block;
-    border: solid 1px black;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    overflow-y:scroll;
-}
-.users .listed .containers .data
-{
-    display: grid;
-    height: 55px;
-    grid-template-columns: 100px 190px 250px 250px 1fr;
-    cursor: pointer;
-}
-.users .listed .containers .data:hover
-{
-    background-color: #E29BA3FF;
-    color: white;
-}
-.users .listed .containers .data div
-{
-    display: flex;
-    height: 100%;
-    width: 100%;
-    align-items: center;
-    text-indent: 10px;
-}
-.users .edit
-{
-    height: 60px;
-    width: 1000px;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 80px;
-    margin-top: 10px;
-}
-.users .edit .containers
-{
-    display: flex;
-    flex-direction: column;
-}
-.users .edit .containers input
-{
-    width: 100%;
-    border-radius: 10px;
-    height: 40px;
-    text-indent: 5px;
-}
-.users .edit .containers select
-{
-    text-align: center;
-    width: 200px;
-    height: 40px;
-    border-radius: 10px;
-    appearance: none;
-}
-.users .edit .buttons
-{
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
-}
-.users .edit .buttons div
-{
-    width: 60px;
-    height: 40px;
-    background-color: white;
-    cursor: pointer;
-    border: solid 1px black;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.users .edit .buttons div:hover
-{
-    color: white;
-    background-color: black;
+
+/* Mobile breakpoint */
+@media (max-width: 600px) {
+    .users .listed {
+        width: 100vw;
+        min-width: 0;
+    }
+
+        .users .listed .header,
+        .users .listed .containers .data {
+            font-size: 0.9rem;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+    .users .edit {
+        grid-template-columns: 1fr;
+        width: 100vw;
+    }
 }

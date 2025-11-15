@@ -1,0 +1,87 @@
+/*
+    Add User Success Overlay Stylesheet
+    - Styles the popup overlay for user add/edit success and inactive account notifications.
+    - Used in add_user_success.html, inactive_account.html, and popup.html.
+    - Ensures overlay is centered, visually distinct, and responsive.
+*/
+
+/* --- Popup Overlay Container --- */
+#popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(228, 207, 161, 0.25); /* semi-transparent gold overlay */
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- Success Overlay Box --- */
+.overlay.success.active {
+    display: block;
+    width: 400px;
+    height: 220px;
+    background-color: white;
+    border: solid 2px #DB6468FF; /* dark pink border */
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    position: relative;
+    padding: 0;
+}
+
+/* --- Top Section: Title and Close Button --- */
+.overlay.success .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px 0 24px;
+}
+
+    .overlay.success .top h2 {
+        font-size: 2rem;
+        color: #DB6468FF;
+        margin: 0;
+        font-weight: 700;
+    }
+
+    .overlay.success .top img {
+        cursor: pointer; /* clickable close icon */
+    }
+
+/* --- Middle Section: Message --- */
+.overlay.success .middle {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    font-size: 1.2rem;
+    color: #222;
+}
+
+/* --- Bottom Section: Action Button --- */
+.overlay.success .bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 18px;
+}
+
+.overlay.success .button {
+    background-color: #DB6468FF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+    .overlay.success .button:hover {
+        background-color: #E4CFA1B3; /* gold on hover */
+    }

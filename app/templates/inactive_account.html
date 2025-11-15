@@ -1,0 +1,34 @@
+{#
+    Inactive Account Notification Template
+    - Displays a message when a user's account is not active.
+    - Used in authentication flow to inform users and provide a link back to login.
+    - Styled using add_user_success.css for consistency with overlays.
+#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Account Not Active</title>
+    <!-- Overlay styling for inactive account message -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/add_user_success.css') }}">
+</head>
+<body>
+    <!-- Popup overlay for inactive account notification -->
+    <div id="popup" style="display: flex;">
+        <div class="overlay success active">
+            <div class="top">
+                <h2>Account Not Active</h2>
+            </div>
+            <div class="middle">
+                <span>
+                    Your account is not currently active.<br>
+                    Please contact administration for assistance.
+                </span>
+            </div>
+            <div class="bottom">
+                <!-- Link to return to login page -->
+                <a href="{{ url_for('auth.login') }}" class="button">Back to Login</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,103 +1,135 @@
+{#
+    Popup Overlays Template
+    - Provides modal overlays for file upload, stock transfer, stock addition, and item deletion.
+    - Used in admin/user dashboard for interactive actions.
+    - Integrates with popup.js for overlay control and form validation.
+    - Styled via popup.css for consistent appearance.
+#}
 <title>Dashboard</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/popup.css') }}" />
 <script src="{{ url_for('static', filename='java/popup.js') }}"></script>
-<div class="overlay upload" data-id="upload">
+
+<!-- Popup container for overlays -->
+<div id="popup" style="display:none;">
+    <!-- Upload Files Overlay -->
+    <div class="overlay upload" data-id="upload">
         <div class="top">
             <h3>Upload files</h3>
-            <img onclick="CloseOverlay()" src="{{ url_for('static', filename='images/close.png') }}"  width="30px" height="30px"  alt="Close Logo" style="cursor: pointer;" >
+            <!-- Close button triggers JS to hide overlay -->
+            <img onclick="CloseOverlay()" src="{{ url_for('static', filename='images/close.png') }}" width="30px" height="30px" alt="Close Logo" style="cursor: pointer;">
         </div>
         <div class="submit_form_file">
             <div id="drop-area">
-                <img src="{{ url_for('static', filename='images/upload.png') }}"  width="80px" height="80px"  alt="Upload Logo" style="margin-top: 10px;">
+                <!-- Drag-and-drop area for file uploads -->
+                <img src="{{ url_for('static', filename='images/upload.png') }}" width="80px" height="80px" alt="Upload Logo" style="margin-top: 10px;">
                 <h2 style="font-weight: lighter;">Drop files here</h2>
                 <p>Supported format: PNG & JPG</p>
                 <h5 style="margin: 10px;">OR</h5>
-                <input type="file" id="fileElem" multiple style="display:none"/>
-                <button onclick="document.getElementById('fileElem').click()" style=" background-color: white; border: 0; color:#E29BA3FF ; cursor: pointer;">Browse files</button>
+                <!-- Hidden file input, triggered by Browse button -->
+                <input type="file" id="fileElem" multiple style="display:none" />
+                <button onclick="document.getElementById('fileElem').click()" style="background-color: white; border: 0; color:#E29BA3FF; cursor: pointer;">Browse files</button>
                 <div id="file-list">. . . . . . . . . .</div>
             </div>
         </div>
         <div class="bottom">
+            <!-- Cancel button closes overlay -->
             <div class="button" onclick="CloseOverlay()">
                 Cancel
             </div>
+            <!-- Upload button triggers upload logic (to be implemented in JS) -->
             <div class="button">
                 Upload
             </div>
         </div>
-</div>
-<div class="overlay transfer" data-id="transfer">
-    <div class="top">
-        <h2>Transfer Stock</h2>
     </div>
-    <div class="middle">
-        <div class="direction">
-            <h5>Direction</h5>
-                            <select id="transferCampus" class="campus">
-                                <option value="all">Store-Campus</option>
-                                <option value="wellington">Wellington</option>
-                                <option value="hamilton">Hamilton</option>
-                                <option value="auckland">Auckland</option>
-                            </select>
+
+    <!-- Transfer Stock Overlay -->
+    <div class="overlay transfer" data-id="transfer">
+        <div class="top">
+            <h2>Transfer Stock</h2>
         </div>
-        <div class="quantity">
-            <div class="title">
-                Quantity
+        <div class="middle">
+            <div class="direction">
+                <h5>Direction</h5>
+                <!-- Campus selection for transfer direction -->
+                <select id="transferCampus" class="campus">
+                    <option value="all">Store-Campus</option>
+                    <option value="wellington">Wellington</option>
+                    <option value="hamilton">Hamilton</option>
+                    <option value="auckland">Auckland</option>
+                </select>
             </div>
-            <input id="transferQuantity" type="number" class="input" min="0" value="0">
-        </div>
-        <div class="reason">
-            <h5>Reason</h5>
-            <textarea class="textarea" id="transferReason"></textarea>
-        </div>
-    </div>
-    <div class="bottom">
-        <div class="button" onclick="transferStock()">
-            Save
-        </div>
-        <div class="button" onclick="CloseOverlay()">
-            Cancel
-        </div>
-    </div>
-</div>
-<div class="overlay add" data-id="add">
-    <div class="top">
-        <h2>Add Stock</h2>
-    </div>
-    <div class="middle">
-        <div class="quantity">
-            <div class="title">
-                Quantity
+            <div class="quantity">
+                <div class="title">
+                    Quantity
+                </div>
+                <input id="transferQuantity" type="number" class="input" min="0" value="0">
             </div>
-            <input id="addQuantity" type="number" class="input" min="0" value="0">
+            <div class="reason">
+                <h5>Reason</h5>
+                <!-- Reason for stock transfer -->
+                <textarea class="textarea" id="transferReason"></textarea>
+            </div>
+        </div>
+        <div class="bottom">
+            <!-- Save button triggers transferStock() JS function -->
+            <div class="button" onclick="transferStock()">
+                Save
+            </div>
+            <!-- Cancel button closes overlay -->
+            <div class="button" onclick="CloseOverlay()">
+                Cancel
+            </div>
         </div>
     </div>
-    <div class="bottom">
-        <div class="button" onclick="addStock()">
-            Add
+
+    <!-- Add Stock Overlay -->
+    <div class="overlay add" data-id="add">
+        <div class="top">
+            <h2>Add Stock</h2>
         </div>
-        <div class="button" onclick="CloseOverlay()">
-            Cancel
+        <div class="middle">
+            <div class="quantity">
+                <div class="title">
+                    Quantity
+                </div>
+                <input id="addQuantity" type="number" class="input" min="0" value="0">
+            </div>
+        </div>
+        <div class="bottom">
+            <!-- Add button triggers addStock() JS function -->
+            <div class="button" onclick="addStock()">
+                Add
+            </div>
+            <!-- Cancel button closes overlay -->
+            <div class="button" onclick="CloseOverlay()">
+                Cancel
+            </div>
         </div>
     </div>
-</div>
-<div class="overlay delete" data-id="delete">
-    <div class="top">
-        <h2>Delete Item</h2>
-    </div>
-    <div class="middle">
-        Are you sure 
-        <br>
-        want to delete 
-        <br>
-        this item?
-    </div>
-    <div class="bottom">
-        <div class="button" onclick="deleteProduct()">
-            Delete
+
+    <!-- Delete Item Overlay -->
+    <div class="overlay delete" data-id="delete">
+        <div class="top">
+            <h2>Delete Item</h2>
         </div>
-        <div class="button" onclick="CloseOverlay()">
-            Cancel
+        <div class="middle">
+            <!-- Confirmation message for item deletion -->
+            Are you sure
+            <br>
+            want to delete
+            <br>
+            this item?
+        </div>
+        <div class="bottom">
+            <!-- Delete button triggers deleteProduct() JS function -->
+            <div class="button" onclick="deleteProduct()">
+                Delete
+            </div>
+            <!-- Cancel button closes overlay -->
+            <div class="button" onclick="CloseOverlay()">
+                Cancel
+            </div>
         </div>
     </div>
 </div>
