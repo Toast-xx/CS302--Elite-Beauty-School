@@ -4,7 +4,7 @@
 <div class="add-container" id="add_product">
     <div class="box">
         <div style="text-align: center; margin-top: 40px;">
-            <h1>Add New Product</h1>
+            <h1 id="product-banner">Add Product</h1>
         </div>
         <div class="middle">
             <div>
@@ -17,7 +17,7 @@
                 <br>
                 <textarea class="description" placeholder="Input text" id="addDescription"></textarea>
             </div>
-            <div class="image" onclick="overlay('upload')">
+            <div class="image" onclick="overlay('upload')" id="product-upload">
                 Add Images
             </div>
             <div class="line">
@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="bottom">
-            <div class="button" onclick="saveProduct()">
+            <div class="button" onclick="saveProduct()" id="product-button">
                 Save
             </div>
             <div class="button" onclick="section('Dashboard')">

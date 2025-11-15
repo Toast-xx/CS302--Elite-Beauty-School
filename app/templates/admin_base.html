@@ -19,30 +19,30 @@
 </head>
 <body>
     <!-- Hidden checkbox for super admin status (used by JS) -->
-    <input type="checkbox" id="superstatus" checked style="display: none;">
+    <input type="checkbox" id="superstatus" {% if clearance= =3 %}checked{% endif %} style="display: none;">
     <div class="admin-container">
         <!-- Sidebar Navigation -->
         <div class="side">
             <img class="side-logo" src="{{ url_for('static', filename='images/elite-gold-logo.png') }}">
             <div class="side-menu">
                 <!-- Sidebar menu items trigger section switching via JS -->
-                <div class="side-menu-dashboard" onclick="secStion('Dashboard')">
+                <div class="side-menu-dashboard" onclick="section('Dashboard')">
                     <img src="{{ url_for('static', filename='images/dashboard.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
                     <span style="margin-left: 15px">Dashboard</span>
                 </div>
-                <div class="side-menu-order" onclick="section('Orders')">
+                <div class="side-menu-order" onclick="section('Orders'); ordersRequest()">
                     <img src="{{ url_for('static', filename='images/order.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
                     <span style="margin-left: 15px">Orders</span>
                 </div>
-                <div class="side-menu-products" onclick="section('Products')">
+                <div class="side-menu-products" onclick="section('Products'); productsRequest()">
                     <img src="{{ url_for('static', filename='images/products.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
                     <span style="margin-left: 15px">Products</span>
                 </div>
-                <div class="side-menu-inventory" onclick="section('Inventory')">
+                <div class="side-menu-inventory" onclick="section('Inventory'); inventoryRequest()">
                     <img src="{{ url_for('static', filename='images/inventory.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
                     <span style="margin-left: 15px">Inventory</span>
                 </div>
-                <div class="side-menu-users" onclick="section('Users')">
+                <div class="side-menu-users" onclick="section('Users'); usersRequest()">
                     <img src="{{ url_for('static', filename='images/dashboard.png') }}" width="24px" height="24px" alt="Logout Icon" style="margin-left: 10px">
                     <span style="margin-left: 15px">Users</span>
                 </div>
@@ -58,8 +58,9 @@
         <!-- Top Banner and Filters -->
         <div class="top">
             <div class="top-banner">
+                <p class="banner-name" id="campus-name">{{campus}}</p>
                 <div class="banner-name" id="banner-name">
-                    Banner
+                    {{banner}}
                 </div>
                 <div class="banner-right">
                     <!-- Product search bar -->
@@ -103,10 +104,10 @@
                         <br>
                         <label for="campus"></label>
                         <select id="campus" class="top-filter-order-selection-campus-drop">
-                            <option value="all">All Campus</option>
-                            <option value="wellington">Wellington</option>
-                            <option value="hamilton">Hamilton</option>
-                            <option value="auckland">Auckland</option>
+                            <option value="All">All Campus</option>
+                            <option value="Wellington">Wellington</option>
+                            <option value="Hamilton">Hamilton</option>
+                            <option value="Auckland">Auckland</option>
                         </select>
                     </div>
                     <div class="top-filter-order-selection-startdate">
@@ -130,13 +131,13 @@
             <!-- Product Search and Campus Filter Section -->
             <div class="top-filter-search" id="filter-search">
                 <div class="top-filter-search-first">
-                    
+
                     <label for="campus2"></label>
                     <select id="campus2" class="top-filter-search-first-list">
-                        <option value="all">All Campus</option>
-                        <option value="wellington">Wellington</option>
-                        <option value="hamilton">Hamilton</option>
-                        <option value="auckland">Auckland</option>
+                        <option value="All">All Campus</option>
+                        <option value="Wellington">Wellington</option>
+                        <option value="Hamilton">Hamilton</option>
+                        <option value="Auckland">Auckland</option>
                     </select>
                 </div>
                 <div class="top-filter-search-second" id="secondFilter">
@@ -179,3 +180,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<script>
+    section("{{banner}}");
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 7);
+    document.getElementById('startdate').value = startDate.toISOString().split('T')[0];
+    document.getElementById('enddate').value = endDate.toISOString().split('T')[0];
+    dashboardRequest();
+</script>

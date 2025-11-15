@@ -38,6 +38,7 @@ def login():
             session['user_id'] = user.id
             session['username'] = user.name
             session['clearance_level'] = getattr(user, 'clearance_level', 1)
+            session['campus']=user.campus.name
 
             login_user(user)
 
@@ -46,9 +47,8 @@ def login():
                 return redirect("/admin")
             elif session['clearance_level'] == 1:
                 return redirect("/")
-            # Future: Add superadmin redirect here
-            # elif session['clearance_level'] == 3:
-            #     return redirect("/superadmin_dashboard")
+            elif session['clearance_level'] == 3:
+                return redirect("/superadmin_dashboard")
 
             return redirect("/")
 
