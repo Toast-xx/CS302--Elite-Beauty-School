@@ -9,6 +9,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from app.config import Config
 from flask_mail import Mail
+from flask_cors import CORS
 import stripe
 import os
 from dotenv import load_dotenv
@@ -32,6 +33,15 @@ def create_app(config_object=Config):
     Returns:
         app: The configured Flask application instance.
     """
+    app = Flask(__name__)
+    app.config.from_object(config_object)
+
+    # Enable CORS for your Vercel frontend
+    CORS(app, origins=["https://elite-emporium-omega.vercel.app/"])  # Replace with your actual Vercel domain
+
+    # Register all route blueprints
+    from .routes import register_routes
+    register_routes(app)
 
     # Initialize Stripe API key
     stripe.api_key = os.environ.get("STRIPE_API_KEY")
