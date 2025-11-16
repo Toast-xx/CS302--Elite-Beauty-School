@@ -11,6 +11,7 @@ from app.models.category import SubCategory
 from collections import Counter
 from datetime import datetime, timedelta
 from app import db
+from sqlalchemy.exc import IntegrityError
 
 # Blueprint for admin-related routes
 admin = Blueprint("admin", __name__)
@@ -283,26 +284,12 @@ def search_user():
     ]
     return jsonify(user_list)
 
-@admin.route("/admin/add_user", methods=["GET", "POST"])
+@admin.route("/admin/add_user", methods=["POST"])
 @require_clearance(2)
 def add_user():
     campus_id, clearance, admin_user = get_admin_campus()
-    # For GET: render form with correct campuses and roles
-    if request.method == "GET":
-        if clearance == 3:
-            campuses = Campus.query.all()
-            allowed_roles = [1, 2, 3]
-        else:
-            campuses = [Campus.query.get(campus_id)]
-            allowed_roles = [1, 2]
-        return render_template(
-            "add_user.html",
-            campuses=campuses,
-            allowed_roles=allowed_roles
-        )
 
-    # For POST: process form submission
-    user_id = request.form.get("user_id")
+    user_id = request.form.get("user_id")  # will exist if editing
     name = request.form.get("name")
     email = request.form.get("email")
     password = request.form.get("password")
@@ -311,68 +298,58 @@ def add_user():
     start_date = request.form.get("start_date")
     end_date = request.form.get("end_date")
 
-    # Validate required fields
     if not all([name, email, campus_id_form]):
-        error = "All fields are required"
-        campuses = [Campus.query.get(campus_id)] if clearance != 3 else Campus.query.all()
-        allowed_roles = [1, 2] if clearance != 3 else [1, 2, 3]
-        return render_template("add_user.html", error=error, campuses=campuses, allowed_roles=allowed_roles), 400
+        return jsonify({"status": "error", "message": "All fields are required"}), 400
 
     # Only super admins can add super admin users
     if clearance_level == 3 and clearance != 3:
-        error = "Only super admins can add super admin users."
-        campuses = [Campus.query.get(campus_id)] if clearance != 3 else Campus.query.all()
-        allowed_roles = [1, 2] if clearance != 3 else [1, 2, 3]
-        return render_template("add_user.html", error=error, campuses=campuses, allowed_roles=allowed_roles), 403
+        return jsonify({"status": "error", "message": "Only super admins can add super admin users."}), 403
 
-    if user_id:
-        user = User.query.get(user_id)
-        if not user:
-            error = "User not found"
-            campuses = [Campus.query.get(campus_id)] if clearance != 3 else Campus.query.all()
-            allowed_roles = [1, 2] if clearance != 3 else [1, 2, 3]
-            return render_template("add_user.html", error=error, campuses=campuses, allowed_roles=allowed_roles), 404
-        existing_user = User.query.filter_by(email=email).first()
-        if user.email != email and existing_user and existing_user.id != user.id:
-            error = "User with this email already exists"
-            campuses = [Campus.query.get(campus_id)] if clearance != 3 else Campus.query.all()
-            allowed_roles = [1, 2] if clearance != 3 else [1, 2, 3]
-            return render_template("add_user.html", error=error, campuses=campuses, allowed_roles=allowed_roles), 400
-        user.name = name
-        user.email = email
-        user.campus_id = campus_id_form
-        user.clearance_level = clearance_level
-        user.start_date = start_date
-        user.end_date = end_date
-        if password:
-            user.password_hash = hash_password(password)
-    else:
-        if User.query.filter_by(email=email).first():
-            error = "User with this email already exists"
-            campuses = [Campus.query.get(campus_id)] if clearance != 3 else Campus.query.all()
-            allowed_roles = [1, 2] if clearance != 3 else [1, 2, 3]
-            return render_template("add_user.html", error=error, campuses=campuses, allowed_roles=allowed_roles), 400
-        user = User(
-            name=name,
-            email=email,
-            password_hash=hash_password(password),
-            campus_id=campus_id_form,
-            clearance_level=clearance_level,
-            start_date=start_date,
-            end_date=end_date
-        )
-        db.session.add(user)
     try:
+        if user_id:  # EDIT EXISTING USER
+            user = User.query.get(user_id)
+            if not user:
+                return jsonify({"status": "error", "message": "User not found"}), 404
+
+            existing_user = User.query.filter_by(email=email).first()
+            if user.email != email and existing_user:
+                return jsonify({"status": "error", "message": "Email already exists"}), 400
+
+            user.name = name
+            user.email = email
+            user.campus_id = campus_id_form
+            user.clearance_level = clearance_level
+            user.start_date = start_date
+            user.end_date = end_date
+            if password:
+                user.password_hash = hash_password(password)
+
+        else:  # CREATE NEW USER
+            if User.query.filter_by(email=email).first():
+                return jsonify({"status": "error", "message": "Email already exists"}), 400
+
+            user = User(
+                name=name,
+                email=email,
+                password_hash=hash_password(password),
+                campus_id=campus_id_form,
+                clearance_level=clearance_level,
+                start_date=start_date,
+                end_date=end_date
+            )
+            db.session.add(user)
+
         db.session.commit()
-        return redirect(url_for('admin.admin_base', success=1))
-    except Exception as ex:
-        print(f"Error in /search_users: {ex}")
-        return jsonify({"error": "Internal server error"}), 500
+        return jsonify({"status": "success", "user_id": user.id}), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 @admin.route("/search_products", methods=["GET"])
 def search_products():
     query = request.args.get("q", "").strip()
-    campus_name = request.args.get("campus", "").strip()  # Get campus from request
+    campus_name = request.args.get("campus", "").strip()
 
     if not query:
         return jsonify([])
@@ -386,8 +363,6 @@ def search_products():
             .join(Category, SubCategory.category_id == Category.id)
             .filter(Product.name.ilike(f"%{query}%"))
         )
-
-        # Apply campus filter if provided and not "All" or "Super Admin"
         if campus_name and campus_name not in ["All", "Super Admin"]:
             campus_products = campus_products.filter(Campus.name == campus_name)
 
@@ -409,9 +384,6 @@ def search_products():
             }
             for cp in campus_products
         ]
-
-        print("SEARCHED PRODUCTS:", product_list)  # Debug output
-
         return jsonify(product_list)
 
     except Exception as ex:
@@ -551,6 +523,55 @@ def update_product():
         db.session.rollback()
         return jsonify({"success": False, "message": str(e)}), 500
 
+@admin.route('/update_quantity', methods=['POST'])
+def update_quantity():
+    data = request.get_json()
+    campus_product_id = data.get("id")
+    qty_to_add = data.get("quantity")
+    qty_to_add = int(qty_to_add)
+    print("Received ID:", campus_product_id)
+    print("Received Quantity:", qty_to_add)
+    if not campus_product_id or qty_to_add is None:
+        return jsonify({"success": False, "message": "Missing id or quantity"}), 400
+
+    product = CampusProduct.query.get(campus_product_id)
+    if not product:
+        return jsonify({"success": False, "message": "Product not found"}), 404
+
+    product.campus_quantity += qty_to_add
+    db.session.commit()
+
+    return jsonify({
+        "success": True,
+        "message": "Quantity updated",
+        "new_quantity": product.campus_quantity
+    })
+
+@admin.route('/create_user', methods=['POST'])
+def create_user():
+    data = request.get_json()
+    try:
+        # Convert dates from string to date objects
+        start_date = datetime.strptime(data['start_date'], '%Y-%m-%d').date() if data.get('start_date') else None
+        end_date = datetime.strptime(data['end_date'], '%Y-%m-%d').date() if data.get('end_date') else None
+        
+        new_user = User(
+            name=data['name'],
+            email=data['email'],
+            campus_id=int(data['campus_id']) if data.get('campus_id') else None,
+            clearance_level=int(data['clearance_level']),
+            active=bool(data['active']),
+            start_date=start_date,
+            end_date=end_date
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({"status": "success", "message": "User created successfully", "user_id": new_user.id}), 201
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({"status": "error", "message": "Email already exists"}), 400
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 # =========================
 # NEW ROUTE FOR ADD PRODUCT

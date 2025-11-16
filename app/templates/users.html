@@ -28,7 +28,7 @@
       {% endfor %}
     </div>
   </div>
-  <h3>Add/Edit User</h3>
+  <h3 id="user-banner">Add User</h3>
   <div class="edit">
     <div class="containers">
       Name
@@ -44,17 +44,17 @@
       Campus
       <select id="userCampus" name="campus">
         <option value="">-- Campus Option --</option>
-        <option value="auckland">Auckland</option>
-        <option value="wellington">Wellington</option>
-        <option value="christchurch">Christchurch</option>
+        <option value="1">Auckland</option>
+        <option value="2">Hamilton</option>
+        <option value="3">Wellington</option>
       </select>
     </div>
     <div class="containers">
       Role
       <select id="userRole" name="role">
         <option value="">-- Role Option --</option>
-        <option value="s">Student</option>
-        <option value="a">Admin</option>
+        <option value="1">Student</option>
+        <option value="2">Admin</option>
       </select>
     </div>
   </div>
@@ -71,8 +71,15 @@
       <input id="userEnd" type="date" name="enddate"value="">
     </div>
     <div class="buttons">
-      <div onclick="saveUser()">Save</div>
-      <div>Exit</div>
+      <div onclick="saveUser()" id="user-button">Add</div>
+      <div onclick="resetUserForm()">Cancel</div>
     </div>
   </div>
+  <div class="edit">
+    <div class="containers">
+      Password
+      <input id="userPassword" type="password" placeholder="Password">
+    </div>
+  </div>
+  <input id="userId" type="number" style="display: none;">
 </div>

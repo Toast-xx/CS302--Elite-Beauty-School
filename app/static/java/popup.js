@@ -100,17 +100,45 @@ function transferStock()
         return;
     }
 }
+function addId(id)
+{
+  const value=document.getElementById('addId');
+  value.value=id;
+}
 function addStock()
 {
-    const quantity=document.getElementById('addQuantity');
-    if(quantity.value.trim()===""||quantity.value==0)
+    const quantity=document.getElementById('addQuantity').value.trim();
+    if(quantity===""||quantity==0)
     {
         alert("Please input a valid quantity!");
         return;
     }
+    const id=document.getElementById('addId').value.trim();
+    const payload = {
+        id: id,
+        quantity: quantity
+    };
+
+    fetch("/update_quantity", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Campus quantity updated!");
+            inventoryRequest();
+            CloseOverlay();
+        } else {
+            alert("Error updating quantity: " + data.message);
+        }
+    })
+    .catch(err => console.error("Error:", err));
+
 }
 function deleteProduct() {
-    let idValue = Number(document.getElementById('deleteID').value);
+    const idValue = document.getElementById('deleteID').value;
     if (!confirm("Are you sure you want to delete this product?")) {
         return;
     }
@@ -125,6 +153,7 @@ function deleteProduct() {
     .then(data => {
         if (data.success) {
             productsRequest();
+            inventoryRequest();
             CloseOverlay();
             alert("Product deleted successfully.");
         } else {

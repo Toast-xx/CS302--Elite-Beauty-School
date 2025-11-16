@@ -50,7 +50,7 @@ function updateInventory(inventory,lowstock)
           <div>${ inventory.campus_quantity }</div>
           <div class="buttons">
             <div class="button" onclick="overlay('transfer')">Transfer</div>
-            <div class="button" onclick="overlay('add')">Add</div>
+            <div class="button" onclick="overlay('add'); addId('${inventory.id}')">Add</div>
             <div class="button" onclick="overlay('delete'); deleteID('${inventory.id}')">Delete</div>
           </div>
         </div>
