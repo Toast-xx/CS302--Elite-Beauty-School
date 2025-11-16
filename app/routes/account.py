@@ -13,6 +13,8 @@ from app.utils.email_handler import validate_new_email
 from app.utils.password_handler import hash_password
 from app import db
 
+API_URL = "https://elite-emporium.onrender.com"
+
 account_bp = Blueprint('account', __name__)
 
 @account_bp.route('/account', methods=['GET', 'POST'])
@@ -49,4 +51,4 @@ def account():
 
         return redirect(url_for("account.account"))
 
-    return render_template("account.html", user=current_user)
+    return render_template("account.html", user=current_user, api_url=API_URL)

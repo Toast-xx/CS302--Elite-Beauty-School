@@ -11,6 +11,10 @@ from flask_login import login_required, current_user
 from app.models import Order, OrderItem
 from sqlalchemy.orm import joinedload
 
+
+
+API_URL = "https://elite-emporium.onrender.com"
+
 order_history_bp = Blueprint('order_history', __name__)
 
 @order_history_bp.route('/order_history')
@@ -29,4 +33,4 @@ def order_history():
         )
         .all()
     )
-    return render_template('order_history.html', orders=orders)
+    return render_template('order_history.html', orders=orders, api_url=API_URL)

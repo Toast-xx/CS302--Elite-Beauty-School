@@ -18,6 +18,10 @@ from ..utils import *
 from decimal import Decimal
 import logging
 
+
+
+API_URL = "https://elite-emporium.onrender.com"
+
 # Blueprint for cart-related routes
 cart_bp = Blueprint('cart', __name__)
 
@@ -51,7 +55,7 @@ def view_cart():
     subtotal = sum(item.campus_product.price * item.quantity for item in cart_items if item.campus_product)
     shipping = Decimal("5.00")
     total = subtotal + shipping
-    return render_template('cart.html', cart_items=cart_items, subtotal=subtotal, total=total)
+    return render_template('cart.html', cart_items=cart_items, subtotal=subtotal, total=total, api_url=API_URL )
 
 @cart_bp.route('/cart/add_to_cart/<int:campus_product_id>', methods=['POST'])
 def add_to_cart(campus_product_id):
@@ -167,7 +171,7 @@ def complete_order():
             flash("Order placed, but confirmation email could not be sent.", "warning")
 
         # Always render the order success page after a successful order
-        return render_template('order_success.html', order=order)
+        return render_template('order_success.html', order=order, api_url="https://elite-emporium.onrender.com")
 
     except Exception as e:
         db.session.rollback()
@@ -175,7 +179,7 @@ def complete_order():
         flash("There was an error processing your order. Please try again.", "danger")
         return redirect(url_for('cart.view_cart'))
 
-    return render_template('order_success.html')
+    return render_template('order_success.html', api_url=API_URL)
 
 @cart_bp.route('/cart/order_success')
 @require_clearance(1)
@@ -183,4 +187,4 @@ def order_success():
     """
     Render the order success (thank you) page after a completed order.
     """
-    return render_template('order_success.html')
+    return render_template('order_success.html', api_url=API_URL)

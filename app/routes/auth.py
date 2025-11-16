@@ -5,6 +5,9 @@ from ..utils import *
 from ..utils.email_handler import is_valid_email
 from ..utils.password_handler import hash_password, verify_password
 
+
+API_URL = "https://elite-emporium.onrender.com"
+
 # Blueprint for authentication routes
 auth = Blueprint("auth", __name__)
 
@@ -58,7 +61,7 @@ def login():
             
 
     # GET request: render login page
-    return render_template("login.html"), 200
+    return render_template("login.html", api_url=API_URL ), 200
 
 @auth.route("/auth/logout", methods=["GET"])
 def logout():
@@ -71,7 +74,7 @@ def logout():
         session.pop('username', None)
         session.pop('clearance_level', None)
         logout_user()
-        return render_template("login.html", message="Logout Successful."), 200
+        return render_template("login.html", api_url=API_URL, message="Logout Successful."), 200
     except Exception as e:
         # Handle unexpected errors during logout
         return render_template("login.html", error=e), 500

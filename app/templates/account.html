@@ -9,6 +9,9 @@
 {% extends "user_Base.html" %}
 {% block title %}Account Details{% endblock %}
 {% block extra_css %}
+<script>
+    const API_URL = "{{ api_url }}";
+</script>
 {% endblock %}
 {% block content %}
 <a href="{{ url_for('products.show_products') }}" class="btn-continue-shopping">← Continue Shopping</a>

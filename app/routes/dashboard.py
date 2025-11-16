@@ -7,9 +7,13 @@
 from flask import Blueprint, render_template
 from flask_login import login_required
 
+
+
+API_URL = "https://elite-emporium.onrender.com"
+
 dashboard_bp = Blueprint('dashboard', __name__)
 
 @dashboard_bp.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('user_dashboard.html')
+    return render_template('user_dashboard.html', api_url=API_URL)

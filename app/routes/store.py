@@ -1,7 +1,7 @@
 # Adds search bar logic to existing product filtering and live search suggestions (autocomplete)
 # Now supports autocomplete for product name, category, subcategory, and brand
 
-from flask import Blueprint, render_template, render_template_string, request, jsonify
+from flask import Blueprint, render_template_string, request, jsonify
 from app.models.product import Product
 from app.models.category import Category, SubCategory
 from app.models.campus_products import CampusProduct
