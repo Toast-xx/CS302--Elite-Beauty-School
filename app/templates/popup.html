@@ -1,6 +1,9 @@
 <title>Dashboard</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/popup.css') }}" />
 <script src="{{ url_for('static', filename='java/popup.js') }}"></script>
+<script>
+    const API_URL = "{{ api_url }}";
+</script>
 <div class="overlay upload" data-id="upload">
         <div class="top">
             <h3>Upload files</h3>

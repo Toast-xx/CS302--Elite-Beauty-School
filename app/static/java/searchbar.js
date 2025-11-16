@@ -25,7 +25,8 @@ window.addEventListener('load', function () {
       }
       if (banner === 'Users') {
         fetch(`${API_URL}/search_users?q=${encodeURIComponent(query)}&campus=${encodeURIComponent(campus)}`)
-          .then(res => res.json())
+          credentials: "include",
+            .then(res => res.json())
           .then(users => {
             resultsList.innerHTML = '';
             users.forEach(user => {
@@ -44,6 +45,7 @@ window.addEventListener('load', function () {
       }
       else {
         fetch(`${API_URL}/search_products?q=${encodeURIComponent(query)}&campus=${encodeURIComponent(campus)}`)
+          credentials: "include",
           .then(res => res.json())
           .then(products => {
             resultsList.innerHTML = '';

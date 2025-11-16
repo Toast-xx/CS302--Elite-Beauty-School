@@ -142,6 +142,7 @@ function saveProduct() {
             fetch(`${API_URL}/update_product`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                credentials: "include", // <-- add this line
                 body: JSON.stringify(updatedFields)
             })
                 .then(response => response.json())
@@ -170,6 +171,7 @@ function saveProduct() {
 
         fetch(`${API_URL}/add_product`, {
             method: "POST",
+            credentials: "include",
             body: formData
         })
             .then(response => response.json())
@@ -271,6 +273,7 @@ function addCategory() {
     fetch(`${API_URL}/admin/add_category`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: "include",
         body: JSON.stringify({ name })
     })
         .then(res => res.json())
@@ -294,6 +297,7 @@ function addSubCategory() {
     fetch(`${API_URL}/admin/add_subcategory`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: "include",
         body: JSON.stringify({ name, category_id: categoryId })
     })
         .then(res => res.json())

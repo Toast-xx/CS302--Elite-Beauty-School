@@ -24,6 +24,7 @@ function productsRequest()
     fetch(`${API_URL}/products_request`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ campus })
     })
     .then(response => response.json())

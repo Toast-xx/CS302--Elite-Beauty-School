@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const params = new URLSearchParams(new FormData(form));
         params.append('ajax', '1');
         fetch(`${API_URL}/store/?${params.toString()}`)
+        credentials: "include"
             .then(response => response.text())
             .then(html => {
                 productListContainer.innerHTML = html;
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const params = new URLSearchParams(new FormData(form));
         params.append('ajax', '1');
         fetch(`${API_URL}/store/?${params.toString()}`)
+        credentials: "include"
             .then(response => response.text())
             .then(html => {
                 productListContainer.innerHTML = html;
@@ -64,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
         fetch(`${API_URL}/store/search_suggestions?q=${encodeURIComponent(query)}`)
+        credentials: "include"
             .then(res => res.json())
             .then(data => {
                 if (data.length === 0) {

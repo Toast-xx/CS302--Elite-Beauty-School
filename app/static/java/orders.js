@@ -14,6 +14,7 @@ function ordersRequest()
     fetch(`${API_URL}/orders_request`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ start_date, end_date, campus })
     })
     .then(response => response.json())

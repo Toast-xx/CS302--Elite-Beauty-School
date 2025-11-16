@@ -27,6 +27,7 @@ function usersRequest()
     fetch(`${API_URL}/users_request`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ campus })
     })
     .then(response => response.json())
