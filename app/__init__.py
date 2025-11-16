@@ -37,7 +37,7 @@ def create_app(config_object=Config):
     app.config.from_object(config_object)
 
     # Enable CORS for your Vercel frontend
-    CORS(app, origins=["https://elite-emporium-omega.vercel.app/"])  # Replace with your actual Vercel domain
+    CORS(app,supports_credentials=True, origins=["https://elite-emporium-omega.vercel.app/"])  # Replace with your actual Vercel domain
 
     # Register all route blueprints
     from .routes import register_routes
