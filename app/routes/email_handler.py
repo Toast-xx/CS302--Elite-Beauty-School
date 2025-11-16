@@ -5,10 +5,10 @@ PDFs include product images, quantities, prices, shipping, and total.
 
 from flask_mail import Message
 from app import mail
-from weasyprint import HTML
 from jinja2 import Template
 
 def send_order_confirmation_email(recipient_email, order):
+    from weasyprint import HTML
     """
     Sends an order confirmation email with a PDF invoice to the recipient.
     Args:
@@ -22,6 +22,7 @@ def send_order_confirmation_email(recipient_email, order):
     mail.send(msg)
 
 def generate_order_pdf(order):
+    from weasyprint import HTML
     """
     Generates a PDF invoice for the given order, including product images, shipping, and total.
     Args:

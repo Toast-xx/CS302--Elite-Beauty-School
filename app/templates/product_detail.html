@@ -10,6 +10,9 @@
 {% extends 'user_Base.html' %}
 {% block title %}Product Details{% endblock %}
 {% block head %}
+<script>
+    const API_URL = "{{ api_url }}";
+</script>
 {{ super() }}
 {% endblock %}
 {% block content %}

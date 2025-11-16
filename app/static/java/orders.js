@@ -1,3 +1,4 @@
+const API_URL = "https://elite-emporium.onrender.com";
 function ordersRequest()
 {
     const start_date = document.getElementById("startdate").value;
@@ -10,9 +11,10 @@ function ordersRequest()
         document.getElementById('campus-name').textContent=temp;
         campus=temp;
     }
-    fetch("/orders_request", {
+    fetch(`${API_URL}/orders_request`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ start_date, end_date, campus })
     })
     .then(response => response.json())

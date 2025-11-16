@@ -1,3 +1,4 @@
+
 window.addEventListener('load', function () {
     const admin = document.getElementById('superstatus');
     if (admin && admin.checked) {

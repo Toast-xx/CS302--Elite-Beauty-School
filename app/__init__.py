@@ -9,6 +9,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from app.config import Config
 from flask_mail import Mail
+from flask_cors import CORS
 import stripe
 import os
 from dotenv import load_dotenv
@@ -32,6 +33,15 @@ def create_app(config_object=Config):
     Returns:
         app: The configured Flask application instance.
     """
+    app = Flask(__name__)
+    app.config.from_object(config_object)
+
+    # Enable CORS for your Vercel frontend
+    CORS(app, origins=["https://elite-emporium-omega.vercel.app/"])  # Replace with your actual Vercel domain
+
+    # Register all route blueprints
+    from .routes import register_routes
+    register_routes(app)
 
     # Initialize Stripe API key
     stripe.api_key = os.environ.get("STRIPE_API_KEY")
@@ -41,7 +51,7 @@ def create_app(config_object=Config):
 
     # Set the secret key for session management and CSRF protection
     # TODO: Replace this with a secure, random value in production
-    app.secret_key = 'Placeholder_Secret_Key'
+    app.secret_key = 'FLASK_SECRET_KEY'
 
     # Load configuration from the provided config object (e.g., from .env)
     app.config.from_object(config_object)
@@ -71,3 +81,6 @@ def create_app(config_object=Config):
     register_routes(app)
 
     return app
+
+# Optionally expose app for Gunicorn if you want to run with gunicorn app:app
+app = create_app()

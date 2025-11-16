@@ -1,4 +1,6 @@
-window.addEventListener('load', function() {
+
+const API_URL = "https://elite-emporium.onrender.com";
+window.addEventListener('load', function () {
 
   const searchInput = document.getElementById('searchBar');
   const resultsList = document.getElementById('search-result');
@@ -22,8 +24,9 @@ window.addEventListener('load', function() {
         return;
       }
       if (banner === 'Users') {
-        fetch(`/search_users?q=${encodeURIComponent(query)}&campus=${encodeURIComponent(campus)}`)
-          .then(res => res.json())
+        fetch(`${API_URL}/search_users?q=${encodeURIComponent(query)}&campus=${encodeURIComponent(campus)}`)
+          credentials: "include",
+            .then(res => res.json())
           .then(users => {
             resultsList.innerHTML = '';
             users.forEach(user => {
@@ -41,7 +44,8 @@ window.addEventListener('load', function() {
           });
       }
       else {
-        fetch(`/search_products?q=${encodeURIComponent(query)}&campus=${encodeURIComponent(campus)}`)
+        fetch(`${API_URL}/search_products?q=${encodeURIComponent(query)}&campus=${encodeURIComponent(campus)}`)
+          credentials: "include",
           .then(res => res.json())
           .then(products => {
             resultsList.innerHTML = '';

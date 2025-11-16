@@ -4,10 +4,10 @@
 // - Integrates with Flask backend endpoints for cart operations.
 // - Attaches event listeners to quantity and remove buttons for interactive cart management.
 
-
+const API_URL = "https://elite-emporium.onrender.com";
 function updateQty(campusProductId, delta) {
     // Send AJAX request to update item quantity in the cart
-    fetch(`/cart/update_quantity/${campusProductId}`, {
+    fetch(`${API_URL}/cart/update_quantity/${campusProductId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'same-origin',
@@ -27,7 +27,7 @@ function updateQty(campusProductId, delta) {
 
 function removeFromCart(campusProductId) {
     // Send AJAX request to remove item from the cart
-    fetch(`/cart/delete_item/${campusProductId}`, {
+    fetch(`${API_URL}/cart/delete_item/${campusProductId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
     })

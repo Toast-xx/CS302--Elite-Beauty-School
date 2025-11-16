@@ -13,6 +13,8 @@ from datetime import datetime, timedelta
 from app import db
 from sqlalchemy.exc import IntegrityError
 
+API_URL = "https://elite-emporium.onrender.com"
+
 # Blueprint for admin-related routes
 admin = Blueprint("admin", __name__)
 
@@ -31,7 +33,7 @@ def admin_base():
     campus= session.get('campus')
     if clearance != 2:
         return redirect("/")
-    return render_template("admin_base.html", clearance=clearance, banner=banner, campus=campus)
+    return render_template("admin_base.html", clearance=clearance, banner=banner, campus=campus, api_url=API_URL)
 
 @admin.route("/superadmin_dashboard")
 @require_clearance(3)
@@ -40,7 +42,7 @@ def superadmin_dashboard():
     banner = "Dashboard"
     if clearance != 3:
         return redirect("/")
-    return render_template("admin_base.html", clearance=clearance, banner=banner, campus="Super Admin")
+    return render_template("admin_base.html", clearance=clearance, banner=banner, campus="Super Admin", aapi_url=API_URL)
 
 @admin.route("/dashboard_request", methods=["POST"])
 def dashboard_request():

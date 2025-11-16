@@ -3,11 +3,12 @@
 # Renders product_detail.html with all required context.
 # If you want dynamic campuses, replace the static list with a database query.
 
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, abort
 from app.models.product import Product
 from flask_login import current_user
 from app.models.campus_products import CampusProduct
 from app.utils import *
+
 
 product_detail_bp = Blueprint("product_detail", __name__, url_prefix="/product")
 

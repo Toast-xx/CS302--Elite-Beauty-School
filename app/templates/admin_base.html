@@ -6,6 +6,9 @@
     <title>{% block title %}Elite{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/admin_base.css') }}" />
     <script src="{{ url_for('static', filename='java/admin_base.js') }}"></script>
+    <script>
+    const API_URL = "{{ api_url }}";
+    </script>
 </head>
 <body>
     <input type="checkbox" id="superstatus" {% if clearance == 3 %}checked{% endif %} style="display: none;">
