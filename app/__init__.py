@@ -9,6 +9,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from app.config import Config
 from flask_mail import Mail
+from app import create_app
 import stripe
 import os
 from dotenv import load_dotenv
