@@ -55,6 +55,7 @@ def login():
         except Exception as e:
             # Handle unexpected errors
             return render_template("login.html", error=e), 401
+            
 
     # GET request: render login page
     return render_template("login.html"), 200
