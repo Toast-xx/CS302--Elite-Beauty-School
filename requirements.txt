@@ -11,3 +11,4 @@ stripe~=13.0.1
 flask-mail~=0.9.1
 gunicorn
 weasyprint
+flask-cors
