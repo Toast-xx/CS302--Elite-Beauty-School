@@ -42,7 +42,7 @@ def superadmin_dashboard():
     banner = "Dashboard"
     if clearance != 3:
         return redirect("/")
-    return render_template("admin_base.html", clearance=clearance, banner=banner, campus="Super Admin", aapi_url=API_URL)
+    return render_template("admin_base.html", clearance=clearance, banner=banner, campus="Super Admin", api_url=API_URL)
 
 @admin.route("/dashboard_request", methods=["POST"])
 def dashboard_request():
