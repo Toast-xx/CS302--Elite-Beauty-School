@@ -1,6 +1,6 @@
 <title>Dashboard</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/add.css') }}" />
-<script src="{{ url_for('static', filename='java/add.js') }}"></script>
+
 <div class="add-container" id="add_product">
     <div class="box">
         <div style="text-align: center; margin-top: 40px;">
@@ -17,37 +17,51 @@
                 <br>
                 <textarea class="description" placeholder="Input text" id="addDescription"></textarea>
             </div>
-            <div class="image" onclick="overlay('upload')" id="product-upload">
+            <div class="image" onclick="document.getElementById('addImagesInput').click()" id="product-upload">
                 Add Images
             </div>
+            <!-- Image input and preview for product images -->
+            <input type="file" id="addImagesInput" multiple accept="image/*" style="display:none" />
+            <div id="imagePreview"></div>
             <div class="line">
                 <div>
                     Price
                     <br>
-                    <input type="number" min="0" step="0.01"class="input" id="addPrice">
-                </div>
-                <div>
-                    SKU
-                    <br>
-                    <input type="text" placeholder="Input text" class="input" id="addSKU">
-
+                    <input type="number" min="0" step="0.01" class="input" id="addPrice">
                 </div>
             </div>
-            <div class="line">
-                <div>
+
+            <div class="line line-brand-cat-subcat">
+                <div class="brand-block">
+                    Brand
+                    <br>
+                    <input type="text" class="input brand" id="addBrand" placeholder="Input brand">
+                </div>
+                <div class="category-block">
                     Category
                     <br>
-                    <input type="text" placeholder="Input text" class="input" id="addCategory">
+                    <select class="input category" id="addCategorySelect" onchange="onCategoryChange()"></select>
+                    <input type="text" id="newCategoryInput" class="input category" style="display:none;" placeholder="New category name">
+                    <button type="button" id="addCategoryBtn" style="display:none;" onclick="addCategory()">Add Category</button>
+                </div>
+                <div class="subcategory-block">
+                    Sub-category
+                    <br>
+                    <select class="input subcategory" id="addSubCategorySelect" onchange="onSubCategoryChange()"></select>
+                    <input type="text" id="newSubCategoryInput" class="input subcategory" style="display:none;" placeholder="New sub-category name">
+                    <button type="button" id="addSubCategoryBtn" style="display:none;" onclick="addSubCategory()">Add Sub-category</button>
                 </div>
             </div>
         </div>
-        <div class="bottom">
-            <div class="button" onclick="saveProduct()" id="product-button">
-                Save
-            </div>
-            <div class="button" onclick="section('Dashboard')">
-                Close
-            </div>
+
+
+        <div class="bottom bottom-actions">
+            <button class="button" onclick="saveProduct()" id="product-button">Add</button>
+            <button class="button" onclick="section('Dashboard')">Close</button>
         </div>
     </div>
 </div>
+
+
+
+<script src="{{ url_for('static', filename='java/add.js') }}"></script>

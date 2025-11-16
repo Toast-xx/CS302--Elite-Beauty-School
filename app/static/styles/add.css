@@ -85,23 +85,78 @@
     color: black;
     background-color: white;
 }
-.bottom .button
-{
+.bottom.bottom-actions {
     display: flex;
-    width: 80px;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+    .bottom.bottom-actions .button {
+        width: 120px;
+        height: 48px;
+        font-size: 16px;
+        background-color: #E29BA3FF;
+        color: white;
+        border-radius: 10px;
+        border: solid 1px black;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+        margin-left: 0;
+        margin-right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .bottom.bottom-actions .button:hover {
+            background-color: white;
+            color: #E29BA3FF;
+            border: solid 1px #E29BA3FF;
+        }
+
+.line.line-brand-cat-subcat {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 30px;
+    align-items: flex-end;
+}
+
+.brand-block, .category-block, .subcategory-block {
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+}
+
+.input.brand,
+.input.category,
+.input.subcategory {
     height: 40px;
-    font-size: 14px;
+    border-radius: 10px;
+    border: solid 1px black;
+    text-indent: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.category-block button,
+.subcategory-block button {
+    margin-top: 5px;
+    height: 32px;
+    border-radius: 8px;
     background-color: #E29BA3FF;
     color: white;
-    margin-left: 10px;
-    align-items: center;
-    justify-content: center;
-    border-radius:10px;
     border: solid 1px black;
     cursor: pointer;
+    font-size: 14px;
 }
-.bottom .button:hover
-{
-    background-color: white;
-    color: black;
-}
+
+    .category-block button:hover,
+    .subcategory-block button:hover {
+        background-color: white;
+        color: black;
+    }

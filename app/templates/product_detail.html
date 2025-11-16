@@ -1,4 +1,4 @@
-﻿{# 
+﻿{#
     Product detail page template.
     - Displays main product image, gallery, details, and description.
     - Includes quantity controls and "Add to Cart" form.
@@ -19,26 +19,32 @@
     <!-- Product Image & Gallery -->
     <div class="product-detail-container">
         <div class="product-detail-left">
-            {# Main product image: first image in image_gallery #}
-            {% set main_img = product.image_gallery[0] if product.image_gallery else None %}
+            {# Main product image: first image in image_gallery, fallback to image_file if gallery is empty #}
+            {% set main_img = product.image_gallery[0] if product.image_gallery else product.image_file %}
             {% if main_img %}
-                {% if main_img.startswith('http') %}
-                    <img id="mainProductImg" src="{{ main_img }}" class="product-detail-main-img" alt="{{ product.name }}">
-                {% else %}
-                    <img id="mainProductImg" src="{{ url_for('static', filename='images/' ~ main_img) }}" class="product-detail-main-img" alt="{{ product.name }}">
-                {% endif %}
+            {% if main_img.startswith('http') %}
+            <img id="mainProductImg" src="{{ main_img }}" class="product-detail-main-img" alt="{{ product.name }}">
             {% else %}
-                <img id="mainProductImg" src="{{ url_for('static', filename='images/placeholder.png') }}" class="product-detail-main-img" alt="No image">
+            <img id="mainProductImg" src="{{ url_for('static', filename='images/' ~ main_img) }}" class="product-detail-main-img" alt="{{ product.name }}">
+            {% endif %}
+            {% else %}
+            <img id="mainProductImg" src="{{ url_for('static', filename='images/placeholder.png') }}" class="product-detail-main-img" alt="No image">
             {% endif %}
             <div class="product-gallery">
                 {% if product.image_gallery %}
-                    {% for img in product.image_gallery %}
-                        {% if img.startswith('http') %}
-                            <img src="{{ img }}" class="product-gallery-img" alt="Gallery image" data-img="{{ img }}">
-                        {% else %}
-                            <img src="{{ url_for('static', filename='images/' ~ img) }}" class="product-gallery-img" alt="Gallery image" data-img="{{ url_for('static', filename='images/' ~ img) }}">
-                        {% endif %}
-                    {% endfor %}
+                {% for img in product.image_gallery %}
+                {% if img.startswith('http') %}
+                <img src="{{ img }}" class="product-gallery-img" alt="Gallery image" data-img="{{ img }}">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/' ~ img) }}" class="product-gallery-img" alt="Gallery image" data-img="{{ url_for('static', filename='images/' ~ img) }}">
+                {% endif %}
+                {% endfor %}
+                {% elif product.image_file %}
+                {% if product.image_file.startswith('http') %}
+                <img src="{{ product.image_file }}" class="product-gallery-img" alt="Gallery image" data-img="{{ product.image_file }}">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/' ~ product.image_file) }}" class="product-gallery-img" alt="Gallery image" data-img="{{ url_for('static', filename='images/' ~ product.image_file) }}">
+                {% endif %}
                 {% endif %}
             </div>
         </div>
@@ -76,16 +82,29 @@
         <div class="may-also-like-row">
             {# Render recommended products with image, name, price, and add button #}
             {% for rec in recommendations %}
-                {% if rec.image_gallery and rec.image_gallery[0].startswith('http') %}
-                    <img src="{{ rec.image_gallery[0] }}" alt="{{ rec.name }}">
-                {% elif rec.image_gallery %}
-                    <img src="{{ url_for('static', filename='images/' ~ rec.image_gallery[0]) }}" alt="{{ rec.name }}">
+            {% set rec_product = rec.product %}
+            {% set rec_campus_product = rec.campus_product %}
+            {% set rec_img = rec_product.image_gallery[0] if rec_product.image_gallery else rec_product.image_file %}
+            <div class="product-recommend-card">
+                {% if rec_img %}
+                {% if rec_img.startswith('http') %}
+                <img src="{{ rec_img }}" alt="{{ rec_product.name }}">
                 {% else %}
-                    <img src="{{ url_for('static', filename='images/placeholder.png') }}" alt="No image">
+                <img src="{{ url_for('static', filename='images/' ~ rec_img) }}" alt="{{ rec_product.name }}">
                 {% endif %}
-                <div class="card-title">{{ rec.name }}</div>
-                <div class="card-text">${{ "%.2f"|format(rec.price) }}</div>
+                {% else %}
+                <img src="{{ url_for('static', filename='images/placeholder.png') }}" alt="No image">
+                {% endif %}
+                <div class="card-title">{{ rec_product.name }}</div>
+                <div class="card-text">
+                    {% if rec_campus_product %}
+                    ${{ "%.2f"|format(rec_campus_product.price) }}
+                    {% else %}
+                    Not available
+                    {% endif %}
+                </div>
                 <button class="btn">Add</button>
+            </div>
             {% endfor %}
         </div>
     </div>

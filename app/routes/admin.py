@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, render_template
+from flask import Blueprint, jsonify, request, render_template, session, redirect, url_for
 from app.utils import require_clearance
 from app.utils import *
 from app.models.user import User  
@@ -11,7 +11,6 @@ from app.models.category import SubCategory
 from collections import Counter
 from datetime import datetime, timedelta
 from app import db
-
 
 # Blueprint for admin-related routes
 admin = Blueprint("admin", __name__)
@@ -136,7 +135,6 @@ def dashboard_request():
         print("ERROR /dashboard_request:", ex)
         return jsonify({"error": "Internal server error"}), 500
 
-
 @admin.route("/orders_request", methods=["POST"])
 def orders_request():
     try:
@@ -181,7 +179,6 @@ def orders_request():
     except Exception as ex:
         print("ERROR /orders_request:", ex)
         return jsonify({"error": "Internal server error"}), 500
-
 
 @admin.route("/products_request", methods=["POST"])
 def products_request():
@@ -285,7 +282,6 @@ def search_user():
         for user in users
     ]
     return jsonify(user_list)
-
 
 @admin.route("/admin/add_user", methods=["GET", "POST"])
 @require_clearance(2)
@@ -554,3 +550,186 @@ def update_product():
     except Exception as e:
         db.session.rollback()
         return jsonify({"success": False, "message": str(e)}), 500
+
+
+# =========================
+# NEW ROUTE FOR ADD PRODUCT
+# =========================
+@admin.route("/add_product", methods=["POST"])
+def add_product():
+    import os
+    import json
+    from werkzeug.utils import secure_filename
+
+    name = request.form.get('name', '').strip()
+    description = request.form.get('description', '').strip()
+    price = request.form.get('price', '').strip()
+    brand = request.form.get('brand', '').strip()
+    category_name = request.form.get('category', '').strip()
+    images = request.files.getlist('images')
+    category_id = request.form.get('category_id', '').strip()
+    sub_category_id = request.form.get('sub_category_id', '').strip()
+
+    
+
+# Validate
+    if not name or not description or not price or not category_id or not sub_category_id:
+       return jsonify({"success": False, "message": "Missing required fields"}), 400
+
+    category = Category.query.get(category_id)
+    sub_category = SubCategory.query.get(sub_category_id)
+    if not category or not sub_category:
+        return jsonify({"success": False, "message": "Invalid category or sub-category"}), 400
+
+
+    try:
+        price = float(price)
+    except ValueError:
+        return jsonify({"success": False, "message": "Invalid price"}), 400
+
+    # Find or create category and subcategory
+    category = Category.query.get(category_id)
+    sub_category = SubCategory.query.get(sub_category_id)
+    if not category or not sub_category:
+        return jsonify({"success": False, "message": "Invalid category or sub-category"}), 400
+
+
+    # Save images to disk and collect filenames
+    image_filenames = []
+    for image in images:
+        if image and image.filename:
+            filename = secure_filename(image.filename)
+            save_path = os.path.join('app', 'static', 'images', filename)
+            image.save(save_path)
+            image_filenames.append(filename)
+
+    # Save product (sku removed)
+    product = Product(
+        name=name,
+        brand=brand,
+        description=description,
+        sub_category_id=sub_category.id,
+        image_gallery=image_filenames,  # Store filenames as JSON array
+    )
+    db.session.add(product)
+    db.session.flush()
+
+    # Get campus from session
+    campus_name = session.get('campus')
+    campus = Campus.query.filter_by(name=campus_name).first()
+    if not campus:
+        campus = Campus(name=campus_name)
+        db.session.add(campus)
+        db.session.flush()
+
+    campus_product = CampusProduct(
+        campus_id=campus.id,
+        product_id=product.id,
+        price=price,
+        campus_quantity=0,
+        spa_quantity=0
+    )
+    db.session.add(campus_product)
+    db.session.commit()
+
+    return jsonify({"success": True, "message": "Product added!", "images_saved": len(image_filenames)})
+
+@admin.route("/get_categories_subcategories", methods=["GET"])
+def get_categories_subcategories():
+    categories = Category.query.all()
+    sub_categories = SubCategory.query.all()
+    return jsonify({
+        "categories": [
+            {"id": c.id, "name": c.name} for c in categories
+        ],
+        "sub_categories": [
+            {"id": sc.id, "name": sc.name, "category_id": sc.category_id} for sc in sub_categories
+        ]
+    })
+admin_bp = Blueprint('admin', __name__)
+
+# --- CATEGORY ROUTES ---
+
+@admin_bp.route('/categories', methods=['GET'])
+def get_categories():
+    categories = Category.query.all()
+    return jsonify([{'id': c.id, 'name': c.name} for c in categories])
+
+@admin_bp.route('/categories', methods=['POST'])
+def add_category():
+    data = request.get_json()
+    name = data.get('name')
+    if not name:
+        return jsonify({'error': 'Name required'}), 400
+    if Category.query.filter_by(name=name).first():
+        return jsonify({'error': 'Category already exists'}), 400
+    category = Category(name=name)
+    db.session.add(category)
+    db.session.commit()
+    return jsonify({'id': category.id, 'name': category.name}), 201
+
+# --- SUBCATEGORY ROUTES ---
+
+@admin_bp.route('/subcategories', methods=['GET'])
+def get_subcategories():
+    subcategories = SubCategory.query.all()
+    return jsonify([
+        {'id': sc.id, 'name': sc.name, 'category_id': sc.category_id}
+        for sc in subcategories
+    ])
+
+@admin_bp.route('/subcategories', methods=['POST'])
+def add_subcategory():
+    data = request.get_json()
+    name = data.get('name')
+    category_id = data.get('category_id')
+    if not name or not category_id:
+        return jsonify({'error': 'Name and category_id required'}), 400
+    if SubCategory.query.filter_by(name=name, category_id=category_id).first():
+        return jsonify({'error': 'SubCategory already exists'}), 400
+    subcategory = SubCategory(name=name, category_id=category_id)
+    db.session.add(subcategory)
+    db.session.commit()
+    return jsonify({'id': subcategory.id, 'name': subcategory.name, 'category_id': subcategory.category_id}), 201
+
+# --- BRAND LOGIC (as string) ---
+
+@admin_bp.route('/brands', methods=['GET'])
+def get_brands():
+    brands = db.session.query(Product.brand).distinct().filter(Product.brand.isnot(None)).all()
+    brand_list = [b[0] for b in brands if b[0]]
+    return jsonify(brand_list)
+
+@admin_bp.route('/brands', methods=['POST'])
+def add_brand():
+    data = request.get_json()
+    name = data.get('name')
+    if not name:
+        return jsonify({'error': 'Name required'}), 400
+    # No brand table, so just return success; actual brand is added when a product is created
+    return jsonify({'name': name}), 201
+
+# --- PRODUCT ROUTE ---
+
+@admin_bp.route('/products', methods=['POST'])
+def add_product():
+    data = request.get_json()
+    name = data.get('name')
+    brand = data.get('brand')
+    sub_category_id = data.get('sub_category_id')
+    description = data.get('description')
+    image_gallery = data.get('image_gallery')
+
+    if not all([name, brand, sub_category_id]):
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    product = Product(
+        name=name,
+        brand=brand,
+        sub_category_id=sub_category_id,
+        description=description,
+        image_gallery=image_gallery
+    )
+    db.session.add(product)
+    db.session.commit()
+    return jsonify({'id': product.id, 'name': product.name}), 201

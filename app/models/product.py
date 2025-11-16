@@ -14,6 +14,7 @@ class Product(db.Model):
     sub_category_id = db.Column(db.Integer, db.ForeignKey('sub_category.id'), nullable=False)
     description = db.Column(db.Text, nullable=True)
     image_gallery = db.Column(db.JSON, nullable=True)
+   
 
 
     def __repr__(self):
