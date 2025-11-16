@@ -1,4 +1,4 @@
-const API_URL = "https://elite-emporium.onrender.com";
+
 window.addEventListener('load', function () {
 });
 

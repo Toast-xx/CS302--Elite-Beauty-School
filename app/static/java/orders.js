@@ -1,4 +1,4 @@
-const API_URL = "https://elite-emporium.onrender.com";
+
 function ordersRequest()
 {
     const start_date = document.getElementById("startdate").value;

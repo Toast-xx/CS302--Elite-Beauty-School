@@ -1,5 +1,4 @@
 
-const API_URL = "https://elite-emporium.onrender.com";
 selectedProduct = null;
 
 // --- Image upload logic START ---
