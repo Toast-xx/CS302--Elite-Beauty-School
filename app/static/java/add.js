@@ -1,3 +1,5 @@
+
+const API_URL = "https://elite-emporium.onrender.com";
 selectedProduct = null;
 
 // --- Image upload logic START ---
@@ -137,7 +139,7 @@ function saveProduct() {
             updatedFields.sub_category_id = subCategoryId;
             updatedFields.id = selectedProduct.id;
 
-            fetch("/update_product", {
+            fetch(`${API_URL}/update_product`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedFields)
@@ -166,7 +168,7 @@ function saveProduct() {
             formData.append('images', file);
         });
 
-        fetch("/add_product", {
+        fetch(`${API_URL}/add_product`, {
             method: "POST",
             body: formData
         })
@@ -193,7 +195,7 @@ let categories = [];
 let subCategories = [];
 
 function fetchCategoriesAndSubCategories() {
-    fetch('/get_categories_subcategories')
+    fetch(`${API_URL}/get_categories_subcategories`)
         .then(res => res.json())
         .then(data => {
             categories = data.categories;
@@ -266,7 +268,7 @@ function onSubCategoryChange() {
 function addCategory() {
     const name = document.getElementById('newCategoryInput').value.trim();
     if (!name) return alert("Enter a category name.");
-    fetch('/admin/add_category', {
+    fetch(`${API_URL}/admin/add_category`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name })
@@ -289,7 +291,7 @@ function addSubCategory() {
     const name = document.getElementById('newSubCategoryInput').value.trim();
     const categoryId = document.getElementById('addCategorySelect').value;
     if (!name || !categoryId || categoryId === 'add_new') return alert("Select category and enter sub-category name.");
-    fetch('/admin/add_subcategory', {
+    fetch(`${API_URL}/admin/add_subcategory`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, category_id: categoryId })

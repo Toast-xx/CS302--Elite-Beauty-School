@@ -1,4 +1,5 @@
-window.addEventListener('load', function() {
+const API_URL = "https://elite-emporium.onrender.com";
+window.addEventListener('load', function () {
     initDragAndDrop();
 });
 function overlay(id)
@@ -114,7 +115,7 @@ function deleteProduct() {
     if (!confirm("Are you sure you want to delete this product?")) {
         return;
     }
-    fetch("/delete_product", {
+    fetch(`${API_URL}/delete_product`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

@@ -4,7 +4,7 @@
 // - Creates and manages an autocomplete dropdown for product search input.
 // - Integrates with Flask backend endpoints for product filtering and search suggestions.
 // - Attaches event listeners for instant filtering and search interactivity.
-
+const API_URL = "https://elite-emporium.onrender.com";
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
     const productListContainer = document.querySelector('.product-list');
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         const params = new URLSearchParams(new FormData(form));
         params.append('ajax', '1');
-        fetch(`/store/?${params.toString()}`)
+        fetch(`${API_URL}/store/?${params.toString()}`)
             .then(response => response.text())
             .then(html => {
                 productListContainer.innerHTML = html;
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         const params = new URLSearchParams(new FormData(form));
         params.append('ajax', '1');
-        fetch(`/store/?${params.toString()}`)
+        fetch(`${API_URL}/store/?${params.toString()}`)
             .then(response => response.text())
             .then(html => {
                 productListContainer.innerHTML = html;
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
             dropdown.innerHTML = '';
             return;
         }
-        fetch(`/store/search_suggestions?q=${encodeURIComponent(query)}`)
+        fetch(`${API_URL}/store/search_suggestions?q=${encodeURIComponent(query)}`)
             .then(res => res.json())
             .then(data => {
                 if (data.length === 0) {

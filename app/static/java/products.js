@@ -1,4 +1,6 @@
-window.addEventListener('load', function() 
+
+const API_URL = "https://elite-emporium.onrender.com";
+window.addEventListener('load', function () 
 {
     const admin=document.getElementById('superstatus');
     const campusSelect = document.getElementById('campus2');
@@ -19,7 +21,7 @@ function productsRequest()
         document.getElementById('campus-name').textContent=temp;
         campus=temp;
     }
-    fetch("/products_request", {
+    fetch(`${API_URL}/products_request`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ campus })
