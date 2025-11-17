@@ -103,11 +103,12 @@ def dashboard_request():
 
         for idx, (wk_start, wk_end) in enumerate(week_ranges):
             for order in orders:
-                if wk_start <= order.created_at <= wk_end and order.status in status_list:
+                order_date = order.created_at.date()
+                if wk_start.date() <= order_date <= wk_end.date() and order.status in status_list:
                     diagram_data[order.status][idx] += 1
 
-        week_labels = [f"{w[0].strftime('%b %d')} - {w[1].strftime('%b %d')}" for w in week_ranges]
 
+        week_labels = [f"{w[0].strftime('%b %d')} - {w[1].strftime('%b %d')}" for w in week_ranges]
         colors_bar = {
             "Completed": "#59a14f",
             "Pending": "#f28e2b",
