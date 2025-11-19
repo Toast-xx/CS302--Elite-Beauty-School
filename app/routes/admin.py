@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 from app import db
 from sqlalchemy.exc import IntegrityError
 
-API_URL = "https://elite-emporium.onrender.com"
+API_URL = "https://cs-302-elite-beauty-school.vercel.app/"
 
 # Blueprint for admin-related routes
 admin = Blueprint("admin", __name__)
