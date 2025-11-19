@@ -20,7 +20,7 @@ import logging
 
 
 
-API_URL = "https://elite-emporium.onrender.com"
+API_URL = "https://cs-302-elite-beauty-school.vercel.app/"
 
 # Blueprint for cart-related routes
 cart_bp = Blueprint('cart', __name__)

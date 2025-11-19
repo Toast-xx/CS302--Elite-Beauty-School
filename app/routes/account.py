@@ -13,7 +13,7 @@ from app.utils.email_handler import validate_new_email
 from app.utils.password_handler import hash_password
 from app import db
 
-API_URL = "https://elite-emporium.onrender.com"
+API_URL = "https://cs-302-elite-beauty-school.vercel.app/"
 
 account_bp = Blueprint('account', __name__)
 
