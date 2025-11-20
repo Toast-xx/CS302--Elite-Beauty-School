@@ -58,5 +58,5 @@ def checkout():
         subtotal=subtotal,
         shipping=shipping,
         total=subtotal + shipping,
-        stripe_public_key=os.getenv("STRIPE_PUBLIC_KEY")
+        stripe_api_key=os.getenv("STRIPE_API_KEY")
     )

@@ -20,7 +20,7 @@ import logging
 
 
 
-API_URL = "https://elite-emporium.onrender.com"
+API_URL = "https://cs-302-elite-beauty-school.vercel.app/"
 
 # Blueprint for cart-related routes
 cart_bp = Blueprint('cart', __name__)
@@ -162,12 +162,15 @@ def complete_order():
             db.session.delete(item)
         db.session.commit()
         logging.info(f"Order {order.id} created for user {current_user.id}")
+        print(f"Order {order.id} created. Attempting to send confirmation email to {current_user.email}")
 
         # Try to send confirmation email
         try:
             send_order_confirmation_email(current_user.email, order)
+            print("Confirmation email sent successfully.")
         except Exception as mail_error:
             logging.error(f"Order {order.id}: Email sending failed: {mail_error}")
+            print(f"Order {order.id}: Email sending failed: {mail_error}")
             flash("Order placed, but confirmation email could not be sent.", "warning")
 
         # Always render the order success page after a successful order

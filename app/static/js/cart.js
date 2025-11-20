@@ -4,7 +4,7 @@
 // - Integrates with Flask backend endpoints for cart operations.
 // - Attaches event listeners to quantity and remove buttons for interactive cart management.
 
-const API_URL = "https://elite-emporium.onrender.com";
+const API_URL = "https://cs-302-elite-beauty-school.vercel.app/";
 function updateQty(campusProductId, delta) {
     // Send AJAX request to update item quantity in the cart
     fetch(`${API_URL}/cart/update_quantity/${campusProductId}`, {
