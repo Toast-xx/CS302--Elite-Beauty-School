@@ -17,9 +17,9 @@ from ..models import db, Cart, CartItem, CampusProduct
 from ..utils import *
 from decimal import Decimal
 import logging
+import os
 
-
-
+pdfshift_api_key = os.getenv('PDFSHIFT_API_KEY')
 API_URL = "https://cs302-elite-beauty-school.onrender.com"
 
 # Blueprint for cart-related routes

@@ -6,6 +6,8 @@ PDFs include product images, quantities, prices, shipping, and total.
 from flask_mail import Message
 from app import mail
 from jinja2 import Template
+import requests
+import os
 
 def send_order_confirmation_email(recipient_email, order):
     from weasyprint import HTML
@@ -22,9 +24,8 @@ def send_order_confirmation_email(recipient_email, order):
     mail.send(msg)
 
 def generate_order_pdf(order):
-    from weasyprint import HTML
     """
-    Generates a PDF invoice for the given order, including product images, shipping, and total.
+    Generates a PDF invoice for the given order using PDFShift.
     Args:
         order (Order): The order object.
     Returns:
@@ -85,8 +86,19 @@ def generate_order_pdf(order):
     </html>
     """
     # Render HTML with Jinja2
+    from jinja2 import Template
     template = Template(html_template)
     html_content = template.render(order=order)
-    # Generate PDF from HTML
-    pdf_bytes = HTML(string=html_content).write_pdf()
-    return pdf_bytes
+
+    # Get API key from environment variable
+    api_key = os.getenv('PDFSHIFT_API_KEY')
+    print("Loaded PDFShift API key:", api_key)
+    response = requests.post(
+        'https://api.pdfshift.io/v3/convert/pdf',
+         headers={ 'X-API-Key': api_key },
+        json={'source': html_content}
+    )
+    if response.status_code == 200:
+        return response.content  # PDF bytes
+    else:
+        raise Exception(f"PDFShift error: {response.text}")

@@ -10,5 +10,5 @@ SQLAlchemy~=2.0.43
 stripe~=13.0.1
 flask-mail~=0.9.1
 gunicorn
-weasyprint
+requests
 flask-cors
