@@ -10,7 +10,7 @@ import requests
 import os
 
 def send_order_confirmation_email(recipient_email, order):
-    from weasyprint import HTML
+    
     """
     Sends an order confirmation email with a PDF invoice to the recipient.
     Args:
