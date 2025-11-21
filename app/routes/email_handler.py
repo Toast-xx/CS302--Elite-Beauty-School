@@ -1,37 +1,43 @@
-"""
-Handles sending order confirmation emails with PDF invoice attachments.
-PDFs include product images, quantities, prices, shipping, and total.
-"""
-
-from flask_mail import Message
-from app import mail
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition
+import base64
 from jinja2 import Template
 import requests
-import os
 
 def send_order_confirmation_email(recipient_email, order):
-    
     """
     Sends an order confirmation email with a PDF invoice to the recipient.
     Args:
         recipient_email (str): The recipient's email address.
         order (Order): The order object containing order details.
     """
-    msg = Message("Your Order Confirmation", recipients=[recipient_email])
-    msg.body = "Thank you for your order! Please find your order details attached."
     pdf_data = generate_order_pdf(order)
-    msg.attach("order_confirmation.pdf", "application/pdf", pdf_data)
-    mail.send(msg)
+    encoded_pdf = base64.b64encode(pdf_data).decode()
+
+    message = Mail(
+        from_email=os.environ.get('MAIL_DEFAULT_SENDER'),
+        to_emails=recipient_email,
+        subject="Your Order Confirmation",
+        html_content="Thank you for your order! Please find your order details attached."
+    )
+    attachment = Attachment(
+        FileContent(encoded_pdf),
+        FileName("order_confirmation.pdf"),
+        FileType("application/pdf"),
+        Disposition("attachment")
+    )
+    message.attachment = attachment
+
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+        print(f"SendGrid response: {response.status_code}")
+    except Exception as e:
+        print(f"SendGrid error: {e}")
 
 def generate_order_pdf(order):
-    """
-    Generates a PDF invoice for the given order using PDFShift.
-    Args:
-        order (Order): The order object.
-    Returns:
-        bytes: The PDF file as bytes.
-    """
-    # HTML template for the order invoice
+    # ... (your existing PDF generation code remains unchanged)
     html_template = """
     <html>
     <head>
@@ -85,17 +91,14 @@ def generate_order_pdf(order):
     </body>
     </html>
     """
-    # Render HTML with Jinja2
-    from jinja2 import Template
     template = Template(html_template)
     html_content = template.render(order=order)
 
-    # Get API key from environment variable
     api_key = os.getenv('PDFSHIFT_API_KEY')
     print("Loaded PDFShift API key:", api_key)
     response = requests.post(
         'https://api.pdfshift.io/v3/convert/pdf',
-         headers={ 'X-API-Key': api_key },
+        headers={ 'X-API-Key': api_key },
         json={'source': html_content}
     )
     if response.status_code == 200:
