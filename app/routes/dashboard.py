@@ -9,7 +9,7 @@ from flask_login import login_required
 
 
 
-API_URL = "https://cs-302-elite-beauty-school.vercel.app/"
+API_URL = "https://cs302-elite-beauty-school.onrender.com"
 
 dashboard_bp = Blueprint('dashboard', __name__)
 

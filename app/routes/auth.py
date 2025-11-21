@@ -6,7 +6,7 @@ from ..utils.email_handler import is_valid_email
 from ..utils.password_handler import hash_password, verify_password
 
 
-API_URL = "https://cs-302-elite-beauty-school.vercel.app/"
+API_URL = "https://cs302-elite-beauty-school.onrender.com"
 
 # Blueprint for authentication routes
 auth = Blueprint("auth", __name__)

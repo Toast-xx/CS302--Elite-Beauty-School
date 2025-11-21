@@ -13,7 +13,7 @@ from sqlalchemy.orm import joinedload
 
 
 
-API_URL = "https://cs-302-elite-beauty-school.vercel.app/"
+API_URL = "https://cs302-elite-beauty-school.onrender.com"
 
 order_history_bp = Blueprint('order_history', __name__)
 
