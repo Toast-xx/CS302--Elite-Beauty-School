@@ -21,5 +21,5 @@ class CampusProduct(db.Model):
     price = db.Column(db.Numeric(10, 2), nullable=False)
     campus_quantity = db.Column(db.Integer, default=0)  # For online purchases
     spa_quantity = db.Column(db.Integer, default=0)     # For internal SPA/training use
-
+    is_active = db.Column(db.Boolean, default=True)
     product = db.relationship("Product", backref="campus_products")

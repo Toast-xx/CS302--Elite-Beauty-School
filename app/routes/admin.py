@@ -434,7 +434,7 @@ def delete_product():
     if not campus_product:
         return jsonify({"success": False, "message": "Product not found"})
 
-    db.session.delete(campus_product)
+    campus_product.is_active = False
     db.session.commit()
     return jsonify({"success": True})
 
