@@ -193,7 +193,7 @@ def products_request():
     if campus and campus not in ["Super Admin", "All"]:
         query = query.filter(Campus.name == campus)
         
-    campus_products = query.all()
+    campus_products = query.filter(CampusProduct.is_active == True).all()
     
     print("All CampusProducts:", campus_products)
     product_list = [
@@ -224,7 +224,7 @@ def inventory_request():
     if campus and campus not in ["Super Admin", "All"]:
         query = query.filter(Campus.name == campus)
 
-    campus_products = query.all()
+    campus_products = query.filter(CampusProduct.is_active == True).all()
 
     inventory_list = [
         {
@@ -369,7 +369,7 @@ def search_products():
         if campus_name and campus_name not in ["All", "Super Admin"]:
             campus_products = campus_products.filter(Campus.name == campus_name)
 
-        campus_products = campus_products.all()
+        campus_products = campus_products.filter(CampusProduct.is_active == True).all()
 
         product_list = [
             {
