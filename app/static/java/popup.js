@@ -69,7 +69,7 @@ function handleFiles(files) {
   // Only allow PDF files
   const file = files[0];
   if (file && !['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-  alert('Only JPG, PNG, and WEBP files are allowed.');
+  alert('Only JPG, PNG & Webp files are allowed.');
   return;
   }
   file_data = file;
