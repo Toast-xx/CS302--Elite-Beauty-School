@@ -1,17 +1,17 @@
-.add-container
-{
+.add-container {
     display: none;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     justify-content: center;
     align-items: center;
+    overflow-y: auto;
 }
-.add-container .box
-{
-    width: 840px;
-    height: 730px;
-    background-color: white;
-}
+    .add-container .box {
+        width: 840px;
+        background-color: white;
+        max-height: 90vh; /* Limit height to viewport */
+        
+    }
 .box .bottom
 {
     display: flex;
@@ -23,7 +23,7 @@
 {
     display: block;
     width: calc(100% - 60px);
-    height: 560px;
+    
     margin-left: 30px;
 }
 .box .middle .name
