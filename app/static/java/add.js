@@ -168,10 +168,9 @@ function saveProduct() {
             formData.append('images', file);
         });
         // --- This block for multi-campus selection ---
-        const campusSelect = document.getElementById('campusMultiSelect');
-        if (campusSelect) {
-            const selectedCampusIds = Array.from(campusSelect.selectedOptions).map(opt => opt.value);
-            selectedCampusIds.forEach(id => formData.append('campus_ids', id));
+        const campusCheckboxes = document.querySelectorAll('.campus-checkbox:checked');
+        if (campusCheckboxes.length > 0) {
+            campusCheckboxes.forEach(cb => formData.append('campus_ids', cb.value));
         }
 
         fetch(`${API_URL}/add_product`, {
