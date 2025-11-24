@@ -662,19 +662,12 @@ def add_product():
     # Get campus from session
     else:
      campus_name = session.get('campus')
-    campus = Campus.query.filter_by(name=campus_name).first()
-    if not campus:
+     campus = Campus.query.filter_by(name=campus_name).first()
+     if not campus:
         campus = Campus(name=campus_name)
         db.session.add(campus)
         db.session.flush()
 
-    campus_product = CampusProduct(
-        campus_id=campus.id,
-        product_id=product.id,
-        price=price,
-        campus_quantity=0,
-        spa_quantity=0
-    )
     db.session.add(campus_product)
     db.session.commit()
 
