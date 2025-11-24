@@ -52,13 +52,29 @@
                 </div>
             </div>
         </div>
+                {% if session.get('clearance_level') == 3 %}
+                <div class="line">
+                    <div class="input-block">
+                        <label>Select Campuses</label>
+                        <div style="display: flex; gap: 30px; margin-top: 8px; flex-wrap: wrap;">
+                            {% for campus in campuses %}
+                            <label>
+                                <input type="checkbox" class="campus-checkbox" value="{{ campus.id }}">
+                                {{ campus.name }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            
+            {% endif %}
 
 
-        <div class="bottom bottom-actions">
-            <button class="button" onclick="saveProduct()" id="product-button">Add</button>
-            <button class="button" onclick="section('Dashboard')">Close</button>
-        </div>
-    </div>
+                <div class="bottom bottom-actions">
+                    <button class="button" onclick="saveProduct()" id="product-button">Add</button>
+                    <button class="button" onclick="section('Dashboard')">Close</button>
+                </div>
+            </div>
 </div>
 
 

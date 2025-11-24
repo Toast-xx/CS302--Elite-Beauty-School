@@ -160,3 +160,14 @@
         background-color: white;
         color: black;
     }
+.input-block label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.input[multiple] {
+    min-height: 100px;
+    resize: vertical;
+    padding: 8px;
+}

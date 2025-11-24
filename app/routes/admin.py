@@ -31,9 +31,10 @@ def admin_base():
     clearance = session.get('clearance_level')
     banner = "Dashboard"
     campus= session.get('campus')
+    campuses = Campus.query.all()
     if clearance != 2:
         return redirect("/")
-    return render_template("admin_base.html", clearance=clearance, banner=banner, campus=campus, api_url=API_URL)
+    return render_template("admin_base.html", clearance=clearance, banner=banner, campus=campus, campuses=campuses, api_url=API_URL)
 
 @admin.route("/superadmin_dashboard")
 @require_clearance(3)
@@ -42,7 +43,8 @@ def superadmin_dashboard():
     banner = "Dashboard"
     if clearance != 3:
         return redirect("/")
-    return render_template("admin_base.html", clearance=clearance, banner=banner, campus="Super Admin", api_url=API_URL)
+    campuses = Campus.query.all()
+    return render_template("admin_base.html", clearance=clearance, banner=banner, campus="Super Admin", campuses=campuses, api_url=API_URL)
 
 @admin.route("/dashboard_request", methods=["POST"])
 def dashboard_request():
@@ -594,7 +596,8 @@ def add_product():
     category_id = request.form.get('category_id', '').strip()
     sub_category_id = request.form.get('sub_category_id', '').strip()
 
-    
+    # Get clearance level from session
+    clearance = session.get('clearance_level')
 
 # Validate
     if not name or not description or not price or not category_id or not sub_category_id:
@@ -619,6 +622,7 @@ def add_product():
 
 
     # Save images to disk and collect filenames
+    images = request.files.getlist('images')
     image_filenames = []
     for image in images:
         if image and image.filename:
@@ -638,8 +642,26 @@ def add_product():
     db.session.add(product)
     db.session.flush()
 
+    if clearance == 3:  # Superadmin: multi-campus
+        campus_ids = request.form.getlist('campus_ids')
+        if not campus_ids:
+            return jsonify({"success": False, "message": "Select at least one campus."}), 400
+        for campus_id in campus_ids:
+            campus = Campus.query.get(campus_id)
+            if not campus:
+                continue
+            campus_product = CampusProduct(
+                campus_id=campus.id,
+                product_id=product.id,
+                price=price,
+                campus_quantity=0,
+                spa_quantity=0
+            )
+            db.session.add(campus_product)
+
     # Get campus from session
-    campus_name = session.get('campus')
+    else:
+     campus_name = session.get('campus')
     campus = Campus.query.filter_by(name=campus_name).first()
     if not campus:
         campus = Campus(name=campus_name)

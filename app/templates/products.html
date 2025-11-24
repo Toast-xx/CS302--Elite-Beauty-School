@@ -10,16 +10,17 @@
   </div>
   <div class="list" id="products_container">
     {% for product in products %}
-        <div class="data">
-          <img style="width: 140px; height: 110px;" src="{{ url_for('static', filename='images/placeholder1.jpg') }}">
+      <div class="data">
+          <img style="width: 140px; height: 110px;"
+               src="{{ url_for('static', filename='images/' ~ product.image) if product.image else url_for('static', filename='images/placeholder1.jpg') }}">
           <div>{{ product.name }}</div>
           <div>{{ product.price }}%</div>
           <div>{{ product.campus }}</div>
           <div class="buttons">
-            <div class="edit" onclick="editProduct('{{product.id}}')">Edit</div>
-            <div class="delete" onclick="overlay('delete');deleteID('{{product.id}}')">Delete</div>
+              <div class="edit" onclick="editProduct('{{product.id}}')">Edit</div>
+              <div class="delete" onclick="overlay('delete');deleteID('{{product.id}}')">Delete</div>
           </div>
-        </div>
+      </div>
       {% endfor %}
   </div>
 </div>

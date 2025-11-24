@@ -167,6 +167,12 @@ function saveProduct() {
         selectedImages.forEach((file) => {
             formData.append('images', file);
         });
+        // --- This block for multi-campus selection ---
+        const campusSelect = document.getElementById('campusMultiSelect');
+        if (campusSelect) {
+            const selectedCampusIds = Array.from(campusSelect.selectedOptions).map(opt => opt.value);
+            selectedCampusIds.forEach(id => formData.append('campus_ids', id));
+        }
 
         fetch(`${API_URL}/add_product`, {
             method: "POST",
