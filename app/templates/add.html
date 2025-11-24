@@ -58,7 +58,7 @@
                         <div style="display: flex; gap: 30px; margin-top: 8px; flex-wrap: wrap;">
                             {% for campus in campuses %}
                             <label>
-                                <input type="checkbox" class="campus-checkbox" value="{{ campus.id }}">
+                                <input type="checkbox" class="campus-checkbox" name="campus_ids" value="{{ campus.id }}">
                                 {{ campus.name }}
                             </label>
                             {% endfor %}
