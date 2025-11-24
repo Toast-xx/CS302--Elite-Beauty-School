@@ -12,7 +12,7 @@
     {% for product in products %}
       <div class="data">
           <img style="width: 140px; height: 110px;"
-               src="{{ url_for('static', filename='images/' ~ product.image) if product.image else url_for('static', filename='images/placeholder1.jpg') }}">
+               src="{{url_for('static', filename='images/' ~ product.image)  }}">
           <div>{{ product.name }}</div>
           <div>{{ product.price }}%</div>
           <div>{{ product.campus }}</div>
