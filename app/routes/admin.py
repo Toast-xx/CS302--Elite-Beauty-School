@@ -637,7 +637,7 @@ def add_product():
         brand=brand,
         description=description,
         sub_category_id=sub_category.id,
-        image_gallery=image_filenames,  # Store filenames as JSON array
+        image_gallery=image_filenames # Store filenames as JSON array
     )
     db.session.add(product)
     db.session.flush()
