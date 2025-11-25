@@ -39,6 +39,14 @@ function updateProducts(data)
     container.innerHTML = "";
 
     data.forEach(product => {
+        let imgSrc = "/static/images/placeholder1.jpg";
+        if (item.image_gallery && item.image_gallery.length > 0) {
+            if (item.image_gallery[0].startsWith("http")) {
+                imgSrc = item.image_gallery[0];
+            } else {
+                imgSrc = `/admin/uploaded_image/${item.image_gallery[0]}`;
+            }
+        }
         const productStr = JSON.stringify(product).replace(/'/g, "&apos;");
         container.innerHTML += `
             <div class="data">
