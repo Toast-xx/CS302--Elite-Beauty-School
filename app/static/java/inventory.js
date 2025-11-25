@@ -45,13 +45,13 @@ function updateInventory(inventory,lowstock)
             if (inventory.image_gallery[0].startsWith("http")) {
                 imgSrc = inventory.image_gallery[0];
             } else {
-                imgSrc = `/admin/uploaded_image/${inventory.image_gallery[0]}`;
+                imgSrc =`/uploads/images/${inventory.image_gallery[0]}`;
             }
         }
         container.innerHTML += `
             <div class="data">
           <div style="align-items: center; display: flex;">
-            <img style="width: 140px; height: 110px; margin-right: 10px;" src="${imgSrc}" alt="${item.name}">
+            <img style="width: 140px; height: 110px; margin-right: 10px;" src="${imgSrc}" alt="${inventory.name}">
             <span>${ inventory.name }</span>
           </div>
           <div>${ inventory.id }</div>
