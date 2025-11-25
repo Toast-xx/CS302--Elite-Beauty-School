@@ -45,7 +45,7 @@ function updateProducts(data)
             if (product.image_gallery[0].startsWith("http")) {
                 imgSrc = product.image_gallery[0];
             } else {
-                imgSrc = `/uploads/images/${product.image_gallery[0]}`;
+                imgSrc = `/admin/uploaded_images/${product.image_gallery[0]}`;
             }
         }
        container.innerHTML += `

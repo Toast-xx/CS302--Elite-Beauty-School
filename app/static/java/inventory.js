@@ -45,7 +45,7 @@ function updateInventory(inventory,lowstock)
             if (inventory.image_gallery[0].startsWith("http")) {
                 imgSrc = inventory.image_gallery[0];
             } else {
-                imgSrc =`/uploads/images/${inventory.image_gallery[0]}`;
+                imgSrc =`/admin/uploaded_images/${inventory.image_gallery[0]}`;
             }
         }
         container.innerHTML += `
