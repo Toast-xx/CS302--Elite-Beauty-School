@@ -12,6 +12,7 @@ from collections import Counter
 from datetime import datetime, timedelta
 from app import db
 from sqlalchemy.exc import IntegrityError
+import os
 
 API_URL = "https://cs302-elite-beauty-school.onrender.com"
 
@@ -627,7 +628,8 @@ def add_product():
     for image in images:
         if image and image.filename:
             filename = secure_filename(image.filename)
-            save_path = os.path.join('app', 'static', 'images', filename)
+            save_path = os.path.join(current_app.root_path, 'uploads', 'images', filename)
+            print("Saving image to:", save_path)
             image.save(save_path)
             image_filenames.append(filename)
 
@@ -672,6 +674,15 @@ def add_product():
     db.session.commit()
 
     return jsonify({"success": True, "message": "Product added!", "images_saved": len(image_filenames)})
+
+# --- Add this route to serve uploaded images ---
+@admin.route('/uploads/images/<filename>')
+def uploaded_image(filename):
+    from flask import send_from_directory, current_app
+    return send_from_directory(
+        os.path.join(current_app.root_path, 'uploads', 'images'),
+        filename
+    )
 
 @admin.route("/get_categories_subcategories", methods=["GET"])
 def get_categories_subcategories():

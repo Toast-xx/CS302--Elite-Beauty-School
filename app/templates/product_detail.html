@@ -28,7 +28,7 @@
             {% if main_img.startswith('http') %}
             <img id="mainProductImg" src="{{ main_img }}" class="product-detail-main-img" alt="{{ product.name }}">
             {% else %}
-            <img id="mainProductImg" src="{{ url_for('static', filename='images/' ~ main_img) }}" class="product-detail-main-img" alt="{{ product.name }}">
+            <img id="mainProductImg" src="{{ url_for('admin.uploaded_image', filename=main_img) }}" class="product-detail-main-img" alt="{{ product.name }}">
             {% endif %}
             {% else %}
             <img id="mainProductImg" src="{{ url_for('static', filename='images/placeholder.png') }}" class="product-detail-main-img" alt="No image">
