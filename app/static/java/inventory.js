@@ -39,6 +39,7 @@ function updateInventory(inventory,lowstock)
     container.innerHTML = "";
 
     inventory.forEach(inventory => {
+        const inventoryStr = JSON.stringify(inventory).replace(/'/g, "&apos;");
         let imgSrc = "/static/images/placeholder1.jpg";
         if (item.image_gallery && item.image_gallery.length > 0) {
             if (item.image_gallery[0].startsWith("http")) {
@@ -47,11 +48,10 @@ function updateInventory(inventory,lowstock)
                 imgSrc = `/admin/uploaded_image/${item.image_gallery[0]}`;
             }
         }
-        const inventoryStr = JSON.stringify(inventory).replace(/'/g, "&apos;");
         container.innerHTML += `
             <div class="data">
           <div style="align-items: center; display: flex;">
-            <img style="width: 140px; height: 110px; margin-right: 10px;" src="{{ url_for('static', filename='images/placeholder1.jpg') }}">
+            <img style="width: 140px; height: 110px; margin-right: 10px;" src="${imgSrc}" alt="${item.name}">
             <span>${ inventory.name }</span>
           </div>
           <div>${ inventory.id }</div>
