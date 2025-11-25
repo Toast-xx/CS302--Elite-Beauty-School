@@ -41,11 +41,11 @@ function updateProducts(data)
     data.forEach(product => {
         const productStr = JSON.stringify(product).replace(/'/g, "&apos;");
         let imgSrc = "/static/images/placeholder1.jpg";
-        if (item.image_gallery && item.image_gallery.length > 0) {
-            if (item.image_gallery[0].startsWith("http")) {
-                imgSrc = item.image_gallery[0];
+        if (product.image_gallery && product.image_gallery.length > 0) {
+            if (product.image_gallery[0].startsWith("http")) {
+                imgSrc = product.image_gallery[0];
             } else {
-                imgSrc = `/admin/uploaded_image/${item.image_gallery[0]}`;
+                imgSrc = `/admin/uploaded_image/${product.image_gallery[0]}`;
             }
         }
        container.innerHTML += `
