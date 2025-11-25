@@ -39,14 +39,14 @@
                 {% if img.startswith('http') %}
                 <img src="{{ img }}" class="product-gallery-img" alt="Gallery image" data-img="{{ img }}">
                 {% else %}
-                <img src="{{ url_for('static', filename='images/' ~ img) }}" class="product-gallery-img" alt="Gallery image" data-img="{{ url_for('static', filename='images/' ~ img) }}">
+                <img src="{{ url_for('admin.uploaded_image', filename=img) }}" class="product-gallery-img" alt="Gallery image" data-img="{{ url_for('static', filename='images/' ~ img) }}">
                 {% endif %}
                 {% endfor %}
                 {% elif product.image_file %}
                 {% if product.image_file.startswith('http') %}
                 <img src="{{ product.image_file }}" class="product-gallery-img" alt="Gallery image" data-img="{{ product.image_file }}">
                 {% else %}
-                <img src="{{ url_for('static', filename='images/' ~ product.image_file) }}" class="product-gallery-img" alt="Gallery image" data-img="{{ url_for('static', filename='images/' ~ product.image_file) }}">
+                <img src="{{ url_for('admin.uploaded_image', filename=product.image_file) }}" class="product-gallery-img" alt="Gallery image" data-img="{{ url_for('static', filename='images/' ~ product.image_file) }}">
                 {% endif %}
                 {% endif %}
             </div>
@@ -93,7 +93,7 @@
                 {% if rec_img.startswith('http') %}
                 <img src="{{ rec_img }}" alt="{{ rec_product.name }}">
                 {% else %}
-                <img src="{{ url_for('static', filename='images/' ~ rec_img) }}" alt="{{ rec_product.name }}">
+                <img src="{{ url_for('admin.uploaded_image', filename=rec_img) }}" alt="{{ rec_product.name }}">
                 {% endif %}
                 {% else %}
                 <img src="{{ url_for('static', filename='images/placeholder.png') }}" alt="No image">
