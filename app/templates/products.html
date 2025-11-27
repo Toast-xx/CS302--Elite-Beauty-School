@@ -15,11 +15,10 @@
                src="{% if product.image_gallery and product.image_gallery[0].startswith('http') %}
               {{ product.image_gallery[0] }}
            {% elif product.image_gallery %}
-              {{ url_for('admin.serve_azure_image', filename=product.image_gallery[0]) }}
-               {% else %}
-              {{ url_for('static', filename='images/placeholder1.jpg') }}
-          {% endif %}"
-               alt="{{ product.name }}">
+              {{ url_for('admin.serve_azure_image', filename=product.image_gallery[0]) }}" class="card-img-top" alt="{{ product.name }}">
+          {% else %}
+          {{ url_for('static', filename='images/placeholder1.jpg') }}" class="card-img-top" alt="No image">
+          {% endif %}
           <div>{{ product.name }}</div>
           <div>{{ product.price }}%</div>
           <div>{{ product.campus }}</div>

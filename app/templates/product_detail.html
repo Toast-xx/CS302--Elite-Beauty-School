@@ -28,7 +28,7 @@
             {% if main_img.startswith('http') %}
             <img id="mainProductImg" src="{{ main_img }}" class="product-detail-main-img" alt="{{ product.name }}">
             {% else %}
-            <img id="mainProductImg" src="{{ url_for('admin.uploaded_image', filename=main_img) }}" class="product-detail-main-img" alt="{{ product.name }}">
+            <img id="mainProductImg" src="{{ url_for('admin.serve_azure_image', filename=main_img) }}" class="product-detail-main-img" alt="{{ product.name }}">
             {% endif %}
             {% else %}
             <img id="mainProductImg" src="{{ url_for('static', filename='images/placeholder.png') }}" class="product-detail-main-img" alt="No image">
@@ -39,7 +39,7 @@
                 {% if img.startswith('http') %}
                 <img src="{{ img }}" class="product-gallery-img" alt="Gallery image" data-img="{{ img }}">
                 {% else %}
-                <img src="{{ url_for('admin.uploaded_image', filename=img) }}" class="product-gallery-img" alt="Gallery image" data-img="{{ url_for('static', filename='images/' ~ img) }}">
+                <img src="{{ url_for('admin.serve_azure_image', filename=img) }}" class="product-gallery-img" alt="Gallery image" data-img="{{ img }}">
                 {% endif %}
                 {% endfor %}
                 {% elif product.image_file %}
@@ -48,7 +48,7 @@
                 {% else %}
                 <img src="{{ url_for('admin.uploaded_image', filename=product.image_file) }}" class="product-gallery-img" alt="Gallery image" data-img="{{ url_for('static', filename='images/' ~ product.image_file) }}">
                 {% endif %}
-                {% endif %}
+
             </div>
         </div>
         <div class="product-detail-right">
@@ -93,7 +93,7 @@
                 {% if rec_img.startswith('http') %}
                 <img src="{{ rec_img }}" alt="{{ rec_product.name }}">
                 {% else %}
-                <img src="{{ url_for('admin.uploaded_image', filename=rec_img) }}" alt="{{ rec_product.name }}">
+                <img src="{{ url_for('admin.serve_azure_image', filename=rec_img) }}" alt="{{ rec_product.name }}">
                 {% endif %}
                 {% else %}
                 <img src="{{ url_for('static', filename='images/placeholder.png') }}" alt="No image">

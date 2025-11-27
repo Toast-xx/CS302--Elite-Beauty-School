@@ -14,7 +14,8 @@
                     {% if product.image_gallery and product.image_gallery[0].startswith('http') %}
                     <img src="{{ product.image_gallery[0] }}" class="card-img-top" alt="{{ product.name }}">
                     {% elif product.image_gallery %}
-                    <img src="{{ url_for('admin.uploaded_image', filename=product.image_gallery[0]) }}" class="card-img-top" alt="{{ product.name }}">
+                    {% elif product.image_gallery %}
+                    <img src="{{ url_for('admin.serve_azure_image', filename=product.image_gallery[0]) }}" class="card-img-top" alt="{{ product.name }}">
                     {% else %}
                     <img src="{{ url_for('static', filename='images/placeholder.png') }}" class="card-img-top" alt="No image">
                     {% endif %}
