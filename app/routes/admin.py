@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, render_template, session, redirect, url_for
+from flask import Blueprint, jsonify, request, render_template, session, redirect, url_for, Response 
 from app.utils import require_clearance
 from app.utils import *
 from app.models.user import User  
@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 from app import db
 from sqlalchemy.exc import IntegrityError
 import os
+import mimetypes
 from azure.storage.blob import BlobServiceClient
 from flask import current_app
 
@@ -687,13 +688,22 @@ def add_product():
     return jsonify({"success": True, "message": "Product added!", "images_saved": len(image_urls)})
 
 # --- Add this route to serve uploaded images ---
-@admin.route('/uploads/images/<filename>')
-def uploaded_image(filename):
-    from flask import send_from_directory, current_app
-    return send_from_directory(
-        os.path.join(current_app.root_path, 'uploads', 'images'),
-        filename
-    )
+@admin.route('/admin/uploaded_images/<filename>')
+def serve_azure_image(filename):
+    conn_str = current_app.config.get('AZURE_STORAGE_CONNECTION_STRING')
+    container = current_app.config.get('AZURE_STORAGE_CONTAINER_NAME')
+    if not conn_str or not container:
+        return "Azure storage not configured", 500
+
+    blob_service_client = BlobServiceClient.from_connection_string(conn_str)
+    blob_client = blob_service_client.get_blob_client(container=container, blob=filename)
+    try:
+        stream = blob_client.download_blob()
+        data = stream.readall()
+        content_type = mimetypes.guess_type(filename)[0] or 'application/octet-stream'
+        return Response(data, mimetype=content_type)
+    except Exception as e:
+        return f"Error fetching image: {str(e)}", 404
 
 @admin.route("/get_categories_subcategories", methods=["GET"])
 def get_categories_subcategories():
