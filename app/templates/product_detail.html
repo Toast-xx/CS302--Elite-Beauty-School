@@ -48,7 +48,7 @@
                 {% else %}
                 <img src="{{ url_for('admin.uploaded_image', filename=product.image_file) }}" class="product-gallery-img" alt="Gallery image" data-img="{{ url_for('static', filename='images/' ~ product.image_file) }}">
                 {% endif %}
-                {% endblock %}
+             
             </div>
         </div>
         <div class="product-detail-right">
