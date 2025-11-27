@@ -67,7 +67,7 @@
                 {# Render product cards #}
                 {% for cp in campus_products %}
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                    wrap the Flask URL in an <img> tag:
+                    
                     <div class="card h-100 shadow-sm position-relative">
                         {% if cp.product.image_gallery and cp.product.image_gallery[0].startswith('http') %}
                         <img src="{{ cp.product.image_gallery[0] }}" class="card-img-top product-img" alt="{{ cp.product.name }}">
@@ -83,7 +83,6 @@
                             <p class="card-text mb-1"><strong>Quantity:</strong> {{ cp.quantity }}</p>
                         </div>
                     </div>
-                    
                 </div>
                 {% endfor %}
             </div>
