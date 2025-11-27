@@ -63,7 +63,7 @@ def show_products():
                         {% if cp.product.image_gallery and cp.product.image_gallery[0].startswith('http') %}
                         <img src="{{ cp.product.image_gallery[0] }}" class="card-img-top product-img" alt="{{ cp.product.name }}">
                         {% elif cp.product.image_gallery %}
-                        <img src="{{ url_for('static', filename='images/' ~ cp.product.image_gallery[0]) }}" class="card-img-top product-img" alt="{{ cp.product.name }}">
+                           <img src="{{ url_for('admin.uploaded_image', filename=cp.product.image_gallery[0]) }}" class="card-img-top product-img" alt="{{ cp.product.name }}">
                         {% else %}
                         <img src="{{ url_for('static', filename='images/placeholder.png') }}" class="card-img-top product-img" alt="No image">
                         {% endif %}

@@ -13,6 +13,16 @@ from datetime import datetime, timedelta
 from app import db
 from sqlalchemy.exc import IntegrityError
 import os
+from azure.storage.blob import BlobServiceClient
+from flask import current_app
+
+def upload_to_azure_blob(file, filename):
+    conn_str = current_app.config['AZURE_STORAGE_CONNECTION_STRING']
+    container = current_app.config['AZURE_STORAGE_CONTAINER_NAME']
+    blob_service_client = BlobServiceClient.from_connection_string(conn_str)
+    blob_client = blob_service_client.get_blob_client(container=container, blob=filename)
+    blob_client.upload_blob(file, overwrite=True)
+    return blob_client.url
 
 API_URL = "https://cs302-elite-beauty-school.onrender.com"
 
@@ -207,7 +217,7 @@ def products_request():
             "description": cp.product.description,
             "category": cp.product.sub_category.category.name,
             "sub_category": cp.product.sub_category.name,
-            "image": cp.product.image_gallery[0] if cp.product.image_gallery else None,
+            "image_gallery": cp.product.image_gallery if cp.product.image_gallery else [],
             "price": float(cp.price),
             "campus_quantity": cp.campus_quantity,
             "spa_quantity": cp.spa_quantity,
@@ -235,6 +245,8 @@ def inventory_request():
             "name": cp.product.name,
             "campus_quantity": cp.campus_quantity,
             "spa_quantity":cp.spa_quantity,
+            "image_gallery": cp.product.image_gallery if cp.product.image_gallery else []
+   
         }
         for cp in campus_products
     ]
@@ -624,14 +636,13 @@ def add_product():
 
     # Save images to disk and collect filenames
     images = request.files.getlist('images')
-    image_filenames = []
+    image_urls = []
     for image in images:
         if image and image.filename:
             filename = secure_filename(image.filename)
-            save_path = os.path.join(current_app.root_path, 'uploads', 'images', filename)
-            print("Saving image to:", save_path)
-            image.save(save_path)
-            image_filenames.append(filename)
+            # Upload to Azure Blob Storage
+            url = upload_to_azure_blob(image, filename)
+            image_urls.append(url)
 
     # Save product (sku removed)
     product = Product(
@@ -639,7 +650,7 @@ def add_product():
         brand=brand,
         description=description,
         sub_category_id=sub_category.id,
-        image_gallery=image_filenames # Store filenames as JSON array
+        image_gallery=image_urls  # Store URLs as JSON array
     )
     db.session.add(product)
     db.session.flush()
@@ -673,7 +684,7 @@ def add_product():
     db.session.add(campus_product)
     db.session.commit()
 
-    return jsonify({"success": True, "message": "Product added!", "images_saved": len(image_filenames)})
+    return jsonify({"success": True, "message": "Product added!", "images_saved": len(image_urls)})
 
 # --- Add this route to serve uploaded images ---
 @admin.route('/uploads/images/<filename>')
