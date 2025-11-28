@@ -28,5 +28,5 @@ class Product(db.Model):
             "description": self.description,
             "category": self.category,
             "image_gallery": self.image_gallery,
-            "campuses": [campus.id for campus in self.campuses],
+            
         }
