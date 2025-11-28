@@ -42,11 +42,7 @@ function updateInventory(inventory,lowstock)
         const inventoryStr = JSON.stringify(inventory).replace(/'/g, "&apos;");
         let imgSrc = "/static/images/placeholder1.jpg";
         if (inventory.image_gallery && inventory.image_gallery.length > 0) {
-            if (inventory.image_gallery[0].startsWith("http")) {
-                imgSrc = inventory.image_gallery[0];
-            } else {
-                imgSrc =`/admin/uploaded_images/${inventory.image_gallery[0]}`;
-            }
+            imgSrc = `/admin/uploaded_images/${inventory.image_gallery[0]}`;
         }
         container.innerHTML += `
             <div class="data">
