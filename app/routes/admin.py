@@ -23,6 +23,7 @@ def upload_to_azure_blob(file, filename):
     blob_service_client = BlobServiceClient.from_connection_string(conn_str)
     blob_client = blob_service_client.get_blob_client(container=container, blob=filename)
     blob_client.upload_blob(file, overwrite=True)
+    print(f"Uploaded {filename} to Azure. URL: {blob_client.url}")
     return blob_client.url
 
 API_URL = "https://cs302-elite-beauty-school.onrender.com"
