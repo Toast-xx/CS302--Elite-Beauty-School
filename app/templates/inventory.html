@@ -21,7 +21,11 @@
               {{ url_for('static', filename='images/placeholder1.jpg') }}
           {% endif %}"
                    alt="{{ inventory.name }}">
-              <span>{{ inventory.name }}</span>
+              <span>
+                  {{ inventory.name }} 
+                  <br>
+                  <small class="campus-name">({{ inventory.campus.name }})</small>
+              </span>
           </div>
           <div>{{ inventory.id }}</div>
           <div>{{ inventory.spa_quantity }}%</div>
