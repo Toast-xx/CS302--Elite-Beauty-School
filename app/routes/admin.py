@@ -247,7 +247,8 @@ def inventory_request():
             "name": cp.product.name,
             "campus_quantity": cp.campus_quantity,
             "spa_quantity":cp.spa_quantity,
-            "image_gallery": cp.product.image_gallery if cp.product.image_gallery else []
+            "image_gallery": cp.product.image_gallery if cp.product.image_gallery else [],
+            "campus": cp.campus.name
    
         }
         for cp in campus_products
