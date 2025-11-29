@@ -15,15 +15,12 @@
         <div class="data">
           <div style="align-items: center; display: flex;">
               <img style="width: 140px; height: 110px; margin-right: 10px;"
-                   src="{% if inventory.image_gallery and inventory.image_gallery[0].startswith('http') %}
-              {{ inventory.image_gallery[0] }}
-          {% elif inventory.image_gallery %}
+                   src="{% if inventory.image_gallery %}
               {{ url_for('admin.serve_azure_image', filename=inventory.image_gallery[0]) }}
           {% else %}
               {{ url_for('static', filename='images/placeholder1.jpg') }}
           {% endif %}"
-                   alt="{{ inventory.name }}"> 
-
+                   alt="{{ inventory.name }}">
               <span>{{ inventory.name }}</span>
           </div>
           <div>{{ inventory.id }}</div>

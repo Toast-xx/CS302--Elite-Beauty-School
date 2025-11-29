@@ -643,8 +643,8 @@ def add_product():
         if image and image.filename:
             filename = secure_filename(image.filename)
             # Upload to Azure Blob Storage
-            url = upload_to_azure_blob(image, filename)
-            image_urls.append(url)
+            upload_to_azure_blob(image, filename) 
+            image_urls.append(filename)
 
     # Save product (sku removed)
     product = Product(
