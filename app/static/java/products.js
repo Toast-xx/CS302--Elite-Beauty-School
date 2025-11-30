@@ -58,6 +58,6 @@ function updateProducts(data)
                     <div class="delete" onclick="overlay('delete'); deleteID('${product.id}')">Delete</div>
                 </div>
             </div>
-       
+       `;
     });
 }
