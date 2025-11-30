@@ -208,8 +208,11 @@ def products_request():
     if campus and campus not in ["Super Admin", "All"]:
         query = query.filter(Campus.name == campus)
         
-    campus_products = query.filter(CampusProduct.is_active == True).all()
-    
+    campus_products = query.filter(
+    CampusProduct.is_active == True,
+    Product.is_active == True  # Only if Product has is_active
+).all()
+
     print("All CampusProducts:", campus_products)
     product_list = [
         {
