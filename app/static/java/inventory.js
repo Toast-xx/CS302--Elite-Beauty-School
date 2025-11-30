@@ -48,7 +48,10 @@ function updateInventory(inventory,lowstock)
             <div class="data">
           <div style="align-items: center; display: flex;">
             <img style="width: 140px; height: 110px; margin-right: 10px;" src="${imgSrc}" alt="${inventory.name}">
-            <span>${ inventory.name }</span>
+            <span>${ inventory.name }
+            <br>
+            <small class="campus-name">(${inventory.campus})</small>
+            </span>
           </div>
           <div>${ inventory.id }</div>
           <div>${ inventory.spa_quantity }</div>

@@ -4,41 +4,23 @@
 <div class="inventory">
   <h3>Update Inventory</h3>
   <div class="box">
-    <div class="header">
-      <div style="margin-left: 15px;">Product</div>
-      <div style="margin-left: 15px;">ID</div>
-      <div>Store Stock</div>
-      <div>Campus Stock</div>
-    </div>
-    <div class="list" id="inventory_container">
-      {% for inventory in inventories %}
-        <div class="data">
-          <div style="align-items: center; display: flex;">
-              <img style="width: 140px; height: 110px; margin-right: 10px;"
-                   src="{% if inventory.image_gallery %}
-              {{ url_for('admin.serve_azure_image', filename=inventory.image_gallery[0]) }}
-          {% else %}
-              {{ url_for('static', filename='images/placeholder1.jpg') }}
-          {% endif %}"
-                   alt="{{ inventory.name }}">
-              <span>
-                  {{ inventory.name }} 
-                  <br>
-                  <small class="campus-name">({{ inventory.campus.name }})</small>
-              </span>
-          </div>
-          <div>{{ inventory.id }}</div>
-          <div>{{ inventory.spa_quantity }}%</div>
-          <div>{{ inventory.campus_quantity }}</div>
-          <div class="buttons">
-            <div class="button" onclick="overlay('transfer')">Transfer</div>
-            <div class="button" onclick="overlay('add')">Add</div>
-            <div class="button" onclick="overlay('delete')">Delete</div>
-          </div>
-        </div>
+      <div class="header">
+          <div style="margin-left: 15px;">Product</div>
+          <div style="margin-left: 15px;">ID</div>
+          <div>Store Stock</div>
+          <div>Campus Stock</div>
+      </div>
+      <div class="list" id="inventory_container">
+          <!-- Inventory items will be injected by JavaScript -->
+      </div>
+      <div class="button" onclick="overlay('transfer')">Transfer</div>
+      <div class="button" onclick="overlay('add')">Add</div>
+      <div class="button" onclick="overlay('delete')">Delete</div>
       {% endfor %}
-    </div>
   </div>
+  </div>
+     
+   
   <h3>Low Stock Alert.</h3>
   <div class="alert">
     <div class="header">
@@ -54,4 +36,3 @@
       {% endfor %}
     </div>
   </div>
-</div>
