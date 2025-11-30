@@ -70,10 +70,10 @@ def generate_order_pdf(order):
                 <td>
                     {% if item.product.image_gallery %}
                         {% if item.product.image_gallery is string %}
-                            <img src="{{ item.product.image_gallery }}">
-                        {% else %}
-                            <img src="{{ item.product.image_gallery[0] }}">
-                        {% endif %}
+                       <img src="/admin/uploaded_images/{{ gallery }}" alt="{{ item.product.name }}" style="width:60px; height:60px; object-fit:cover; margin-right:15px;">                                
+                       {% else %}
+                       <img src="/admin/uploaded_images/{{ gallery[0] }}" alt="{{ item.product.name }}" style="width:60px; height:60px; object-fit:cover; margin-right:15px;">    
+                       {% endif %}
                     {% endif %}
                 </td>
                 <td>{{ item.quantity }}</td>
