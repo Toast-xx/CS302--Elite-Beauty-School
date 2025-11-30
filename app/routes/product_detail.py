@@ -28,20 +28,25 @@ def product_detail(product_id):
     # Simple recommendations: get 5 other products (excluding current)
     # For each recommended product, get its campus-specific product for the current campus
     recommended_products = (
-        Product.query.filter(Product.id != product_id).limit(5).all()
+        Product.query
+        .filter(Product.id != product_id, Product.is_active == True)
+        .limit(10)
+        .all()
     )
     recommendations = []
     for rec_product in recommended_products:
         rec_campus_product = CampusProduct.query.filter_by(
-        product_id=rec_product.id,
-        campus_id=current_user.campus_id,
-        is_active=True
-    ).first()
-    if rec_campus_product:
-        recommendations.append({
-            "product": rec_product,
-            "campus_product": rec_campus_product
-        })
+            product_id=rec_product.id,
+            campus_id=current_user.campus_id,
+            is_active=True
+        ).first()
+        if rec_campus_product:
+            recommendations.append({
+                "product": rec_product,
+                "campus_product": rec_campus_product
+            })
+
+   
 
     return render_template(
         'product_detail.html',
