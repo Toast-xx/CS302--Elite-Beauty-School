@@ -9,24 +9,6 @@
     <div>Campus</div>
   </div>
   <div class="list" id="products_container">
-      {% for product in products %}
-      <div class="data">
-          {% if product.image_gallery %}
-          <img src="{{ url_for('admin.serve_azure_image', filename=product.image_gallery[0]) }}"
-               class="card-img-top"
-               alt="{{ product.name }}"
-               style="width: 140px; height: 110px;">
-          {% else %}
-          <img src="{{ url_for('static', filename='images/placeholder1.jpg') }}" class="card-img-top" alt="No image">
-          {% endif %}
-          <div>{{ product.name }}</div>
-          <div>{{ product.price }}%</div>
-          <div>{{ product.campus }}</div>
-          <div class="buttons">
-              <div class="edit" onclick="editProduct('{{product.id}}')">Edit</div>
-              <div class="delete" onclick="overlay('delete');deleteID('{{product.id}}')">Delete</div>
-          </div>
-      </div>
-      {% endfor %}
+      <!-- Product items will be injected by JavaScript -->
   </div>
-</div>
+  </div>
