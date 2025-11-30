@@ -21,7 +21,8 @@ def product_detail(product_id):
     # Get the campus-specific product info
     campus_product = CampusProduct.query.filter_by(
         product_id=product_id,
-        campus_id=current_user.campus_id
+        campus_id=current_user.campus_id,
+        is_active=True
     ).first()
 
     # Simple recommendations: get 5 other products (excluding current)
