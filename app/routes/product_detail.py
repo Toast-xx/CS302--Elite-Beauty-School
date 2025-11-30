@@ -35,7 +35,7 @@ def product_detail(product_id):
         rec_campus_product = CampusProduct.query.filter_by(
         product_id=rec_product.id,
         campus_id=current_user.campus_id,
-         is_active=True
+        is_active=True
     ).first()
     if rec_campus_product:
         recommendations.append({
