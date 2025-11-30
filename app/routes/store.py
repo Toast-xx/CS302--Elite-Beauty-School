@@ -22,9 +22,7 @@ def show_products():
 
     categories = Category.query.all()
     subcategories = []
-    campus_products_query = CampusProduct.query.join(Product, CampusProduct.product_id == Product.id)\
-        .filter(CampusProduct.campus_id == current_user.campus_id)
-
+    
     if category_id:
         subcategories = SubCategory.query.filter_by(category_id=category_id).all()
     if subcategory_id:
