@@ -65,6 +65,7 @@ def generate_order_pdf(order):
                 <th>Subtotal</th>
             </tr>
             {% for item in order.items %}
+            {% set gallery = item.product.image_gallery %}
             <tr>
                 <td>{{ item.product.name }}</td>
                 <td>
