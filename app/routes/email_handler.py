@@ -70,9 +70,8 @@ def generate_order_pdf(order):
                 <td>{{ item.product.name }}</td>
                 <td>
                     {% if gallery %}
-                        
-                      <img src="https://eliteemporium.blob.core.windows.net/images/{{ gallery if gallery is string else gallery[0] }}" alt="{{ item.product.name }}" style="width:60px; height:60px; object-fit:cover; margin-right:15px;">
-                    {% endif %}
+                   <img src="https://cs302-elite-beauty-school.onrender.com/admin/uploaded_images/{{ gallery if gallery is string else gallery[0] }}" ...>    
+                   {% endif %}
                 </td>
                 <td>{{ item.quantity }}</td>
                 <td>${{ "%.2f"|format(item.price) }}</td>
