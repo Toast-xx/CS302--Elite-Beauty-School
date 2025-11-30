@@ -27,6 +27,10 @@ def show_products():
         CampusProduct.campus_id == current_user.campus_id,
         CampusProduct.is_active == True  # <-- Add this filter
     )
+    campus_products_query = campus_products_query.filter(Product.is_active == True)
+
+    campus_products = campus_products_query.all()
+
     if category_id:
         subcategories = SubCategory.query.filter_by(category_id=category_id).all()
     if subcategory_id:
