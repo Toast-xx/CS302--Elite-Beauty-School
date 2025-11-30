@@ -29,7 +29,7 @@ def product_detail(product_id):
     # For each recommended product, get its campus-specific product for the current campus
     recommended_products = (
         Product.query
-        .filter(Product.id != product_id, Product.is_active == True)
+        .filter(Product.id != product_id)
         .limit(10)
         .all()
     )
