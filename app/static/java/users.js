@@ -47,7 +47,6 @@ function updateUsers(users)
                 </div>
                 <div>${ user.id }</div>
                 <div style="align-items: center; display: flex;">
-                    <img style="width: 40px; height: 40px; margin-right: 10px; border-radius: 100px;" src="{{ url_for('static', filename='images/dummy.png') }}">
                     <span>${ user.name }</span>
                 </div>
                 <div>${ user.email }</div>
