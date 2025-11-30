@@ -69,8 +69,8 @@ def generate_order_pdf(order):
             <tr>
                 <td>{{ item.product.name }}</td>
                 <td>
-                    {% if item.product.image_gallery %}
-                        {% if item.product.image_gallery is string %}
+                    {% if gallery %}
+                        
                       <img src="https://eliteemporium.blob.core.windows.net/images/{{ gallery if gallery is string else gallery[0] }}" alt="{{ item.product.name }}" style="width:60px; height:60px; object-fit:cover; margin-right:15px;">
                     {% endif %}
                 </td>
