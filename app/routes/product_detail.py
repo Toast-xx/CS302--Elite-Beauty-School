@@ -31,10 +31,12 @@ def product_detail(product_id):
     )
     recommendations = []
     for rec_product in recommended_products:
-        rec_campus_product = CampusProduct.query.filter_by(
-            product_id=rec_product.id,
-            campus_id=current_user.campus_id
-        ).first()
+     rec_campus_product = CampusProduct.query.filter_by(
+        product_id=rec_product.id,
+        campus_id=current_user.campus_id,
+        is_active=True  # <-- Add this filter
+    ).first()
+    if rec_campus_product:
         recommendations.append({
             "product": rec_product,
             "campus_product": rec_campus_product
