@@ -1,4 +1,4 @@
-﻿{#
+﻿s{#
 Order History Template
 Displays a table of all user orders and a modal for order details.
 Shows product images, names, quantities, unit prices, subtotals, shipping, and total.
@@ -51,9 +51,9 @@ Shows product images, names, quantities, unit prices, subtotals, shipping, and t
                                                     {% if item.product.image_gallery %}
                                                     {% set gallery = item.product.image_gallery %}
                                                     {% if gallery is string %}
-                                                    <img src="{{ gallery }}" alt="{{ item.product.name }}" style="width:60px; height:60px; object-fit:cover; margin-right:15px;">
+                                                    <img src="/admin/uploaded_images/{{ gallery }}" alt="{{ item.product.name }}" style="width:60px; height:60px; object-fit:cover; margin-right:15px;">
                                                     {% else %}
-                                                    <img src="{{ gallery[0] }}" alt="{{ item.product.name }}" style="width:60px; height:60px; object-fit:cover; margin-right:15px;">
+                                                    <img src="/admin/uploaded_images/{{ gallery[0] }}" alt="{{ item.product.name }}" style="width:60px; height:60px; object-fit:cover; margin-right:15px;">
                                                     {% endif %}
                                                     {% endif %}
                                                     <div>
