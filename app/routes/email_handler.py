@@ -4,6 +4,18 @@ from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileT
 import base64
 from jinja2 import Template
 import requests
+import mimetypes
+from azure.storage.blob import BlobServiceClient
+
+def get_image_data_uri(filename):
+    conn_str = os.environ.get('AZURE_STORAGE_CONNECTION_STRING')
+    container = os.environ.get('AZURE_STORAGE_CONTAINER_NAME')
+    blob_service_client = BlobServiceClient.from_connection_string(conn_str)
+    blob_client = blob_service_client.get_blob_client(container=container, blob=filename)
+    image_bytes = blob_client.download_blob().readall()
+    mime_type = mimetypes.guess_type(filename)[0] or 'image/png'
+    encoded = base64.b64encode(image_bytes).decode('utf-8')
+    return f"data:{mime_type};base64,{encoded}"
 
 def send_order_confirmation_email(recipient_email, order):
     """
@@ -37,7 +49,15 @@ def send_order_confirmation_email(recipient_email, order):
         print(f"SendGrid error: {e}")
 
 def generate_order_pdf(order):
-    # ... (your existing PDF generation code remains unchanged)
+    # Preprocess order items to add image_data_uri
+    for item in order.items:
+        gallery = item.product.image_gallery
+        if gallery:
+            filename = gallery if isinstance(gallery, str) else gallery[0]
+            item.image_data_uri = get_image_data_uri(filename)
+        else:
+            item.image_data_uri = None
+
     html_template = """
     <html>
     <head>
@@ -65,13 +85,12 @@ def generate_order_pdf(order):
                 <th>Subtotal</th>
             </tr>
             {% for item in order.items %}
-            {% set gallery = item.product.image_gallery %}
             <tr>
                 <td>{{ item.product.name }}</td>
                 <td>
-                    {% if gallery %}
-                   <img src="https://cs302-elite-beauty-school.onrender.com/admin/uploaded_images/{{ gallery if gallery is string else gallery[0] }}" ...>    
-                   {% endif %}
+                    {% if item.image_data_uri %}
+                      <img src="{{ item.image_data_uri }}" alt="{{ item.product.name }}" style="width:60px; height:60px; object-fit:cover; margin-right:15px;">
+                    {% endif %}
                 </td>
                 <td>{{ item.quantity }}</td>
                 <td>${{ "%.2f"|format(item.price) }}</td>
