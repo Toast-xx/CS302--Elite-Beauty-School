@@ -210,7 +210,7 @@ def products_request():
         
     campus_products = query.filter(
     CampusProduct.is_active == True,
-    Product.is_active == True  # Only if Product has is_active
+    
 ).all()
 
     print("All CampusProducts:", campus_products)

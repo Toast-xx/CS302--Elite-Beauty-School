@@ -10,8 +10,7 @@ window.addEventListener('load', function ()
         }
     });
 });
-function productsRequest()
-{
+function productsRequest(){
     let campus = document.getElementById("campus-name").textContent;
     const admin=document.getElementById('superstatus');
     if(admin.checked)
