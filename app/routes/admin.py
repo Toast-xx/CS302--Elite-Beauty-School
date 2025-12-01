@@ -642,45 +642,35 @@ def add_product():
     # Get clearance level from session
     clearance = session.get('clearance_level')
 
-# Validate
+    # Validate
     if not name or not description or not price or not category_id or not sub_category_id:
-       return jsonify({"success": False, "message": "Missing required fields"}), 400
+        return jsonify({"success": False, "message": "Missing required fields"}), 400
 
     category = Category.query.get(category_id)
     sub_category = SubCategory.query.get(sub_category_id)
     if not category or not sub_category:
         return jsonify({"success": False, "message": "Invalid category or sub-category"}), 400
-
 
     try:
         price = float(price)
     except ValueError:
         return jsonify({"success": False, "message": "Invalid price"}), 400
 
-    # Find or create category and subcategory
-    category = Category.query.get(category_id)
-    sub_category = SubCategory.query.get(sub_category_id)
-    if not category or not sub_category:
-        return jsonify({"success": False, "message": "Invalid category or sub-category"}), 400
-
-
     # Save images to disk and collect filenames
-    images = request.files.getlist('images')
     image_urls = []
     for image in images:
         if image and image.filename:
             filename = secure_filename(image.filename)
-            # Upload to Azure Blob Storage
-            upload_to_azure_blob(image, filename) 
+            upload_to_azure_blob(image, filename)
             image_urls.append(filename)
 
-    # Save product (sku removed)
+    # Save product
     product = Product(
         name=name,
         brand=brand,
         description=description,
         sub_category_id=sub_category.id,
-        image_gallery=image_urls  # Store URLs as JSON array
+        image_gallery=image_urls
     )
     db.session.add(product)
     db.session.flush()
@@ -698,19 +688,20 @@ def add_product():
                 product_id=product.id,
                 price=price,
                 campus_quantity=0,
-                spa_quantity=0
+                spa_quantity=0,
+                is_active=True
             )
             db.session.add(campus_product)
+        db.session.commit()
+        return jsonify({"success": True, "message": "Product added!", "images_saved": len(image_urls)})
 
-    # Get campus from session
-    else:
-     campus_name = session.get('campus')
+    # Admin: single campus
+    campus_name = session.get('campus')
     campus = Campus.query.filter_by(name=campus_name).first()
     if not campus:
         campus = Campus(name=campus_name)
         db.session.add(campus)
         db.session.flush()
-    # Always create campus_product for admin
     campus_product = CampusProduct(
         campus_id=campus.id,
         product_id=product.id,
@@ -720,7 +711,7 @@ def add_product():
         is_active=True
     )
     db.session.add(campus_product)
-
+    db.session.commit()
     return jsonify({"success": True, "message": "Product added!", "images_saved": len(image_urls)})
 
 # --- Add this route to serve uploaded images ---
