@@ -46,3 +46,21 @@ function updateOrders(data)
         `;
     });
 }
+function updateOrderStatus(orderId, status) {
+    fetch(`${API_URL}/update_order_status`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ order_id: orderId, status })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Order status updated!");
+                ordersRequest(); // Refresh the orders list
+            } else {
+                alert("Error: " + data.message);
+            }
+        })
+        .catch(err => alert("Error: " + err));
+}

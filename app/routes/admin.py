@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request, render_template, session, redirect, url_for, Response 
+from app.utils.email_handler import send_order_status_update_email  
 from app.utils import require_clearance
 from app.utils import *
 from app.models.user import User  
@@ -198,7 +199,30 @@ def orders_request():
     except Exception as ex:
         print("ERROR /orders_request:", ex)
         return jsonify({"error": "Internal server error"}), 500
+    from app.utils.email_handler import send_order_status_update_email  # Add this import at the top
 
+@admin.route("/update_order_status", methods=["POST"])
+@require_clearance(2)
+def update_order_status():
+    data = request.get_json()
+    order_id = data.get("order_id")
+    new_status = data.get("status")
+    valid_statuses = ["Pending", "Paid", "Pending Delivery", "Completed", "Cancelled", "Refunded"]
+
+    if new_status not in valid_statuses:
+        return jsonify({"success": False, "message": "Invalid status"}), 400
+
+    order = Order.query.get(order_id)
+    if not order:
+        return jsonify({"success": False, "message": "Order not found"}), 404
+
+    order.status = new_status
+    db.session.commit()
+
+    # Send email notification
+    send_order_status_update_email(order.user.email, order, new_status)
+
+    return jsonify({"success": True, "message": "Order status updated"})
 @admin.route("/products_request", methods=["POST"])
 def products_request():
     data = request.json

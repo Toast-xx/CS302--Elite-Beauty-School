@@ -15,11 +15,22 @@
     <div class="data" id="orders_container">
       {% for order in orders %}
         <div class="value">
-          <div>{{ order.id }}</div>
-          <div>{{ order.date }}</div>
-          <div>{{ order.percentage }}%</div>
-          <div>{{ order.amount }}</div>
-          <div class="{% if order.status == 'Completed' %} completed{% elif order.status == 'Cancelled' %} cancelled {% elif order.status == 'Pending' %} pending {% elif order.status == 'Refunded' %} refunded{% endif %}">{{ order.status }}</div>
+            <div>{{ order.id }}</div>
+            <div>{{ order.date }}</div>
+            <div>{{ order.percentage }}%</div>
+            <div>{{ order.amount }}</div>
+            {% if clearance in [2, 3] %}
+            <select onchange="updateOrderStatus({{ order.id }}, this.value)">
+                <option value="Pending" {% if order.status == "Pending" %}selected{% endif %}>Pending</option>
+                <option value="Paid" {% if order.status == "Paid" %}selected{% endif %}>Paid</option>
+                <option value="Pending Delivery" {% if order.status == "Pending Delivery" %}selected{% endif %}>Pending Delivery</option>
+                <option value="Completed" {% if order.status == "Completed" %}selected{% endif %}>Completed</option>
+                <option value="Cancelled" {% if order.status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+                <option value="Refunded" {% if order.status == "Refunded" %}selected{% endif %}>Refunded</option>
+            </select>
+            {% else %}
+            <div class="{% if order.status == 'Completed' %} completed{% elif order.status == 'Cancelled' %} cancelled {% elif order.status == 'Pending' %} pending {% elif order.status == 'Refunded' %} refunded{% endif %}">{{ order.status }}</div>
+            {% endif %}
         </div>
       {% endfor %}
     </div>

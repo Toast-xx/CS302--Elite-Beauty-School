@@ -121,3 +121,28 @@ def generate_order_pdf(order):
         return response.content  # PDF bytes
     else:
         raise Exception(f"PDFShift error: {response.text}")
+    # ...existing functions...
+
+def send_order_status_update_email(recipient_email, order, new_status):
+    from sendgrid import SendGridAPIClient
+    from sendgrid.helpers.mail import Mail
+    import os
+
+    subject = f"Your Order #{order.id} Status Update"
+    html_content = f"""
+        <p>Dear Customer,</p>
+        <p>Your order status has been updated to <strong>{new_status}</strong>.</p>
+        <p>Order ID: {order.id}</p>
+        <p>Thank you for shopping with us!</p>
+    """
+    message = Mail(
+        from_email=os.environ.get('MAIL_DEFAULT_SENDER'),
+        to_emails=recipient_email,
+        subject=subject,
+        html_content=html_content
+    )
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        sg.send(message)
+    except Exception as e:
+        print(f"SendGrid error: {e}")
