@@ -716,7 +716,8 @@ def add_product():
         product_id=product.id,
         price=price,
         campus_quantity=0,
-        spa_quantity=0
+        spa_quantity=0,
+        is_active=True
     )
     db.session.add(campus_product)
 
