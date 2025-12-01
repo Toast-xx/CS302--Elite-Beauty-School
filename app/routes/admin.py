@@ -711,6 +711,14 @@ def add_product():
         db.session.add(campus)
         db.session.flush()
 
+        campus_product = CampusProduct(
+            campus_id=campus.id,
+            product_id=product.id,
+            price=price,
+            campus_quantity=0,
+            spa_quantity=0
+        )
+
     db.session.add(campus_product)
     db.session.commit()
 
