@@ -65,6 +65,7 @@ def validate_new_email(email: str, user_id=None) -> tuple[bool, str]:
     if is_email_in_use(email, user_id):
         return False, "Email is already in use."
     return True, "Email is valid and available."
+
 def send_order_status_update_email(recipient_email, order, new_status):
     from sendgrid import SendGridAPIClient
     from sendgrid.helpers.mail import Mail

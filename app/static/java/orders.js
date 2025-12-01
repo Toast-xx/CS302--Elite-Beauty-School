@@ -24,24 +24,33 @@ function ordersRequest()
     })
     .catch(err => console.error("Orders request failed:", err));
 }
-function updateOrders(data)
-{
+function updateOrders(data) {
     const container = document.getElementById("orders_container");
     container.innerHTML = "";
     data.forEach(item => {
         const statusClass =
             item.status === "Completed" ? "completed" :
-            item.status === "Cancelled" ? "cancelled" :
-            item.status === "Pending" ? "pending" :
-            item.status === "Refunded" ? "refunded" : "";
+                item.status === "Cancelled" ? "cancelled" :
+                    item.status === "Pending" ? "pending" :
+                        item.status === "Refunded" ? "refunded" : "";
+
+        // Status options
+        const statusOptions = ["Paid", "Pending", "Completed", "Cancelled", "Refunded"];
+        const statusSelect = `
+            <select onchange="updateOrderStatus(${item.id}, this.value)">
+                ${statusOptions.map(opt =>
+            `<option value="${opt}"${opt === item.status ? " selected" : ""}>${opt}</option>`
+        ).join("")}
+            </select>
+        `;
 
         container.innerHTML += `
             <div class="value">
                 <div>${item.id}</div>
                 <div>${item.created_at}</div>
-                <div>${item.user_id}</div>
+                <div>${item.promotion || ""}</div>
                 <div>$${item.total}</div>
-                <div class="${statusClass}">${item.status}</div>
+                <div class="${statusClass}">${statusSelect}</div>
             </div>
         `;
     });
